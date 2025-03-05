@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import axios from "axios";
+
+axios.defaults.baseURL = 'http://127.0.0.1:8000';
+axios.defaults.timeout = 2000;
 </script>
 
 <template>
