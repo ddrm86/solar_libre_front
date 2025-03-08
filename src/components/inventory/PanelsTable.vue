@@ -29,8 +29,8 @@ onMounted(() => {
     </DataTable>
   </div>
   <div v-else>
-    <h2>{{ t('error_message') }}</h2>
-    <small>{{ panelsStore.errorDetails }}</small>
+    <h2 class="text-xl font-bold">{{ t('error_message') }}</h2>
+    <small class="text-red-500">{{ panelsStore.errorDetails }}</small>
   </div>
 </template>
 

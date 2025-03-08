@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite';
 import {PrimeVueResolver} from '@primevue/auto-import-resolver';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,6 +14,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     VueI18nPlugin({}),
+    tailwindcss(),
     Components({
       resolvers: [
         PrimeVueResolver()
