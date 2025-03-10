@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { AxiosError } from 'axios'
 
-interface Panel {
+export interface Panel {
   id?: string;
   model: string;
   nominal_power: number;
