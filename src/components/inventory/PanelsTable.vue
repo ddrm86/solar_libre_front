@@ -6,17 +6,18 @@
       </template>
     </Toolbar>
 
-    <DataTable :value="panelsStore.availablePanels" dataKey="id" :loading="panelsStore.fetching">
-      <Column field="model" :header="t('panel.model')"></Column>
-      <Column field="nominal_power" :header="t('panel.nominal_power')"></Column>
-      <Column field="vmpp" :header="t('panel.vmpp')"></Column>
-      <Column field="impp" :header="t('panel.impp')"></Column>
-      <Column field="voc" :header="t('panel.voc')"></Column>
-      <Column field="isc" :header="t('panel.isc')"></Column>
-      <Column field="length" :header="t('panel.length')"></Column>
-      <Column field="width" :header="t('panel.width')"></Column>
-      <Column field="reference" :header="t('panel.reference')"></Column>
-      <Column field="description" :header="t('panel.description')"></Column>
+    <DataTable :value="panelsStore.availablePanels" :loading="panelsStore.fetching" dataKey="id"
+               stripedRows sortField="model" :sortOrder="1" >
+      <Column field="model" :header="t('panel.model')" sortable></Column>
+      <Column field="nominal_power" :header="t('panel.nominal_power')" sortable></Column>
+      <Column field="vmpp" :header="t('panel.vmpp')" sortable></Column>
+      <Column field="impp" :header="t('panel.impp')" sortable></Column>
+      <Column field="voc" :header="t('panel.voc')" sortable></Column>
+      <Column field="isc" :header="t('panel.isc')" sortable></Column>
+      <Column field="length" :header="t('panel.length')" sortable></Column>
+      <Column field="width" :header="t('panel.width')" sortable></Column>
+      <Column field="reference" :header="t('panel.reference')" sortable></Column>
+      <Column field="description" :header="t('panel.description')" sortable></Column>
       <Column :exportable="false">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editPanel(slotProps.data)"/>
