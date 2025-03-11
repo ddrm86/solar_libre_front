@@ -6,7 +6,7 @@
       </template>
     </Toolbar>
 
-    <DataTable :value="panelsStore.panels" dataKey="id" :loading="panelsStore.fetching">
+    <DataTable :value="panelsStore.availablePanels" dataKey="id" :loading="panelsStore.fetching">
       <Column field="model" :header="t('panel.model')"></Column>
       <Column field="nominal_power" :header="t('panel.nominal_power')"></Column>
       <Column field="vmpp" :header="t('panel.vmpp')"></Column>

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { AxiosError } from 'axios'
 
@@ -14,10 +14,13 @@ export interface Panel {
   width: number;
   reference?: string;
   description?: string;
+  deleted: boolean;
 }
 
 export const usePanelsStore = defineStore('panels', () => {
   const panels = ref<Panel[]>([])
+  const availablePanels = computed(() =>
+    panels.value.filter(panel => !panel.deleted));
   const fetching = ref(false);
   const error = ref(false);
   const errorDetails = ref<AxiosError>();
@@ -65,5 +68,5 @@ export const usePanelsStore = defineStore('panels', () => {
       });
   }
 
-  return { panels, fetching, error, errorDetails, fetchPanels, addPanel, editPanel }
+  return { panels, availablePanels, fetching, error, errorDetails, fetchPanels, addPanel, editPanel }
 })
