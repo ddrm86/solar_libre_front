@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!panelsStore.error">
+  <div v-if="!fechingError">
     <Toolbar>
       <template #start>
         <Button :label="t('button.new')" icon="pi pi-plus" @click="openNew" />
@@ -20,7 +20,7 @@
     </DataTable>
   </div>
   <div v-else>
-    <h2 class="text-xl font-bold">{{ t('error_message') }}</h2>
+    <h2 class="text-xl font-bold">{{ t('messages.fetching_error') }}</h2>
     <small class="text-red-500">{{ panelsStore.errorDetails }}</small>
   </div>
 
@@ -155,12 +155,8 @@
           rows="3"
           cols="20"
           fluid
-          :invalid="submitted && !selectedPanel.description"
         />
         <label for="description">{{ t('panel.description') }}</label>
-        <small v-if="submitted && !selectedPanel.description" class="text-red-500"
-          >La descripción es requerida.</small
-        >
       </IftaLabel>
     </div>
 
@@ -175,17 +171,21 @@
 import { usePanelsStore, type Panel } from '@/stores/panels.ts'
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import {useToast} from 'primevue/usetoast';
 
 const { t } = useI18n()
-
+const toast = useToast();
 const panelsStore = usePanelsStore()
+
+const fechingError = ref(false);
 const selectedPanel = ref({} as Panel)
 const panelDialog = ref(false)
 const submitted = ref(false)
 const savingPanel = ref(false)
 
 onMounted(() => {
-  panelsStore.fetchPanels()
+  panelsStore.fetchPanels();
+  fechingError.value = panelsStore.error;
 })
 
 const openNew = () => {
@@ -200,7 +200,37 @@ const hideDialog = () => {
 }
 
 const savePanel = () => {
-  alert('Unimplemented')
+  submitted.value = true;
+
+  if (selectedPanel.value.model?.trim()) {
+    const editing = selectedPanel.value.id;
+    savingPanel.value = true;
+    if (editing) {
+      saveChanges();
+    } else {
+      saveNew();
+    }
+    savingPanel.value = false;
+  }
+
+  function saveNew() {
+    panelsStore.addPanel(selectedPanel.value)
+      .then(() => {
+        if (panelsStore.error) {
+          toast.add({ severity: 'error', summary: t('messages.error'),
+            detail: t('messages.adding_panel_error') + panelsStore.errorDetails, life: 3000 });
+        } else {
+          toast.add({ severity: 'success', summary: t('messages.success'),
+            detail: t('messages.panel_added'), life: 3000 });
+        }
+      });
+    selectedPanel.value = {} as Panel;
+    panelDialog.value = false;
+  }
+
+  function saveChanges() {
+    alert('Unimplemented');
+  }
 }
 </script>
 
@@ -225,7 +255,13 @@ const savePanel = () => {
     "button": {
       "new": "New"
     },
-    "error_message": "There was an error fetching the data from the database. Please try again later."
+    "messages": {
+      "success": "Success",
+      "error": "Error",
+      "fetching_error": "There was an error fetching the data from the database. Please try again later.",
+      "panel_added": "Panel added",
+      "adding_panel_error": "Error adding the panel: "
+    }
   },
   "es": {
     "panel": {
@@ -246,7 +282,13 @@ const savePanel = () => {
     "button": {
       "new": "Nuevo"
     },
-    "error_message": "Hubo un error al obtener los datos de la base de datos. Por favor, inténtelo de nuevo más tarde."
+    "messages": {
+      "success": "Éxito",
+      "error": "Error",
+      "fetching_error": "Hubo un error al obtener los datos de la base de datos. Por favor, inténtelo de nuevo más tarde.",
+      "panel_added": "Panel añadido",
+      "adding_panel_error": "Error añadiendo el panel: "
+    }
   }
 }
 </i18n>
