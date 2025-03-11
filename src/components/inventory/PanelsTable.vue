@@ -1,13 +1,23 @@
 <template>
   <div v-if="!fetchingError">
-    <Toolbar>
-      <template #start>
-        <Button :label="t('button.new')" icon="pi pi-plus" @click="openNew" />
-      </template>
-    </Toolbar>
-
     <DataTable :value="panelsStore.availablePanels" :loading="panelsStore.fetching" dataKey="id"
-               stripedRows sortField="model" :sortOrder="1" >
+               stripedRows sortField="model" :sortOrder="1"
+               v-model:filters="filters" :globalFilterFields="['model', 'description']" filterDisplay="row">
+      <template #header>
+        <div class="flex justify-between">
+          <div>
+            <Button :label="t('button.new')" icon="pi pi-plus" @click="openNew" />
+          </div>
+          <div>
+            <IconField>
+              <InputIcon>
+                <i class="pi pi-search" />
+              </InputIcon>
+              <InputText v-model="filters['global'].value" :placeholder="t('labels.keyword_search')" />
+            </IconField>
+          </div>
+        </div>
+      </template>
       <Column field="model" :header="t('panel.model')" sortable></Column>
       <Column field="nominal_power" :header="t('panel.nominal_power')" sortable></Column>
       <Column field="vmpp" :header="t('panel.vmpp')" sortable></Column>
@@ -195,10 +205,15 @@ import { usePanelsStore, type Panel } from '@/stores/panels.ts'
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {useToast} from 'primevue/usetoast';
+import { FilterMatchMode } from '@primevue/core/api';
 
 const { t } = useI18n()
 const toast = useToast();
 const panelsStore = usePanelsStore()
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
 
 const fetchingError = ref(false);
 const selectedPanel = ref({} as Panel)
@@ -339,6 +354,9 @@ const deletePanel = () => {
       "panel_edited": "Panel edited",
       "deleting_panel_error": "Error deleting the panel: ",
       "panel_deleted": "Panel deleted"
+    },
+    "labels": {
+      "keyword_search": "Search"
     }
   },
   "es": {
@@ -374,6 +392,9 @@ const deletePanel = () => {
       "panel_edited": "Panel editado",
       "deleting_panel_error": "Error eliminando el panel: ",
       "panel_deleted": "Panel eliminado"
+    },
+    "labels": {
+      "keyword_search": "Buscar"
     }
   }
 }
