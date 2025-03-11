@@ -22,9 +22,9 @@ export const usePanelsStore = defineStore('panels', () => {
   const error = ref(false);
   const errorDetails = ref<AxiosError>();
 
-  const fetchPanels = ()=> {
+  const fetchPanels = async ()=> {
     fetching.value = true;
-    axios
+    return axios
       .get('/panels/')
       .then(response => {
         panels.value = response.data;

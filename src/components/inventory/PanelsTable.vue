@@ -184,8 +184,9 @@ const submitted = ref(false)
 const savingPanel = ref(false)
 
 onMounted(() => {
-  panelsStore.fetchPanels();
-  fechingError.value = panelsStore.error;
+  panelsStore.fetchPanels().then(() => {
+    fechingError.value = panelsStore.error;
+  })
 })
 
 const openNew = () => {
