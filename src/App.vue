@@ -9,6 +9,7 @@ axios.defaults.timeout = 2000;
 </script>
 
 <template>
+  <Toast />
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
