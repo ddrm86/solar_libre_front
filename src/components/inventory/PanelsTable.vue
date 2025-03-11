@@ -17,6 +17,11 @@
       <Column field="width" :header="t('panel.width')"></Column>
       <Column field="reference" :header="t('panel.reference')"></Column>
       <Column field="description" :header="t('panel.description')"></Column>
+      <Column :exportable="false">
+        <template #body="slotProps">
+          <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editPanel(slotProps.data)"/>
+        </template>
+      </Column>
     </DataTable>
   </div>
   <div v-else>
@@ -230,9 +235,25 @@ const savePanel = () => {
   }
 
   function saveChanges() {
-    alert('Unimplemented');
+    panelsStore.editPanel(selectedPanel.value)
+      .then(() => {
+        if (panelsStore.error) {
+          toast.add({ severity: 'error', summary: t('messages.error'),
+            detail: t('messages.editing_panel_error') + panelsStore.errorDetails, life: 3000 });
+        } else {
+          toast.add({ severity: 'success', summary: t('messages.success'),
+            detail: t('messages.panel_edited'), life: 3000 });
+        }
+      });
+    selectedPanel.value = {} as Panel;
+    panelDialog.value = false;
   }
 }
+
+const editPanel = (panel: Panel) => {
+  selectedPanel.value = { ...panel };
+  panelDialog.value = true;
+};
 </script>
 
 <i18n>
@@ -261,7 +282,9 @@ const savePanel = () => {
       "error": "Error",
       "fetching_error": "There was an error fetching the data from the database. Please try again later.",
       "panel_added": "Panel added",
-      "adding_panel_error": "Error adding the panel: "
+      "adding_panel_error": "Error adding the panel: ",
+      "editing_panel_error": "Error editing the panel: ",
+      "panel_edited": "Panel edited"
     }
   },
   "es": {
@@ -288,7 +311,9 @@ const savePanel = () => {
       "error": "Error",
       "fetching_error": "Hubo un error al obtener los datos de la base de datos. Por favor, inténtelo de nuevo más tarde.",
       "panel_added": "Panel añadido",
-      "adding_panel_error": "Error añadiendo el panel: "
+      "adding_panel_error": "Error añadiendo el panel: ",
+      "editing_panel_error": "Error editando el panel: ",
+      "panel_edited": "Panel editado"
     }
   }
 }

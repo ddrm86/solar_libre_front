@@ -52,5 +52,18 @@ export const usePanelsStore = defineStore('panels', () => {
       });
   }
 
-  return { panels, fetching, error, errorDetails, fetchPanels, addPanel }
+  const editPanel = async (panel: Panel) => {
+    return axios
+      .patch(`/panels/${panel.id}`, panel)
+      .then(() => {
+        error.value = false;
+        fetchPanels();
+      })
+      .catch((errorResponse) => {
+        error.value = true;
+        errorDetails.value = errorResponse;
+      });
+  }
+
+  return { panels, fetching, error, errorDetails, fetchPanels, addPanel, editPanel }
 })
