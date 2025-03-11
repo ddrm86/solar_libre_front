@@ -68,5 +68,18 @@ export const usePanelsStore = defineStore('panels', () => {
       });
   }
 
-  return { panels, availablePanels, fetching, error, errorDetails, fetchPanels, addPanel, editPanel }
+  const deletePanel = async (id: string) => {
+    return axios
+      .delete(`/panels/${id}`)
+      .then(() => {
+        error.value = false;
+        fetchPanels();
+      })
+      .catch((errorResponse) => {
+        error.value = true;
+        errorDetails.value = errorResponse;
+      })
+  }
+
+  return { panels, availablePanels, fetching, error, errorDetails, fetchPanels, addPanel, editPanel, deletePanel };
 })

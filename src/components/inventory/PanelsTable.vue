@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!fechingError">
+  <div v-if="!fetchingError">
     <Toolbar>
       <template #start>
         <Button :label="t('button.new')" icon="pi pi-plus" @click="openNew" />
@@ -20,6 +20,7 @@
       <Column :exportable="false">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editPanel(slotProps.data)"/>
+          <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeletePanel(slotProps.data)"/>
         </template>
       </Column>
     </DataTable>
@@ -170,6 +171,22 @@
       <Button label="Guardar" :loading="savingPanel" icon="pi pi-check" @click="savePanel" />
     </template>
   </Dialog>
+
+  <Dialog v-model:visible="deletePanelDialog" :header="t('dialog.confirm_header')" :modal="true">
+    <div class="flex flex-col justify-center">
+      <div class="flex items-center pb-4">
+        <i class="pi pi-exclamation-triangle !text-3xl"/>
+        <span>{{ t('dialog.confirm_delete') }}</span>
+      </div>
+      <div class="flex items-center max-w-64 bg-slate-100 rounded shadow mx-auto">
+        <small class="truncate ...">{{ selectedPanel.model }} - {{ selectedPanel.description }}</small>
+      </div>
+    </div>
+    <template #footer>
+      <Button :label="t('button.no')" icon="pi pi-times" text autofocus @click="deletePanelDialog = false"/>
+      <Button :label="t('button.yes')" icon="pi pi-check" severity="danger" :loading="deletingPanel" @click="deletePanel"/>
+    </template>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -182,15 +199,17 @@ const { t } = useI18n()
 const toast = useToast();
 const panelsStore = usePanelsStore()
 
-const fechingError = ref(false);
+const fetchingError = ref(false);
 const selectedPanel = ref({} as Panel)
 const panelDialog = ref(false)
+const deletePanelDialog = ref(false)
 const submitted = ref(false)
 const savingPanel = ref(false)
+const deletingPanel = ref(false);
 
 onMounted(() => {
   panelsStore.fetchPanels().then(() => {
-    fechingError.value = panelsStore.error;
+    fetchingError.value = panelsStore.error;
   })
 })
 
@@ -254,6 +273,34 @@ const editPanel = (panel: Panel) => {
   selectedPanel.value = { ...panel };
   panelDialog.value = true;
 };
+
+const confirmDeletePanel = (panel: Panel) => {
+  selectedPanel.value = panel;
+  deletePanelDialog.value = true;
+};
+
+const deletePanel = () => {
+  const panel_id = selectedPanel.value?.id;
+  if (!panel_id) {
+    throw new Error('Selected panel has no id.');
+  }
+  deletingPanel.value = true;
+  panelsStore.deletePanel(panel_id)
+    .then(() => {
+      if (panelsStore.error) {
+        toast.add({ severity: 'error', summary: t('messages.error'),
+          detail: t('messages.deleting_panel_error') + panelsStore.errorDetails, life: 3000 });
+      } else {
+        toast.add({ severity: 'success', summary: t('messages.success'),
+          detail: t('messages.panel_deleted'), life: 3000 });
+      }
+    })
+    .finally(() => {
+        selectedPanel.value = {} as Panel;
+        deletePanelDialog.value = false;
+        deletingPanel.value = false;
+      });
+};
 </script>
 
 <i18n>
@@ -272,10 +319,14 @@ const editPanel = (panel: Panel) => {
       "description": "Description"
     },
     "dialog": {
-      "header": "Panel details"
+      "header": "Panel details",
+      "confirm_header": "Confirm",
+      "confirm_delete": "Are you sure you want to delete this panel?️"
     },
     "button": {
-      "new": "New"
+      "new": "New",
+      "no": "No",
+      "yes": "Yes"
     },
     "messages": {
       "success": "Success",
@@ -284,7 +335,9 @@ const editPanel = (panel: Panel) => {
       "panel_added": "Panel added",
       "adding_panel_error": "Error adding the panel: ",
       "editing_panel_error": "Error editing the panel: ",
-      "panel_edited": "Panel edited"
+      "panel_edited": "Panel edited",
+      "deleting_panel_error": "Error deleting the panel: ",
+      "panel_deleted": "Panel deleted"
     }
   },
   "es": {
@@ -301,10 +354,14 @@ const editPanel = (panel: Panel) => {
       "description": "Descripción"
     },
     "dialog": {
-      "header": "Detalles del panel"
+      "header": "Detalles del panel",
+      "confirm_header": "Confirmar",
+      "confirm_delete": "¿Estás seguro de que deseas eliminar este panel?️"
     },
     "button": {
-      "new": "Nuevo"
+      "new": "Nuevo",
+      "no": "No",
+      "yes": "Sí"
     },
     "messages": {
       "success": "Éxito",
@@ -313,7 +370,9 @@ const editPanel = (panel: Panel) => {
       "panel_added": "Panel añadido",
       "adding_panel_error": "Error añadiendo el panel: ",
       "editing_panel_error": "Error editando el panel: ",
-      "panel_edited": "Panel editado"
+      "panel_edited": "Panel editado",
+      "deleting_panel_error": "Error eliminando el panel: ",
+      "panel_deleted": "Panel eliminado"
     }
   }
 }
