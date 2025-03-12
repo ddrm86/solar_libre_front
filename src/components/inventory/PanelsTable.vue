@@ -186,7 +186,7 @@
       </IftaLabel>
     </div>
 
-    <div v-if="submitted && !selectedPanel.model">
+    <div v-if="submitted && !validatePanel(selectedPanel)">
       <small class="text-red-500">{{ t('messages.required_fields') }}.</small>
     </div>
 
@@ -228,11 +228,12 @@
 </template>
 
 <script setup lang="ts">
-import { usePanelsStore, type Panel } from '@/stores/panels.ts'
+import { usePanelsStore, } from '@/stores/panels.ts'
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
+import {type Panel, validatePanel } from '@/models/panel.ts'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -270,7 +271,7 @@ const hideDialog = () => {
 const savePanel = () => {
   submitted.value = true
 
-  if (selectedPanel.value.model?.trim()) {
+  if (validatePanel(selectedPanel.value)) {
     const editing = selectedPanel.value.id
     savingPanel.value = true
     if (editing) {
