@@ -1,21 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { AxiosError } from 'axios'
-
-export interface Panel {
-  id?: string;
-  model: string;
-  nominal_power: number;
-  vmpp: number;
-  impp: number;
-  voc: number;
-  isc: number;
-  length: number;
-  width: number;
-  reference?: string;
-  description?: string;
-  deleted: boolean;
-}
+import type { Panel } from '@/models/panel.ts'
 
 export const usePanelsStore = defineStore('panels', () => {
   const panels = ref<Panel[]>([])
