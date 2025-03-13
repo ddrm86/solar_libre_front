@@ -4,7 +4,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import axios from "axios";
 import 'primeicons/primeicons.css'
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
+axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.timeout = 2000;
 </script>
 
