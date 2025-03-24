@@ -5,8 +5,7 @@ import axios from "axios";
 import 'primeicons/primeicons.css'
 
 const apiBaseUrl = import.meta.env.VITE_SOLAR_LIBRE_API_BASE_URL;
-const apiPort = import.meta.env.VITE_SOLAR_LIBRE_API_PORT;
-axios.defaults.baseURL = `${apiBaseUrl}:${apiPort}`;
+axios.defaults.baseURL = `${apiBaseUrl}`;
 axios.defaults.timeout = 2000;
 </script>
 
