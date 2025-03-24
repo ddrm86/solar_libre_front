@@ -1,6 +1,12 @@
 <template>
   <div v-if="!fetchingError">
-    <DataTable
+    <Card>
+      <template #title>
+        {{ t('labels.title') }}
+        <Divider />
+      </template>
+      <template #content>
+        <DataTable
       :value="panelsStore.availablePanels"
       :loading="panelsStore.fetching"
       dataKey="id"
@@ -58,6 +64,8 @@
         </template>
       </Column>
     </DataTable>
+      </template>
+    </Card>
   </div>
   <div v-else>
     <h2 class="text-xl font-bold">{{ t('messages.fetching_error') }}</h2>
@@ -408,6 +416,7 @@ const deletePanel = () => {
       "required_field": "There are required fields left blank"
     },
     "labels": {
+      "title": "Solar panels",
       "keyword_search": "Search"
     }
   },
@@ -447,6 +456,7 @@ const deletePanel = () => {
       "required_fields": "Hay campos obligatorios sin rellenar"
     },
     "labels": {
+      "title": "Paneles solares",
       "keyword_search": "Buscar"
     }
   }
