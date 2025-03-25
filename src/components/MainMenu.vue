@@ -1,5 +1,5 @@
 <template>
-  <Menubar :model="items">
+  <Menubar :model="items" class="main-menubar">
     <template #item="{ item, props, hasSubmenu }">
       <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
         <a :href="href" v-bind="props.action" @click="navigate">
@@ -41,6 +41,12 @@ const items = ref([
   },
 ])
 </script>
+
+<style scoped>
+.main-menubar {
+  --p-menubar-background: var(--color-stone-50);
+}
+</style>
 
 <i18n>
 {

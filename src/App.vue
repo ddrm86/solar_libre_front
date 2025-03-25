@@ -25,6 +25,3 @@ axios.defaults.timeout = 2000;
     </div>
   </main>
 </template>
-
-<style scoped>
-</style>
