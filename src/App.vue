@@ -13,7 +13,7 @@ axios.defaults.timeout = 2000;
 <template>
   <Toast />
   <header>
-    <div>
+    <div class="pt-2 pb-2">
       <nav>
         <MainMenu />
       </nav>
