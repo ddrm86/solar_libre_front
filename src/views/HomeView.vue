@@ -1,9 +1,5 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <div>
+    <img alt="SolarLibre logo" class="logo" src="@/assets/solar_libre_logo.jpeg" width="800" height="800" />
+  </div>
 </template>
