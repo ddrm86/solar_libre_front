@@ -35,6 +35,7 @@
           </div>
         </div>
       </template>
+      <Column field="maker" :header="t('panel.maker')" sortable></Column>
       <Column field="model" :header="t('panel.model')" sortable></Column>
       <Column field="nominal_power" :header="t('panel.nominal_power')" sortable></Column>
       <Column field="vmpp" :header="t('panel.vmpp')" sortable></Column>
@@ -76,10 +77,21 @@
     <div class="pb-2">
       <IftaLabel>
         <InputText
+          id="maker"
+          v-model="selectedPanel.maker"
+          required="true"
+          autofocus
+          :invalid="submitted && !selectedPanel.maker"
+        />
+        <label for="maker">{{ t('panel.maker') }}*</label>
+      </IftaLabel>
+    </div>
+    <div class="pb-2">
+      <IftaLabel>
+        <InputText
           id="model"
           v-model="selectedPanel.model"
           required="true"
-          autofocus
           :invalid="submitted && !selectedPanel.model"
         />
         <label for="model">{{ t('panel.model') }}*</label>
@@ -382,6 +394,7 @@ const deletePanel = () => {
 {
   "en": {
     "panel": {
+      "maker": "Maker",
       "model": "Model",
       "nominal_power": "Nominal Power",
       "vmpp": "Vmpp",
@@ -422,6 +435,7 @@ const deletePanel = () => {
   },
   "es": {
     "panel": {
+      "maker": "Fabricante",
       "model": "Modelo",
       "nominal_power": "Potencia Nominal",
       "vmpp": "Vmpp",
