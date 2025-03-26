@@ -1,7 +1,6 @@
-export interface MonophaseInverter {
-  id?: string;
-  maker: string;
-  model: string;
+import { type Component, validateComponent } from '@/models/component.ts'
+
+export interface MonophaseInverter extends Component {
   recommended_max_input_power: number;
   nominal_output_power: number;
   max_input_voltage: number;
@@ -13,16 +12,10 @@ export interface MonophaseInverter {
   number_of_mppts: number;
   max_inputs_per_mppt: number;
   max_output_current: number;
-  reference?: string;
-  description?: string;
-  deleted: boolean;
 }
 
-export const validateInverter = (inverter: MonophaseInverter): boolean => {
-  if (!inverter.maker?.trim()) {
-    return false;
-  }
-  if (!inverter.model?.trim()) {
+export const validateMonophaseInverter = (inverter: MonophaseInverter): boolean => {
+  if (!validateComponent(inverter)) {
     return false;
   }
   if (!inverter.recommended_max_input_power) {
