@@ -211,8 +211,8 @@
     </div>
 
     <template #footer>
-      <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
-      <Button label="Guardar" :loading="savingPanel" icon="pi pi-check" @click="savePanel" />
+      <Button :label="t('button.cancel')" icon="pi pi-times" text @click="hideDialog" />
+      <Button :label="t('button.save')" :loading="savingPanel" icon="pi pi-check" @click="savePanel" />
     </template>
   </Dialog>
 
@@ -414,7 +414,9 @@ const deletePanel = () => {
     "button": {
       "new": "New",
       "no": "No",
-      "yes": "Yes"
+      "yes": "Yes",
+      "save": "Save",
+      "cancel": "Cancel"
     },
     "messages": {
       "success": "Success",
@@ -455,7 +457,9 @@ const deletePanel = () => {
     "button": {
       "new": "Nuevo",
       "no": "No",
-      "yes": "Sí"
+      "yes": "Sí",
+      "save": "Guardar",
+      "cancel": "Cancelar"
     },
     "messages": {
       "success": "Éxito",

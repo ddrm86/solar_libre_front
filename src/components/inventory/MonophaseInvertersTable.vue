@@ -257,8 +257,8 @@
     </div>
 
     <template #footer>
-      <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
-      <Button label="Guardar" :loading="savingMonophaseInverter" icon="pi pi-check" @click="saveMonophaseInverter" />
+      <Button :label="t('button.cancel')" icon="pi pi-times" text @click="hideDialog" />
+      <Button :label="t('button.save')" :loading="savingMonophaseInverter" icon="pi pi-check" @click="saveMonophaseInverter" />
     </template>
   </Dialog>
 
@@ -464,7 +464,9 @@ const deleteMonophaseInverter = () => {
     "button": {
       "new": "New",
       "no": "No",
-      "yes": "Yes"
+      "yes": "Yes",
+      "save": "Save",
+      "cancel": "Cancel"
     },
     "messages": {
       "success": "Success",
@@ -509,7 +511,9 @@ const deleteMonophaseInverter = () => {
     "button": {
       "new": "Nuevo",
       "no": "No",
-      "yes": "Sí"
+      "yes": "Sí",
+      "save": "Guardar",
+      "cancel": "Cancelar"
     },
     "messages": {
       "success": "Éxito",
