@@ -1,5 +1,6 @@
 export interface Panel {
   id?: string;
+  maker: string;
   model: string;
   nominal_power: number;
   vmpp: number;
@@ -14,6 +15,9 @@ export interface Panel {
 }
 
 export const validatePanel = (panel: Panel): boolean => {
+  if (!panel.maker?.trim()) {
+    return false;
+  }
   if (!panel.model?.trim()) {
     return false;
   }
