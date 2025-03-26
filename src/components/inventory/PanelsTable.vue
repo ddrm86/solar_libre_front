@@ -1,6 +1,12 @@
 <template>
   <div v-if="!fetchingError">
-    <DataTable
+    <Card>
+      <template #title>
+        {{ t('labels.title') }}
+        <Divider />
+      </template>
+      <template #content>
+        <DataTable
       :value="panelsStore.availablePanels"
       :loading="panelsStore.fetching"
       dataKey="id"
@@ -29,6 +35,7 @@
           </div>
         </div>
       </template>
+      <Column field="maker" :header="t('panel.maker')" sortable></Column>
       <Column field="model" :header="t('panel.model')" sortable></Column>
       <Column field="nominal_power" :header="t('panel.nominal_power')" sortable></Column>
       <Column field="vmpp" :header="t('panel.vmpp')" sortable></Column>
@@ -58,6 +65,8 @@
         </template>
       </Column>
     </DataTable>
+      </template>
+    </Card>
   </div>
   <div v-else>
     <h2 class="text-xl font-bold">{{ t('messages.fetching_error') }}</h2>
@@ -68,10 +77,21 @@
     <div class="pb-2">
       <IftaLabel>
         <InputText
+          id="maker"
+          v-model="selectedPanel.maker"
+          required="true"
+          autofocus
+          :invalid="submitted && !selectedPanel.maker"
+        />
+        <label for="maker">{{ t('panel.maker') }}*</label>
+      </IftaLabel>
+    </div>
+    <div class="pb-2">
+      <IftaLabel>
+        <InputText
           id="model"
           v-model="selectedPanel.model"
           required="true"
-          autofocus
           :invalid="submitted && !selectedPanel.model"
         />
         <label for="model">{{ t('panel.model') }}*</label>
@@ -191,8 +211,8 @@
     </div>
 
     <template #footer>
-      <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
-      <Button label="Guardar" :loading="savingPanel" icon="pi pi-check" @click="savePanel" />
+      <Button :label="t('button.cancel')" icon="pi pi-times" text @click="hideDialog" />
+      <Button :label="t('button.save')" :loading="savingPanel" icon="pi pi-check" @click="savePanel" />
     </template>
   </Dialog>
 
@@ -374,6 +394,7 @@ const deletePanel = () => {
 {
   "en": {
     "panel": {
+      "maker": "Maker",
       "model": "Model",
       "nominal_power": "Nominal Power",
       "vmpp": "Vmpp",
@@ -393,7 +414,9 @@ const deletePanel = () => {
     "button": {
       "new": "New",
       "no": "No",
-      "yes": "Yes"
+      "yes": "Yes",
+      "save": "Save",
+      "cancel": "Cancel"
     },
     "messages": {
       "success": "Success",
@@ -408,11 +431,13 @@ const deletePanel = () => {
       "required_field": "There are required fields left blank"
     },
     "labels": {
+      "title": "Solar panels",
       "keyword_search": "Search"
     }
   },
   "es": {
     "panel": {
+      "maker": "Fabricante",
       "model": "Modelo",
       "nominal_power": "Potencia Nominal",
       "vmpp": "Vmpp",
@@ -432,7 +457,9 @@ const deletePanel = () => {
     "button": {
       "new": "Nuevo",
       "no": "No",
-      "yes": "Sí"
+      "yes": "Sí",
+      "save": "Guardar",
+      "cancel": "Cancelar"
     },
     "messages": {
       "success": "Éxito",
@@ -447,6 +474,7 @@ const deletePanel = () => {
       "required_fields": "Hay campos obligatorios sin rellenar"
     },
     "labels": {
+      "title": "Paneles solares",
       "keyword_search": "Buscar"
     }
   }
