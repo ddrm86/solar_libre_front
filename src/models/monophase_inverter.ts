@@ -1,0 +1,62 @@
+export interface MonophaseInverter {
+  id?: string;
+  maker: string;
+  model: string;
+  recommended_max_input_power: number;
+  nominal_output_power: number;
+  max_input_voltage: number;
+  startup_voltage: number;
+  min_mppt_operating_voltage: number;
+  max_mppt_operating_voltage: number;
+  max_input_current_per_mppt: number;
+  max_short_circuit_current: number;
+  number_of_mppts: number;
+  max_inputs_per_mppt: number;
+  max_output_current: number;
+  reference?: string;
+  description?: string;
+  deleted: boolean;
+}
+
+export const validateInverter = (inverter: MonophaseInverter): boolean => {
+  if (!inverter.maker?.trim()) {
+    return false;
+  }
+  if (!inverter.model?.trim()) {
+    return false;
+  }
+  if (!inverter.recommended_max_input_power) {
+    return false;
+  }
+  if (!inverter.nominal_output_power) {
+    return false;
+  }
+  if (!inverter.max_input_voltage) {
+    return false;
+  }
+  if (!inverter.startup_voltage) {
+    return false;
+  }
+  if (!inverter.min_mppt_operating_voltage) {
+    return false;
+  }
+  if (!inverter.max_mppt_operating_voltage) {
+    return false;
+  }
+  if (!inverter.max_input_current_per_mppt) {
+    return false;
+  }
+  if (!inverter.max_short_circuit_current) {
+    return false;
+  }
+  if (!inverter.number_of_mppts) {
+    return false;
+  }
+  if (!inverter.max_inputs_per_mppt) {
+    return false;
+  }
+  if (!inverter.max_output_current) {
+    return false;
+  }
+  return true;
+};
