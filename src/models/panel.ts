@@ -1,7 +1,6 @@
-export interface Panel {
-  id?: string;
-  maker: string;
-  model: string;
+import { type Component, validateComponent } from '@/models/component.ts'
+
+export interface Panel extends Component {
   nominal_power: number;
   vmpp: number;
   impp: number;
@@ -9,16 +8,10 @@ export interface Panel {
   isc: number;
   length: number;
   width: number;
-  reference?: string;
-  description?: string;
-  deleted: boolean;
 }
 
 export const validatePanel = (panel: Panel): boolean => {
-  if (!panel.maker?.trim()) {
-    return false;
-  }
-  if (!panel.model?.trim()) {
+  if (!validateComponent(panel)) {
     return false;
   }
   if (!panel.nominal_power) {
