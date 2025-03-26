@@ -13,14 +13,14 @@ axios.defaults.timeout = 2000;
 <template>
   <Toast />
   <header>
-    <div class="pt-2 pb-2">
+    <div class="p-4">
       <nav>
         <MainMenu />
       </nav>
     </div>
   </header>
   <main>
-    <div>
+    <div class="w-screen p-4">
       <RouterView />
     </div>
   </main>
