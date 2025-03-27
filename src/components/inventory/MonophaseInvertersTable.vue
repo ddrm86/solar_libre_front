@@ -294,12 +294,12 @@
 </template>
 
 <script setup lang="ts">
-import { useMonophaseInvertersStore } from '@/stores/monophase_inverters.ts'
+import { useMonophaseInvertersStore } from '@/stores/monophaseInverters.ts'
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
-import { type MonophaseInverter, validateMonophaseInverter } from '@/models/monophase_inverter.ts'
+import { type MonophaseInverter, validateMonophaseInverter } from '@/models/monophaseInverter.ts'
 
 const { t } = useI18n()
 const toast = useToast()
