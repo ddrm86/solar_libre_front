@@ -13,6 +13,9 @@ import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+const { mapHeight = '500px' } = defineProps<{ mapHeight?: string }>()
+
 const emit = defineEmits(['locationSelected'])
 
 onMounted(() => {
@@ -58,7 +61,7 @@ onMounted(() => {
 
 <style scoped>
 #map {
-  height: 500px;
+  height: v-bind('mapHeight');
 }
 </style>
 
