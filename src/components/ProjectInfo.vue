@@ -13,9 +13,10 @@
     </div>
     <div class="pb-2">
       <IftaLabel>
-        <InputText
+        <Textarea
           id="address"
           v-model="projectInfoStore.projectInfo.location.address"
+          rows="3"
           class="w-full"
         />
         <label for="address">{{ t('project_info.address') }}*</label>
