@@ -29,6 +29,11 @@ const items = ref([
     route: '/'
   },
   {
+    label: t('project_info'),
+    icon: 'pi pi-map-marker',
+    route: '/project_info'
+  },
+  {
     label: t('inventory'),
     icon: 'pi pi-warehouse',
     items: [
@@ -43,7 +48,7 @@ const items = ref([
         route: '/inventory/monophase_inverters'
       }
     ]
-  },
+  }
 ])
 </script>
 
@@ -57,15 +62,17 @@ const items = ref([
 {
   "en": {
     "home": "Home",
+    "project_info": "Project info",
     "inventory": "Inventory",
     "panels": "Solar panels",
-    "monophase_inverters": "Monophase Inverters"
+    "monophase_inverters": "Monophase inverters"
   },
   "es": {
     "home": "Inicio",
+    "project_info": "Información del proyecto",
     "inventory": "Inventario",
     "panels": "Paneles solares",
-    "monophase_inverters": "Inversores Monofásicos"
+    "monophase_inverters": "Inversores monofásicos"
   }
 }
 </i18n>
