@@ -6,6 +6,10 @@
 import 'leaflet/dist/leaflet.css'
 import "leaflet-geosearch/assets/css/leaflet.css";
 
+import markerIconUrl from "../../node_modules/leaflet/dist/images/marker-icon.png";
+import markerIconRetinaUrl from "../../node_modules/leaflet/dist/images/marker-icon-2x.png";
+import markerShadowUrl from "../../node_modules/leaflet/dist/images/marker-shadow.png";
+
 import { type Location } from '@/models/location.ts'
 import L from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
@@ -21,6 +25,12 @@ const emit = defineEmits(['locationSelected'])
 onMounted(() => {
   const map = L.map('map');
 
+  // https://cescobaz.com/2023/06/14/setup-leaflet-with-svelte-and-vite/
+  L.Icon.Default.prototype.options.iconUrl = markerIconUrl;
+  L.Icon.Default.prototype.options.iconRetinaUrl = markerIconRetinaUrl;
+  L.Icon.Default.prototype.options.shadowUrl = markerShadowUrl;
+  L.Icon.Default.imagePath = ""; // necessary to avoid Leaflet adds some prefix to image path
+
   const provider = new OpenStreetMapProvider();
   // @ts-expect-error('Base on sample code from
   // https://github.com/smeijer/leaflet-geosearch/tree/main?tab=readme-ov-file#using-with-react-leaflet')
@@ -28,7 +38,6 @@ onMounted(() => {
     provider: provider,
     style: 'bar',
     marker: {
-      icon: new L.Icon.Default(),
       draggable: true,
     },
   });
