@@ -40,7 +40,8 @@ onMounted(() => {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
 
-  map.on('geosearch/showlocation', (result) => {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  map.on('geosearch/showlocation', (result: any) => {
     emit('locationSelected', {
       latitude: result.location.y,
       longitude: result.location.x,
@@ -48,7 +49,8 @@ onMounted(() => {
     } as Location);
   })
 
-  map.on('geosearch/marker/dragend', (result) => {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  map.on('geosearch/marker/dragend', (result: any) => {
     emit('locationSelected', {
       latitude: result.location.lat,
       longitude: result.location.lng,

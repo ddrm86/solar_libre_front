@@ -63,6 +63,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import MapSearch from '@/components/MapSearch.vue'
+import { type Location } from '@/models/location.ts'
 import { useProjectInfoStore } from '@/stores/projectInfo.ts'
 
 const { t } = useI18n()
