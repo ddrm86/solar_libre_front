@@ -1,7 +1,7 @@
+import { type Location } from '@/models/location.ts'
+
 export interface ProjectInfo {
   id?: string;
   name: string;
-  address: string;
-  latitude: number;
-  longitude: number;
+  location: Location;
 }

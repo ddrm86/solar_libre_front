@@ -1,9 +1,7 @@
 <template>
-<div>
-  <MapSearch @location-selected="args => console.log(args)" />
-</div>
+<ProjectInfo />
 </template>
 
 <script setup lang="ts">
-import MapSearch from '@/components/MapSearch.vue'
+import ProjectInfo from '@/components/ProjectInfo.vue'
 </script>
