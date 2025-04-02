@@ -5,7 +5,7 @@
       <IftaLabel>
         <InputText
           id="name"
-          v-model="projectInfo.name"
+          v-model="projectInfoStore.projectInfo.name"
           class="w-full"
         />
         <label for="name">{{ t('project_info.name') }}*</label>
@@ -15,7 +15,7 @@
       <IftaLabel>
         <InputText
           id="address"
-          v-model="projectInfo.location.address"
+          v-model="projectInfoStore.projectInfo.location.address"
           class="w-full"
         />
         <label for="address">{{ t('project_info.address') }}*</label>
@@ -25,7 +25,7 @@
       <IftaLabel>
         <InputNumber
           id="latitude"
-          v-model="projectInfo.location.latitude"
+          v-model="projectInfoStore.projectInfo.location.latitude"
           :minFractionDigits="6"
           :maxFractionDigits="13"
           class="w-full"
@@ -37,7 +37,7 @@
       <IftaLabel>
         <InputNumber
           id="longitude"
-          v-model="projectInfo.location.longitude"
+          v-model="projectInfoStore.projectInfo.location.longitude"
           :minFractionDigits="6"
           :maxFractionDigits="13"
           class="w-full"
@@ -50,9 +50,9 @@
     <MapSearch
       map-height="400px"
       @location-selected="(location: Location) => {
-        projectInfo.location.latitude = location.latitude
-        projectInfo.location.longitude = location.longitude
-        projectInfo.location.address = location.address
+        projectInfoStore.projectInfo.location.latitude = location.latitude
+        projectInfoStore.projectInfo.location.longitude = location.longitude
+        projectInfoStore.projectInfo.location.address = location.address
       }"
     />
   </div>
@@ -60,13 +60,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { type ProjectInfo } from '@/models/projectInfo.ts'
 import MapSearch from '@/components/MapSearch.vue'
+import { useProjectInfoStore } from '@/stores/projectInfo.ts'
 
 const { t } = useI18n()
-const projectInfo = ref({name: '', location: {latitude: 0.0, longitude: 0.0, address: ''}} as ProjectInfo)
+const projectInfoStore = useProjectInfoStore()
 
 </script>
 
