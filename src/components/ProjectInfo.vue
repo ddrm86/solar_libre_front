@@ -1,5 +1,15 @@
 <template>
 <div class="flex flex-row gap-2">
+  <div id="location-selection" class="flex-2/3">
+    <MapSearch
+      map-height="400px"
+      @location-selected="(location: Location) => {
+        projectInfoStore.projectInfo.location.latitude = location.latitude
+        projectInfoStore.projectInfo.location.longitude = location.longitude
+        projectInfoStore.projectInfo.location.address = location.address
+      }"
+    />
+  </div>
   <div id="project-data" class="flex-1/3">
     <div class="pb-2">
       <IftaLabel>
@@ -46,16 +56,6 @@
         <label for="longitude">{{ t('project_info.longitude') }}*</label>
       </IftaLabel>
     </div>
-  </div>
-  <div id="location-selection" class="flex-2/3">
-    <MapSearch
-      map-height="400px"
-      @location-selected="(location: Location) => {
-        projectInfoStore.projectInfo.location.latitude = location.latitude
-        projectInfoStore.projectInfo.location.longitude = location.longitude
-        projectInfoStore.projectInfo.location.address = location.address
-      }"
-    />
   </div>
 </div>
 </template>
