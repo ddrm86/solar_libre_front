@@ -1,6 +1,16 @@
 <template>
-<div class="flex flex-row gap-2">
-  <div id="project-data" class="flex-1/3">
+<div class="md:flex flex-row gap-2">
+  <div id="location-selection" class="flex-2/3">
+    <MapSearch
+      map-height="400px"
+      @location-selected="(location: Location) => {
+        projectInfoStore.projectInfo.location.latitude = location.latitude
+        projectInfoStore.projectInfo.location.longitude = location.longitude
+        projectInfoStore.projectInfo.location.address = location.address
+      }"
+    />
+  </div>
+  <div id="project-data" class="flex-1/3 max-md:pt-4">
     <div class="pb-2">
       <IftaLabel>
         <InputText
@@ -18,8 +28,9 @@
           v-model="projectInfoStore.projectInfo.location.address"
           rows="3"
           class="w-full"
+          disabled
         />
-        <label for="address">{{ t('project_info.address') }}*</label>
+        <label for="address">{{ t('project_info.address') }}</label>
       </IftaLabel>
     </div>
     <div class="pb-2">
@@ -30,8 +41,9 @@
           :minFractionDigits="6"
           :maxFractionDigits="13"
           class="w-full"
+          disabled
         />
-        <label for="latitude">{{ t('project_info.latitude') }}*</label>
+        <label for="latitude">{{ t('project_info.latitude') }}</label>
       </IftaLabel>
     </div>
     <div class="pb-2">
@@ -42,20 +54,11 @@
           :minFractionDigits="6"
           :maxFractionDigits="13"
           class="w-full"
+          disabled
         />
-        <label for="longitude">{{ t('project_info.longitude') }}*</label>
+        <label for="longitude">{{ t('project_info.longitude') }}</label>
       </IftaLabel>
     </div>
-  </div>
-  <div id="location-selection" class="flex-2/3">
-    <MapSearch
-      map-height="400px"
-      @location-selected="(location: Location) => {
-        projectInfoStore.projectInfo.location.latitude = location.latitude
-        projectInfoStore.projectInfo.location.longitude = location.longitude
-        projectInfoStore.projectInfo.location.address = location.address
-      }"
-    />
   </div>
 </div>
 </template>
