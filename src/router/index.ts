@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import PanelsView from '@/views/inventory/PanelsView.vue'
-import MonophaseInvertersView from '@/views/inventory/MonophaseInvertersView.vue'
-import ProjectInfoView from '@/views/ProjectInfoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,17 +12,17 @@ const router = createRouter({
     {
       path: '/project_info',
       name: 'project_info',
-      component: ProjectInfoView,
+      component: () => import('@/views/ProjectInfoView.vue'),
     },
     {
       path: '/inventory/panels',
       name: 'panels',
-      component: PanelsView,
+      component: () => import('@/views/inventory/PanelsView.vue'),
     },
     {
       path: '/inventory/monophase_inverters',
       name: 'monophase_inverters',
-      component: MonophaseInvertersView,
+      component: () => import('@/views/inventory/MonophaseInvertersView.vue'),
     },
   ],
 })

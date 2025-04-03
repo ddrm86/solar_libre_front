@@ -40,6 +40,7 @@ onMounted(() => {
     marker: {
       draggable: true,
     },
+    searchLabel: t('search_label'),
   });
   map.addControl(searchControl);
 
@@ -79,10 +80,12 @@ onMounted(() => {
 <i18n>
 {
   "en": {
-    "unknown_address": "Unknown address"
+    "unknown_address": "Unknown address",
+    "search_label": "Enter address"
   },
   "es": {
-    "unknown_address": "Dirección desconocida"
+    "unknown_address": "Dirección desconocida",
+    "search_label": "Introduzca la dirección"
   }
 }
 </i18n>
