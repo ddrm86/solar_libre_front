@@ -1,5 +1,5 @@
 <template>
-<div class="flex flex-row gap-2">
+<div class="md:flex flex-row gap-2">
   <div id="location-selection" class="flex-2/3">
     <MapSearch
       map-height="400px"
@@ -10,7 +10,7 @@
       }"
     />
   </div>
-  <div id="project-data" class="flex-1/3">
+  <div id="project-data" class="flex-1/3 max-md:pt-4">
     <div class="pb-2">
       <IftaLabel>
         <InputText
