@@ -34,6 +34,11 @@ const items = ref([
     route: '/project_info'
   },
   {
+    label: t('solar_arrays'),
+    icon: 'pi pi-table',
+    route: '/solar_arrays'
+  },
+  {
     label: t('inventory'),
     icon: 'pi pi-warehouse',
     items: [
@@ -63,6 +68,7 @@ const items = ref([
   "en": {
     "home": "Home",
     "project_info": "Project info",
+    "solar_arrays": "Solar arrays",
     "inventory": "Inventory",
     "panels": "Solar panels",
     "monophase_inverters": "Monophase inverters"
@@ -70,6 +76,7 @@ const items = ref([
   "es": {
     "home": "Inicio",
     "project_info": "Información del proyecto",
+    "solar_arrays": "Matrices solares",
     "inventory": "Inventario",
     "panels": "Paneles solares",
     "monophase_inverters": "Inversores monofásicos"
