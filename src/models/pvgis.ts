@@ -85,6 +85,7 @@ export interface PvgisInterface {
 export class Pvgis implements PvgisInterface {
   request: PvgisRequest
   response?: PvgisResponse
+  fetching = false
   error = false
   errorDetails?: AxiosError
 
@@ -93,6 +94,7 @@ export class Pvgis implements PvgisInterface {
   }
 
   fetch() {
+    this.fetching = true
     axios
       .get('/pvgis', {
         params: {
@@ -111,6 +113,9 @@ export class Pvgis implements PvgisInterface {
       .catch((errorResponse) => {
         this.error = true
         this.errorDetails = errorResponse
+      })
+      .finally(() => {
+        this.fetching = false
       })
   }
 
