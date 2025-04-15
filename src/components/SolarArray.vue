@@ -90,7 +90,7 @@ const panelsStore = usePanelsStore()
 
 const panelFetchingError = ref(false)
 
-const getPanelLabel = (panel: Panel) => panel.maker + ' ' + panel.model
+const getPanelLabel = (panel: Panel) => panel.maker + ' ' + panel.model + ' (' + panel.nominal_power + 'W)'
 
 onMounted(() => {
   panelsStore.fetchPanels().then(() => {
