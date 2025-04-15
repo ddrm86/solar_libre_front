@@ -79,22 +79,33 @@
 import { useI18n } from 'vue-i18n'
 import { useSolarArrayStore } from '@/stores/solarArray.ts'
 import { usePanelsStore } from '@/stores/panels.ts'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { Panel } from '@/models/panel.ts'
 import { useProjectInfoStore } from '@/stores/projectInfo.ts'
+import { useToast } from 'primevue/usetoast'
 
 const { t } = useI18n()
+const toast = useToast()
 const projectInfoStore = useProjectInfoStore()
 const solarArrayStore = useSolarArrayStore()
 const panelsStore = usePanelsStore()
 
 const panelFetchingError = ref(false)
 
-const getPanelLabel = (panel: Panel) => panel.maker + ' ' + panel.model + ' (' + panel.nominal_power + 'W)'
+const getPanelLabel = (panel: Panel) => panel.maker + ' ' + panel.model
+  + ' (' + panel.nominal_power + 'W)'
 
 onMounted(() => {
   panelsStore.fetchPanels().then(() => {
     panelFetchingError.value = panelsStore.error
+    if (panelFetchingError.value) {
+      toast.add({
+        severity: 'error',
+        summary: t('toast_messages.error'),
+        detail: t('toast_messages.error_fetching_panels') + ': ' + panelsStore.errorDetails,
+        life: 3000,
+      })
+    }
   })
 })
 
@@ -138,6 +149,21 @@ const badgeSeverity = computed(() => {
     return 'secondary'
   }
 })
+
+watch (
+  () => solarArrayStore.pvgisData?.error,
+  (newValue) => {
+    if (newValue) {
+      toast.add({
+        severity: 'error',
+        summary: t('toast_messages.error'),
+        detail: t('toast_messages.error_querying_pvgis') + ': '
+          + solarArrayStore.pvgisData?.errorDetails,
+        life: 3000,
+      })
+    }
+  }
+)
 </script>
 
 <i18n>
@@ -149,6 +175,11 @@ const badgeSeverity = computed(() => {
       "updated": "Updated",
       "error": "Error performing query",
       "fetching": "Querying"
+    },
+    "toast_messages": {
+      "error": "Error",
+      "error_fetching_panels": "Error loading the list of solar panels",
+      "error_querying_pvgis": "Error querying PVGIS"
     },
     "solar_array": {
       "title": "Solar array configuration",
@@ -168,6 +199,11 @@ const badgeSeverity = computed(() => {
       "updated": "Actualizado",
       "error": "Error al consultar",
       "fetching": "Consultando"
+    },
+    "toast_messages": {
+      "error": "Error",
+      "error_fetching_panels": "Error al cargar la lista de paneles solares",
+      "error_querying_pvgis": "Error consultando PVGIS"
     },
     "solar_array": {
       "title": "Configuración de la matriz solar",
