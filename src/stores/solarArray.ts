@@ -12,20 +12,20 @@ export const useSolarArrayStore = defineStore('solar_array', () => {
     new SolarArray({} as Panel, 0, 0, 0, 0)
   )
 
-  const pvgisRequest = ref<PvgisRequest>({
-    latitude: projectInfoStore.projectInfo.location.latitude,
-    longitude: projectInfoStore.projectInfo.location.longitude,
-    peakPower: solarArray.value.calcPeakPowerKw(),
-    loss: solarArray.value.loss,
-    angle: solarArray.value.angle,
-    azimuth: solarArray.value.azimuth,
-  })
-
-  const pvgisData = ref<Pvgis>(new Pvgis(pvgisRequest.value))
+  const pvgisData = ref<Pvgis | null>(null)
 
   function fetchPvgisData() {
+    const pvgisRequest: PvgisRequest = {
+      latitude: projectInfoStore.projectInfo.location.latitude,
+      longitude: projectInfoStore.projectInfo.location.longitude,
+      peakPower: solarArray.value.calcPeakPowerKw(),
+      loss: solarArray.value.loss,
+      angle: solarArray.value.angle,
+      azimuth: solarArray.value.azimuth,
+    }
+    pvgisData.value = new Pvgis(pvgisRequest)
     pvgisData.value.fetch()
   }
 
-  return { solarArray, pvgisData, fechPvgisData: fetchPvgisData }
+  return { solarArray, pvgisData, fetchPvgisData }
 })
