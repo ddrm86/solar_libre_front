@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { SolarArray } from '@/models/solarArray.ts'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { Pvgis, type PvgisRequest } from '@/models/pvgis.ts'
 import type { Panel } from '@/models/panel.ts'
 import { useProjectInfoStore } from '@/stores/projectInfo.ts'
@@ -13,6 +13,8 @@ export const useSolarArrayStore = defineStore('solar_array', () => {
   )
 
   const pvgisData = ref<Pvgis | null>(null)
+
+  const isDirty = ref(false)
 
   function fetchPvgisData() {
     const pvgisRequest: PvgisRequest = {
@@ -27,5 +29,15 @@ export const useSolarArrayStore = defineStore('solar_array', () => {
     pvgisData.value.fetch()
   }
 
-  return { solarArray, pvgisData, fetchPvgisData }
+  watch([solarArray, projectInfoStore.projectInfo.location], () => {
+    isDirty.value = true
+  }, { deep: true })
+
+  watch(pvgisData, () => {
+    if (pvgisData.value && !pvgisData.value.fetching) {
+      isDirty.value = pvgisData.value.error
+    }
+  }, { deep: true })
+
+  return { solarArray, pvgisData, isDirty, fetchPvgisData }
 })
