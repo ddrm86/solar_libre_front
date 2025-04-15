@@ -124,7 +124,9 @@ const badgeText = computed(() => {
 })
 
 const badgeSeverity = computed(() => {
-  if (solarArrayStore.pvgisData?.error) {
+  if (!isValidRequest.value) {
+    return 'secondary'
+  } else if (solarArrayStore.pvgisData?.error) {
     return 'danger'
   } else if (solarArrayStore.pvgisData?.fetching) {
     return 'secondary'
