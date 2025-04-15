@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 /**
  * Data model for PVGIS request parameters.
@@ -76,12 +76,17 @@ export interface PvgisResponse {
 export interface PvgisInterface {
   request: PvgisRequest
   response?: PvgisResponse
+  error: boolean
+  errorDetails?: AxiosError
+
   fetch: () => void
 }
 
 export class Pvgis implements PvgisInterface {
   request: PvgisRequest
   response?: PvgisResponse
+  error = false
+  errorDetails?: AxiosError
 
   constructor(request: PvgisRequest) {
     this.request = request
@@ -100,10 +105,12 @@ export class Pvgis implements PvgisInterface {
         },
       })
       .then((apiResponse) => {
+        this.error = false
         this.response = Pvgis.readPvgisResponse(apiResponse.data);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((errorResponse) => {
+        this.error = true
+        this.errorDetails = errorResponse
       })
   }
 
