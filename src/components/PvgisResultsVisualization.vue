@@ -3,7 +3,7 @@
     <h2>{{ t('pvgis_results.title') }}</h2>
     <div v-if="pvgisData">
       <!-- Tabla de producción mensual -->
-      <DataTable size="small" :value="monthlyProduction" class="p-mb-4">
+      <DataTable size="small" stripedRows :value="monthlyProduction" class="p-mb-4">
         <Column field="month" :header="t('pvgis_results.month')"></Column>
         <Column field="E_m" :header="t('pvgis_results.E_m')"></Column>
       </DataTable>
