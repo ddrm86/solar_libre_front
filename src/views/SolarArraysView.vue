@@ -1,6 +1,8 @@
 <template>
-  <SolarArray />
-  <PvgisResultsVisualization />
+  <div class="md:flex md:gap-8">
+    <SolarArray />
+    <PvgisResultsVisualization />
+  </div>
 </template>
 
 <script setup lang="ts">
