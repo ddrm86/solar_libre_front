@@ -204,7 +204,7 @@ watch (
   "es": {
     "pvgis_button": {
       "missing_data": "Faltan datos",
-      "needs_update": "Necesita actualización",
+      "needs_update": "Actualizar",
       "updated": "Actualizado",
       "error": "Error al consultar",
       "fetching": "Consultando"
