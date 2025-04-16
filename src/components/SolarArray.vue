@@ -15,7 +15,7 @@
           <label for="panel">{{ t('solar_array.panel') }}</label>
         </IftaLabel>
       </div>
-      <div class="pb-2">
+      <div class="pb-2 flex">
         <IftaLabel>
           <InputNumber
             id="panelNumber"
@@ -24,6 +24,9 @@
           />
           <label for="panelNumber">{{ t('solar_array.panelNumber') }}</label>
         </IftaLabel>
+        <label for="panelNumber" class="pl-2 text-xs text-gray-500 flex items-end">
+          {{ getTotalPowerText }}
+        </label>
       </div>
       <div class="pb-2">
         <IftaLabel>
@@ -117,6 +120,11 @@ const isValidRequest = computed(() => {
     Object.keys(solarArrayStore.solarArray.panel).length !== 0 &&
     solarArrayStore.solarArray.panelNumber > 0
   )
+})
+
+const getTotalPowerText = computed(() => {
+  const peakPowerKw = solarArrayStore.solarArray.calcPeakPowerKw()
+  return isNaN(peakPowerKw) ? '' : `(${peakPowerKw} kW)`
 })
 
 const badgeText = computed(() => {
