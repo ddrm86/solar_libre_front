@@ -99,18 +99,18 @@ const productionChanges = computed(() => [
       "no_data": "No data available"
     },
     "months": {
-      "January": "January",
-      "February": "February",
-      "March": "March",
-      "April": "April",
-      "May": "May",
-      "June": "June",
-      "July": "July",
-      "August": "August",
-      "September": "September",
-      "October": "October",
-      "November": "November",
-      "December": "December"
+      "1": "January",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
     }
   },
   "es": {
@@ -138,18 +138,18 @@ const productionChanges = computed(() => [
       "no_data": "No hay datos disponibles"
     },
     "months": {
-      "January": "Enero",
-      "February": "Febrero",
-      "March": "Marzo",
-      "April": "Abril",
-      "May": "Mayo",
-      "June": "Junio",
-      "July": "Julio",
-      "August": "Agosto",
-      "September": "Septiembre",
-      "October": "Octubre",
-      "November": "Noviembre",
-      "December": "Diciembre"
+      "1": "Enero",
+      "2": "Febrero",
+      "3": "Marzo",
+      "4": "Abril",
+      "5": "Mayo",
+      "6": "Junio",
+      "7": "Julio",
+      "8": "Agosto",
+      "9": "Septiembre",
+      "10": "Octubre",
+      "11": "Noviembre",
+      "12": "Diciembre"
     }
   }
 }
