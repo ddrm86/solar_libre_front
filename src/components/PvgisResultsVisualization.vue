@@ -1,21 +1,29 @@
 <template>
   <div>
     <h2>{{ t('pvgis_results.title') }}</h2>
-    <div v-if="pvgisData">
-      <!-- Tabla de producción mensual -->
-      <DataTable size="small" stripedRows :value="monthlyProduction" class="p-mb-4">
-        <Column field="month" :header="t('pvgis_results.month')"></Column>
-        <Column field="E_m" :header="t('pvgis_results.E_m')"></Column>
-      </DataTable>
-
-      <DataTable size="small" :value="mergedData" class="p-mb-4">
-        <Column field="label">
-          <template #body="slotProps">
-            {{ labelTemplate(slotProps.data) }}
-          </template>
-        </Column>
-        <Column field="value" :body="valueTemplate"></Column>
-      </DataTable>
+    <div v-if="pvgisData" class="flex">
+      <div class="pr-4">
+      <Card>
+        <template #content>
+          <DataTable size="small" stripedRows :value="monthlyProduction">
+            <Column field="month" :header="t('pvgis_results.month')"></Column>
+            <Column field="E_m" :header="t('pvgis_results.E_m')"></Column>
+          </DataTable>
+        </template>
+      </Card>
+      </div>
+      <Card>
+        <template #content>
+          <DataTable size="small" :value="mergedData">
+            <Column field="label">
+              <template #body="slotProps">
+                {{ labelTemplate(slotProps.data) }}
+              </template>
+            </Column>
+            <Column field="value" :body="valueTemplate"></Column>
+          </DataTable>
+        </template>
+      </Card>
     </div>
     <div v-else>
       <p>{{ t('pvgis_results.no_data') }}</p>
