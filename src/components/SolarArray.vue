@@ -7,6 +7,7 @@
           <Select
             id="panel"
             v-model="solarArrayStore.solarArray.panel"
+            filter
             :options="panelsStore.panels"
             :optionLabel="getPanelLabel"
             :placeholder="t('solar_array.select_panel')"
