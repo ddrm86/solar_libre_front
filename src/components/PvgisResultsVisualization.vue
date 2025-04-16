@@ -8,25 +8,13 @@
         <Column field="E_m" :header="t('pvgis_results.E_m')"></Column>
       </DataTable>
 
-      <!-- Tabla de datos proporcionados -->
-      <h3>{{ t('pvgis_results.provided_data') }}</h3>
-      <DataTable :value="providedData" class="p-mb-4">
-        <Column field="label" :header="t('pvgis_results.label')"></Column>
-          <Column field="value" :header="t('pvgis_results.value')"></Column>
-      </DataTable>
-
-      <!-- Tabla de resultados de la simulación -->
-      <h3>{{ t('pvgis_results.simulation_results') }}</h3>
-      <DataTable :value="simulationResults" class="p-mb-4">
-          <Column field="label" :header="t('pvgis_results.label')"></Column>
-          <Column field="value" :header="t('pvgis_results.value')"></Column>
-      </DataTable>
-
-      <!-- Tabla de cambios en la producción -->
-      <h3>{{ t('pvgis_results.production_changes') }}</h3>
-      <DataTable :value="productionChanges">
-          <Column field="label" :header="t('pvgis_results.label')"></Column>
-          <Column field="value" :header="t('pvgis_results.value')"></Column>
+      <DataTable size="small" :value="mergedData" class="p-mb-4">
+        <Column field="label">
+          <template #body="slotProps">
+            {{ labelTemplate(slotProps.data) }}
+          </template>
+        </Column>
+        <Column field="value" :body="valueTemplate"></Column>
       </DataTable>
     </div>
     <div v-else>
@@ -45,13 +33,22 @@ const solarArrayStore = useSolarArrayStore()
 
 const pvgisData = computed(() => solarArrayStore.pvgisData?.response || null)
 
-const monthlyProduction = computed(() =>
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  pvgisData.value?.monthly.map((item: any) => ({
-    month: t(`months.${item.month}`),
-    E_m: item.E_m.toFixed(2),
-  })) || []
+const monthlyProduction = computed(
+  () =>
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    pvgisData.value?.monthly.map((item: any) => ({
+      month: t(`months.${item.month}`),
+      E_m: item.E_m.toFixed(2),
+    })) || [],
 )
+
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+const labelTemplate = (rowData: any) => {
+  return rowData.isTitle ? rowData.label.toUpperCase() : rowData.label
+}
+
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+const valueTemplate = (rowData: any) => (rowData.isTitle ? '' : rowData.value)
 
 const providedData = computed(() => [
   { label: t('pvgis_results.database'), value: pvgisData.value?.database },
@@ -59,17 +56,52 @@ const providedData = computed(() => [
 
 const simulationResults = computed(() => [
   { label: t('pvgis_results.annual_production'), value: `${pvgisData.value?.totals.E_y} kWh` },
-  { label: t('pvgis_results.monthly_production'), value: `${pvgisData.value?.totals.E_m.toFixed(2)} kWh` },
+  {
+    label: t('pvgis_results.monthly_production'),
+    value: `${pvgisData.value?.totals.E_m.toFixed(2)} kWh`,
+  },
   { label: t('pvgis_results.annual_irradiation'), value: `${pvgisData.value?.totals.Hi_y} kWh/m²` },
-  { label: t('pvgis_results.monthly_irradiation'), value: `${pvgisData.value?.totals.Hi_m.toFixed(2)} kWh/m²` },
+  {
+    label: t('pvgis_results.monthly_irradiation'),
+    value: `${pvgisData.value?.totals.Hi_m.toFixed(2)} kWh/m²`,
+  },
 ])
 
 const productionChanges = computed(() => [
-  { label: t('pvgis_results.incidence_angle'), value: `${pvgisData.value?.totals.l_aoi.toFixed(2)} %` },
-  { label: t('pvgis_results.spectral_effects'), value: `${pvgisData.value?.totals.l_spec.toFixed(2)} %` },
-  { label: t('pvgis_results.temperature_effects'), value: `${pvgisData.value?.totals.l_tg.toFixed(2)} %` },
-  { label: t('pvgis_results.total_losses'), value: `${pvgisData.value?.totals.l_total.toFixed(2)} %` },
+  {
+    label: t('pvgis_results.incidence_angle'),
+    value: `${pvgisData.value?.totals.l_aoi.toFixed(2)} %`,
+  },
+  {
+    label: t('pvgis_results.spectral_effects'),
+    value: `${pvgisData.value?.totals.l_spec.toFixed(2)} %`,
+  },
+  {
+    label: t('pvgis_results.temperature_effects'),
+    value: `${pvgisData.value?.totals.l_tg.toFixed(2)} %`,
+  },
+  {
+    label: t('pvgis_results.total_losses'),
+    value: `${pvgisData.value?.totals.l_total.toFixed(2)} %`,
+  },
 ])
+
+const mergedData = computed(() => {
+  const separator = (titleKey: string) => ({
+    label: t(titleKey),
+    value: null,
+    isTitle: true,
+  })
+
+  return [
+    separator('pvgis_results.provided_data'),
+    ...providedData.value.map((item) => ({ ...item, isTitle: false })),
+    separator('pvgis_results.simulation_results'),
+    ...simulationResults.value.map((item) => ({ ...item, isTitle: false })),
+    separator('pvgis_results.production_changes'),
+    ...productionChanges.value.map((item) => ({ ...item, isTitle: false })),
+  ]
+})
 </script>
 
 <i18n>
