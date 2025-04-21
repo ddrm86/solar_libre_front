@@ -19,6 +19,7 @@
         <IftaLabel>
           <InputNumber
             id="panelNumber"
+            showButtons
             v-model="solarArrayStore.solarArray.panelNumber"
             :min="1"
           />
@@ -32,6 +33,7 @@
         <IftaLabel>
           <InputNumber
             id="loss"
+            showButtons
             v-model="solarArrayStore.solarArray.loss"
             :defaultValue="14"
             :min="0"
@@ -45,6 +47,7 @@
         <IftaLabel>
           <InputNumber
             id="angle"
+            showButtons
             v-model="solarArrayStore.solarArray.angle"
             :defaultValue="35"
             :min="0"
@@ -58,6 +61,7 @@
         <IftaLabel>
           <InputNumber
             id="azimuth"
+            showButtons
             v-model="solarArrayStore.solarArray.azimuth"
             :min="-90"
             :max="90"
