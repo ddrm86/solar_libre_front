@@ -34,7 +34,6 @@
             id="loss"
             showButtons
             v-model="solarArrayStore.solarArray.loss"
-            :defaultValue="14"
             :min="0"
             :max="100"
             :suffix="'%'"
@@ -48,7 +47,6 @@
             id="angle"
             showButtons
             v-model="solarArrayStore.solarArray.angle"
-            :defaultValue="35"
             :min="0"
             :max="90"
             :suffix="'°'"
