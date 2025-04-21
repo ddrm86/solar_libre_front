@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>{{ t('pvgis_results.title') }}</h2>
     <div v-if="pvgisData" class="flex">
       <div class="pr-4">
       <Card>
