@@ -1,220 +1,68 @@
 <template>
-  <div>
-    <h2>{{ t('solar_array.title') }}</h2>
-    <Fluid>
-      <div class="pb-2">
-        <IftaLabel>
-          <Select
-            id="panel"
-            v-model="solarArrayStore.solarArray.panel"
-            filter
-            :options="panelsStore.panels"
-            :optionLabel="getPanelLabel"
-            :placeholder="t('solar_array.select_panel')"
-          />
-          <label for="panel">{{ t('solar_array.panel') }}</label>
-        </IftaLabel>
-      </div>
-      <div class="pb-2">
-        <IftaLabel>
-          <InputNumber
-            id="panelNumber"
-            v-model="solarArrayStore.solarArray.panelNumber"
-            :min="1"
-          />
-          <label for="panelNumber">{{ t('solar_array.panelNumber') }}</label>
-        </IftaLabel>
-      </div>
-      <div class="pb-2">
-        <IftaLabel>
-          <InputNumber
-            id="loss"
-            v-model="solarArrayStore.solarArray.loss"
-            :defaultValue="14"
-            :min="0"
-            :max="100"
-            :suffix="'%'"
-          />
-          <label for="loss">{{ t('solar_array.loss') }}</label>
-        </IftaLabel>
-      </div>
-      <div class="pb-2">
-        <IftaLabel>
-          <InputNumber
-            id="angle"
-            v-model="solarArrayStore.solarArray.angle"
-            :defaultValue="35"
-            :min="0"
-            :max="90"
-            :suffix="'°'"
-          />
-          <label for="angle">{{ t('solar_array.angle') }}</label>
-        </IftaLabel>
-      </div>
-      <div class="pb-2">
-        <IftaLabel>
-          <InputNumber
-            id="azimuth"
-            v-model="solarArrayStore.solarArray.azimuth"
-            :min="-90"
-            :max="90"
-            :suffix="'°'"
-          />
-          <label for="azimuth">{{ t('solar_array.azimuth') }}</label>
-        </IftaLabel>
-      </div>
-    </Fluid>
-    <Button
-      :label="t('solar_array.consult_pvgis')"
-      :loading="solarArrayStore.pvgisData?.fetching"
-      :disabled="!isValidRequest"
-      :badge="badgeText"
-      :badgeSeverity="badgeSeverity"
-      icon="pi pi-search"
-      @click="solarArrayStore.fetchPvgisData"
-    />
-  </div>
+  <Panel :header="headerText" toggleable @update:collapsed="onPanelToggle">
+    <div class="md:flex md:gap-8">
+      <SolarArrayInputData />
+      <PvgisResultsVisualization />
+    </div>
+  </Panel>
 </template>
 
 <script setup lang="ts">
+import SolarArrayInputData from '@/components/SolarArrayInputData.vue'
+import PvgisResultsVisualization from '@/components/PvgisResultsVisualization.vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSolarArrayStore } from '@/stores/solarArray.ts'
-import { usePanelsStore } from '@/stores/panels.ts'
-import { computed, onMounted, ref, watch } from 'vue'
-import type { Panel } from '@/models/panel.ts'
-import { useProjectInfoStore } from '@/stores/projectInfo.ts'
-import { useToast } from 'primevue/usetoast'
 
 const { t } = useI18n()
-const toast = useToast()
-const projectInfoStore = useProjectInfoStore()
 const solarArrayStore = useSolarArrayStore()
-const panelsStore = usePanelsStore()
 
-const panelFetchingError = ref(false)
+const isCollapsed = ref(false)
 
-const getPanelLabel = (panel: Panel) => panel.maker + ' ' + panel.model
-  + ' (' + panel.nominal_power + 'W)'
-
-onMounted(() => {
-  panelsStore.fetchPanels().then(() => {
-    panelFetchingError.value = panelsStore.error
-    if (panelFetchingError.value) {
-      toast.add({
-        severity: 'error',
-        summary: t('toast_messages.error'),
-        detail: t('toast_messages.error_fetching_panels') + ': ' + panelsStore.errorDetails,
-        life: 3000,
-      })
-    }
-  })
-})
-
-const isValidRequest = computed(() => {
-  return (
-    projectInfoStore.projectInfo.location.latitude !== 0.0 &&
-    projectInfoStore.projectInfo.location.longitude !== 0.0 &&
-    Object.keys(solarArrayStore.solarArray.panel).length !== 0 &&
-    solarArrayStore.solarArray.panelNumber > 0
-  )
-})
-
-const badgeText = computed(() => {
-  if (!isValidRequest.value) {
-    return t('pvgis_button.missing_data')
-  } else if (solarArrayStore.pvgisData?.error) {
-    return t('pvgis_button.error')
-  } else if (solarArrayStore.pvgisData?.fetching) {
-    return t('pvgis_button.fetching')
-  } else if (solarArrayStore.isDirty) {
-    return t('pvgis_button.needs_update')
-  } else if (!solarArrayStore.isDirty && !solarArrayStore.pvgisData?.error) {
-    return t('pvgis_button.updated')
-  } else {
-    return ''
+const headerText = computed(() => {
+  if (!isCollapsed.value) {
+    return t('solar_array.title')
   }
+
+  const panelSelected = Object.keys(solarArrayStore.solarArray.panel).length !== 0
+
+  const panelCount = solarArrayStore.solarArray.panelNumber || 0
+  const panelName = panelSelected
+    ? `${solarArrayStore.solarArray.panel.maker} ${solarArrayStore.solarArray.panel.model}`
+    : t('solar_array.no_panel_selected')
+  const loss = solarArrayStore.solarArray.loss || 0
+  const angle = solarArrayStore.solarArray.angle || 0
+  const azimuth = solarArrayStore.solarArray.azimuth || 0
+  const annualProduction = solarArrayStore.pvgisData?.response?.totals.E_y || 0
+
+  return `${panelCount} x ${panelName} (📉${loss}% 📐${angle}º 🧭${azimuth}º)
+  ⚡${annualProduction} kWh ${t('solar_array.annual')} -
+  ${t(solarArrayStore.isDirty || !panelSelected ? 'solar_array.not_updated' : 'solar_array.updated')}`
 })
 
-const badgeSeverity = computed(() => {
-  if (!isValidRequest.value) {
-    return 'secondary'
-  } else if (solarArrayStore.pvgisData?.error) {
-    return 'danger'
-  } else if (solarArrayStore.pvgisData?.fetching) {
-    return 'secondary'
-  } else if (solarArrayStore.isDirty) {
-    return 'contrast'
-  } else if (!solarArrayStore.isDirty && !solarArrayStore.pvgisData?.error) {
-    return 'success'
-  } else {
-    return 'secondary'
-  }
-})
-
-watch (
-  () => solarArrayStore.pvgisData?.error,
-  (newValue) => {
-    if (newValue) {
-      toast.add({
-        severity: 'error',
-        summary: t('toast_messages.error'),
-        detail: t('toast_messages.error_querying_pvgis') + ': '
-          + solarArrayStore.pvgisData?.errorDetails,
-        life: 3000,
-      })
-    }
-  }
-)
+const onPanelToggle = (value: boolean) => {
+  isCollapsed.value = value
+}
 </script>
 
 <i18n>
 {
   "en": {
-    "pvgis_button": {
-      "missing_data": "Missing data",
-      "needs_update": "Needs update",
-      "updated": "Updated",
-      "error": "Error performing query",
-      "fetching": "Querying"
-    },
-    "toast_messages": {
-      "error": "Error",
-      "error_fetching_panels": "Error loading the list of solar panels",
-      "error_querying_pvgis": "Error querying PVGIS"
-    },
     "solar_array": {
-      "title": "Solar array configuration",
-      "panel": "Panel",
-      "panelNumber": "Number of panels",
-      "loss": "Loss (%)",
-      "angle": "Tilt angle (°)",
-      "azimuth": "Azimuth (°)",
-      "consult_pvgis": "Consult PVGIS Data",
-      "select_panel": "Select a panel model"
+      "title": "Solar Array",
+      "annual": "yearly",
+      "updated": "Updated",
+      "not_updated": "NOT UPDATED",
+      "no_panel_selected": "(no panel selected)"
     }
   },
   "es": {
-    "pvgis_button": {
-      "missing_data": "Faltan datos",
-      "needs_update": "Necesita actualización",
-      "updated": "Actualizado",
-      "error": "Error al consultar",
-      "fetching": "Consultando"
-    },
-    "toast_messages": {
-      "error": "Error",
-      "error_fetching_panels": "Error al cargar la lista de paneles solares",
-      "error_querying_pvgis": "Error consultando PVGIS"
-    },
     "solar_array": {
-      "title": "Configuración de la matriz solar",
-      "panel": "Panel",
-      "panelNumber": "Número de paneles",
-      "loss": "Pérdidas (%)",
-      "angle": "Ángulo de inclinación (°)",
-      "azimuth": "Azimut (°)",
-      "consult_pvgis": "Consultar Datos PVGIS",
-      "select_panel": "Selecciona un modelo de panel"
+      "title": "Matriz solar",
+      "annual": "anual",
+      "updated": "Actualizado",
+      "not_updated": "NO ACTUALIZADO",
+      "no_panel_selected": "(ningún panel seleccionado)"
     }
   }
 }

@@ -9,7 +9,7 @@ export const useSolarArrayStore = defineStore('solar_array', () => {
   const projectInfoStore = useProjectInfoStore()
 
   const solarArray = ref<SolarArray>(
-    new SolarArray({} as Panel, 0, 0, 0, 0)
+    new SolarArray({} as Panel, 0, 14, 35, 0)
   )
 
   const pvgisData = ref<Pvgis | null>(null)
