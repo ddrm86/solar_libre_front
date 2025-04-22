@@ -1,6 +1,6 @@
 import type { Panel } from '@/models/panel.ts'
 
-export interface SolarArrayModel {
+export interface SolarArrayDataModel {
   id?: string
   panel: Panel
   panelNumber: number
@@ -11,7 +11,7 @@ export interface SolarArrayModel {
   calcPeakPowerKw: () => number
 }
 
-export class SolarArray implements SolarArrayModel {
+export class SolarArrayData implements SolarArrayDataModel {
   id?: string
   panel: Panel
   panelNumber: number

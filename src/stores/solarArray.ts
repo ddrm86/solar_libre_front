@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { SolarArray } from '@/models/solarArray.ts'
+import { SolarArrayData } from '@/models/solarArrayData.ts'
 import { ref, watch } from 'vue'
 import { Pvgis, type PvgisRequest } from '@/models/pvgis.ts'
 import type { Panel } from '@/models/panel.ts'
@@ -8,8 +8,8 @@ import { useProjectInfoStore } from '@/stores/projectInfo.ts'
 export const useSolarArrayStore = defineStore('solar_array', () => {
   const projectInfoStore = useProjectInfoStore()
 
-  const solarArray = ref<SolarArray>(
-    new SolarArray({} as Panel, 0, 14, 35, 0)
+  const solarArray = ref<SolarArrayData>(
+    new SolarArrayData({} as Panel, 0, 14, 35, 0)
   )
 
   const pvgisData = ref<Pvgis | null>(null)
