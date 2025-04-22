@@ -2,10 +2,9 @@
   <Button
     icon="pi pi-plus"
     :label="t('solar_array.add_array')"
-    class="mb-4"
     @click="solarArraysStore.addSolarArray()"
   />
-  <div v-for="(_, idx) in solarArraysStore.arrays" :key="idx">
+  <div v-for="(_, idx) in solarArraysStore.arrays" :key="idx" class="pt-4">
     <SolarArray :arrayIdx="idx"/>
   </div>
 </template>
