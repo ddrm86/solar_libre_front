@@ -14,7 +14,7 @@
       sortField="model"
       :sortOrder="1"
       v-model:filters="filters"
-      :globalFilterFields="['model', 'description']"
+      :globalFilterFields="['maker', 'model', 'description']"
       filterDisplay="row"
     >
       <template #header>
