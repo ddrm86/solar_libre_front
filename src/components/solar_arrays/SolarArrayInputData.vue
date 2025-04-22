@@ -5,7 +5,7 @@
         <IftaLabel>
           <Select
             id="panel"
-            v-model="solarArrayStore.solarArray.panel"
+            v-model="solarArraysStore.arrays[arrayIdx].array.panel"
             filter
             :options="panelsStore.panels"
             :optionLabel="getPanelLabel"
@@ -19,7 +19,7 @@
           <InputNumber
             id="panelNumber"
             showButtons
-            v-model="solarArrayStore.solarArray.panelNumber"
+            v-model="solarArraysStore.arrays[arrayIdx].array.panelNumber"
             :min="1"
           />
           <label for="panelNumber">{{ t('solar_array.panelNumber') }}</label>
@@ -33,7 +33,7 @@
           <InputNumber
             id="loss"
             showButtons
-            v-model="solarArrayStore.solarArray.loss"
+            v-model="solarArraysStore.arrays[arrayIdx].array.loss"
             :min="0"
             :max="100"
             :suffix="'%'"
@@ -46,7 +46,7 @@
           <InputNumber
             id="angle"
             showButtons
-            v-model="solarArrayStore.solarArray.angle"
+            v-model="solarArraysStore.arrays[arrayIdx].array.angle"
             :min="0"
             :max="90"
             :suffix="'°'"
@@ -59,7 +59,7 @@
           <InputNumber
             id="azimuth"
             showButtons
-            v-model="solarArrayStore.solarArray.azimuth"
+            v-model="solarArraysStore.arrays[arrayIdx].array.azimuth"
             :min="-90"
             :max="90"
             :suffix="'°'"
@@ -68,13 +68,13 @@
         </IftaLabel>
       </div>
     </Fluid>
-    <PvgisButton />
+    <PvgisButton :arrayIdx="arrayIdx"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useSolarArrayStore } from '@/stores/solarArray.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { usePanelsStore } from '@/stores/panels.ts'
 import { computed, onMounted, ref, watch } from 'vue'
 import type { Panel } from '@/models/panel.ts'
@@ -83,8 +83,10 @@ import PvgisButton from '@/components/solar_arrays/PvgisButton.vue'
 
 const { t } = useI18n()
 const toast = useToast()
-const solarArrayStore = useSolarArrayStore()
+const solarArraysStore = useSolarArraysStore()
 const panelsStore = usePanelsStore()
+
+const { arrayIdx } = defineProps<{ arrayIdx: number }>()
 
 const panelFetchingError = ref(false)
 
@@ -106,20 +108,20 @@ onMounted(() => {
 })
 
 const getTotalPowerText = computed(() => {
-  const peakPowerKw = solarArrayStore.solarArray.calcPeakPowerKw()
+  const peakPowerKw = solarArraysStore.arrays[arrayIdx].array.calcPeakPowerKw()
   return isNaN(peakPowerKw) ? '' : `(${peakPowerKw} kW)`
 })
 
 
 watch (
-  () => solarArrayStore.pvgisData?.error,
+  () => solarArraysStore.arrays[arrayIdx].pvgisData?.error,
   (newValue) => {
     if (newValue) {
       toast.add({
         severity: 'error',
         summary: t('toast_messages.error'),
         detail: t('toast_messages.error_querying_pvgis') + ': '
-          + solarArrayStore.pvgisData?.errorDetails,
+          + solarArraysStore.arrays[arrayIdx].pvgisData?.errorDetails,
         life: 3000,
       })
     }

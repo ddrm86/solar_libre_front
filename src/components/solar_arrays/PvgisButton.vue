@@ -1,44 +1,46 @@
 <template>
   <Button
     :label="t('pvgis_button.consult_pvgis')"
-    :loading="solarArrayStore.pvgisData?.fetching"
+    :loading="solarArraysStore.arrays[arrayIdx].pvgisData?.fetching"
     :disabled="!isValidRequest"
     :badge="badgeText"
     :badgeSeverity="badgeSeverity"
     icon="pi pi-search"
-    @click="solarArrayStore.fetchPvgisData"
+    @click="solarArraysStore.arrays[arrayIdx].fetchPvgisData(projectInfoStore.projectInfo)"
   />
 </template>
 
 <script setup lang="ts">
-import { useSolarArrayStore } from '@/stores/solarArray.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { useProjectInfoStore } from '@/stores/projectInfo.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const solarArrayStore = useSolarArrayStore()
+const solarArraysStore = useSolarArraysStore()
 const projectInfoStore = useProjectInfoStore()
+
+const { arrayIdx } = defineProps<{ arrayIdx: number }>()
 
 const isValidRequest = computed(() => {
   return (
     projectInfoStore.projectInfo.location.latitude !== 0.0 &&
     projectInfoStore.projectInfo.location.longitude !== 0.0 &&
-    Object.keys(solarArrayStore.solarArray.panel).length !== 0 &&
-    solarArrayStore.solarArray.panelNumber > 0
+    Object.keys(solarArraysStore.arrays[arrayIdx].array.panel).length !== 0 &&
+    solarArraysStore.arrays[arrayIdx].array.panelNumber > 0
   )
 })
 
 const badgeText = computed(() => {
   if (!isValidRequest.value) {
     return t('pvgis_button.missing_data')
-  } else if (solarArrayStore.pvgisData?.error) {
+  } else if (solarArraysStore.arrays[arrayIdx].pvgisData?.error) {
     return t('pvgis_button.error')
-  } else if (solarArrayStore.pvgisData?.fetching) {
+  } else if (solarArraysStore.arrays[arrayIdx].pvgisData?.fetching) {
     return t('pvgis_button.fetching')
-  } else if (solarArrayStore.isDirty) {
+  } else if (solarArraysStore.arrays[arrayIdx].isDirty) {
     return t('pvgis_button.needs_update')
-  } else if (!solarArrayStore.isDirty && !solarArrayStore.pvgisData?.error) {
+  } else if (!solarArraysStore.arrays[arrayIdx].isDirty && !solarArraysStore.arrays[arrayIdx].pvgisData?.error) {
     return t('pvgis_button.updated')
   } else {
     return ''
@@ -48,13 +50,13 @@ const badgeText = computed(() => {
 const badgeSeverity = computed(() => {
   if (!isValidRequest.value) {
     return 'secondary'
-  } else if (solarArrayStore.pvgisData?.error) {
+  } else if (solarArraysStore.arrays[arrayIdx].pvgisData?.error) {
     return 'danger'
-  } else if (solarArrayStore.pvgisData?.fetching) {
+  } else if (solarArraysStore.arrays[arrayIdx].pvgisData?.fetching) {
     return 'secondary'
-  } else if (solarArrayStore.isDirty) {
+  } else if (solarArraysStore.arrays[arrayIdx].isDirty) {
     return 'contrast'
-  } else if (!solarArrayStore.isDirty && !solarArrayStore.pvgisData?.error) {
+  } else if (!solarArraysStore.arrays[arrayIdx].isDirty && !solarArraysStore.arrays[arrayIdx].pvgisData?.error) {
     return 'success'
   } else {
     return 'secondary'

@@ -33,28 +33,30 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSolarArrayStore } from '@/stores/solarArray.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 
 const { t } = useI18n()
-const solarArrayStore = useSolarArrayStore()
+const solarArrayStore = useSolarArraysStore()
 
-const pvgisData = computed(() => solarArrayStore.pvgisData?.response || null)
+const { arrayIdx } = defineProps<{ arrayIdx: number }>()
+
+const pvgisData = computed(() => solarArrayStore.arrays[arrayIdx].pvgisData?.response || null)
 
 const monthlyProduction = computed(
   () =>
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     pvgisData.value?.monthly.map((item: any) => ({
       month: t(`months.${item.month}`),
       E_m: item.E_m.toFixed(2),
     })) || [],
 )
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const labelTemplate = (rowData: any) => {
   return rowData.isTitle ? rowData.label.toUpperCase() : rowData.label
 }
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const valueTemplate = (rowData: any) => (rowData.isTitle ? '' : rowData.value)
 
 const providedData = computed(() => [

@@ -1,8 +1,8 @@
 <template>
   <Panel :header="headerText" toggleable @update:collapsed="onPanelToggle">
     <div class="md:flex md:gap-8">
-      <SolarArrayInputData />
-      <PvgisResultsVisualization />
+      <SolarArrayInputData :arrayIdx="arrayIdx"/>
+      <PvgisResultsVisualization :arrayIdx="arrayIdx"/>
     </div>
   </Panel>
 </template>
@@ -12,10 +12,12 @@ import SolarArrayInputData from '@/components/solar_arrays/SolarArrayInputData.v
 import PvgisResultsVisualization from '@/components/solar_arrays/PvgisResultsVisualization.vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSolarArrayStore } from '@/stores/solarArray.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 
 const { t } = useI18n()
-const solarArrayStore = useSolarArrayStore()
+const solarArraysStore = useSolarArraysStore()
+
+const { arrayIdx } = defineProps<{ arrayIdx: number }>()
 
 const isCollapsed = ref(false)
 
@@ -24,20 +26,20 @@ const headerText = computed(() => {
     return t('solar_array.title')
   }
 
-  const panelSelected = Object.keys(solarArrayStore.solarArray.panel).length !== 0
+  const panelSelected = Object.keys(solarArraysStore.arrays[arrayIdx].array.panel).length !== 0
 
-  const panelCount = solarArrayStore.solarArray.panelNumber || 0
+  const panelCount = solarArraysStore.arrays[arrayIdx].array.panelNumber || 0
   const panelName = panelSelected
-    ? `${solarArrayStore.solarArray.panel.maker} ${solarArrayStore.solarArray.panel.model}`
+    ? `${solarArraysStore.arrays[arrayIdx].array.panel.maker} ${solarArraysStore.arrays[arrayIdx].array.panel.model}`
     : t('solar_array.no_panel_selected')
-  const loss = solarArrayStore.solarArray.loss || 0
-  const angle = solarArrayStore.solarArray.angle || 0
-  const azimuth = solarArrayStore.solarArray.azimuth || 0
-  const annualProduction = solarArrayStore.pvgisData?.response?.totals.E_y || 0
+  const loss = solarArraysStore.arrays[arrayIdx].array.loss || 0
+  const angle = solarArraysStore.arrays[arrayIdx].array.angle || 0
+  const azimuth = solarArraysStore.arrays[arrayIdx].array.azimuth || 0
+  const annualProduction = solarArraysStore.arrays[arrayIdx].pvgisData?.response?.totals.E_y || 0
 
   return `${panelCount} x ${panelName} (📉${loss}% 📐${angle}º 🧭${azimuth}º)
   ⚡${annualProduction} kWh ${t('solar_array.annual')} -
-  ${t(solarArrayStore.isDirty || !panelSelected ? 'solar_array.not_updated' : 'solar_array.updated')}`
+  ${t(solarArraysStore.arrays[arrayIdx].isDirty || !panelSelected ? 'solar_array.not_updated' : 'solar_array.updated')}`
 })
 
 const onPanelToggle = (value: boolean) => {
