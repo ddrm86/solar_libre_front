@@ -1,5 +1,17 @@
 <template>
-  <Panel :header="headerText" toggleable @update:collapsed="onPanelToggle">
+  <Panel toggleable @update:collapsed="onPanelToggle">
+    <template #header>
+      <div class="flex justify-between items-center w-full">
+        <span>{{ headerText }}</span>
+        <Button
+          icon="pi pi-trash"
+          outlined
+          rounded
+          severity="danger"
+          @click="solarArraysStore.deleteSolarArray(arrayIdx)"
+        />
+      </div>
+    </template>
     <div class="md:flex md:gap-8">
       <SolarArrayInputData :arrayIdx="arrayIdx"/>
       <PvgisResultsVisualization :arrayIdx="arrayIdx"/>

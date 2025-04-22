@@ -13,6 +13,10 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
     arrays.value.push(new SolarArray())
   }
 
+  const deleteSolarArray = (index: number) => {
+    arrays.value.splice(index, 1)
+  }
+
   watch(
     () => projectInfoStore.projectInfo.location,
     () => {
@@ -23,5 +27,5 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
     { deep: true }
   )
 
-  return { arrays, addSolarArray }
+  return { arrays, addSolarArray, deleteSolarArray }
 })
