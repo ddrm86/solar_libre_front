@@ -112,6 +112,13 @@ const getTotalPowerText = computed(() => {
   return isNaN(peakPowerKw) ? '' : `(${peakPowerKw} kW)`
 })
 
+watch (
+  () => solarArraysStore.arrays[arrayIdx].array,
+  () => {
+    solarArraysStore.arrays[arrayIdx].isDirty = true
+  },
+  { deep: true }
+)
 
 watch (
   () => solarArraysStore.arrays[arrayIdx].pvgisData?.error,
