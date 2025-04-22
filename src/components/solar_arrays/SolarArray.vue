@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import SolarArrayInputData from '@/components/SolarArrayInputData.vue'
-import PvgisResultsVisualization from '@/components/PvgisResultsVisualization.vue'
+import SolarArrayInputData from '@/components/solar_arrays/SolarArrayInputData.vue'
+import PvgisResultsVisualization from '@/components/solar_arrays/PvgisResultsVisualization.vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSolarArrayStore } from '@/stores/solarArray.ts'

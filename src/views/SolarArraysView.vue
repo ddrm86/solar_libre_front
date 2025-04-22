@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import SolarArray from '@/components/SolarArray.vue'
+import SolarArray from '@/components/solar_arrays/SolarArray.vue'
 </script>

@@ -79,7 +79,7 @@ import { usePanelsStore } from '@/stores/panels.ts'
 import { computed, onMounted, ref, watch } from 'vue'
 import type { Panel } from '@/models/panel.ts'
 import { useToast } from 'primevue/usetoast'
-import PvgisButton from '@/components/PvgisButton.vue'
+import PvgisButton from '@/components/solar_arrays/PvgisButton.vue'
 
 const { t } = useI18n()
 const toast = useToast()
