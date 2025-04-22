@@ -23,7 +23,7 @@ const isCollapsed = ref(false)
 
 const headerText = computed(() => {
   if (!isCollapsed.value) {
-    return t('solar_array.title')
+    return `${t('solar_array.title')} ${arrayIdx + 1}`
   }
 
   const panelSelected = Object.keys(solarArraysStore.arrays[arrayIdx].array.panel).length !== 0
