@@ -5,7 +5,7 @@
         <IftaLabel>
           <Select
             id="panel"
-            v-model="solarArrayStore.solarArray.panel"
+            v-model="solarArraysStore.arrays[arrayIdx].array.panel"
             filter
             :options="panelsStore.panels"
             :optionLabel="getPanelLabel"
@@ -19,7 +19,7 @@
           <InputNumber
             id="panelNumber"
             showButtons
-            v-model="solarArrayStore.solarArray.panelNumber"
+            v-model="solarArraysStore.arrays[arrayIdx].array.panelNumber"
             :min="1"
           />
           <label for="panelNumber">{{ t('solar_array.panelNumber') }}</label>
@@ -33,7 +33,7 @@
           <InputNumber
             id="loss"
             showButtons
-            v-model="solarArrayStore.solarArray.loss"
+            v-model="solarArraysStore.arrays[arrayIdx].array.loss"
             :min="0"
             :max="100"
             :suffix="'%'"
@@ -46,7 +46,7 @@
           <InputNumber
             id="angle"
             showButtons
-            v-model="solarArrayStore.solarArray.angle"
+            v-model="solarArraysStore.arrays[arrayIdx].array.angle"
             :min="0"
             :max="90"
             :suffix="'°'"
@@ -59,7 +59,7 @@
           <InputNumber
             id="azimuth"
             showButtons
-            v-model="solarArrayStore.solarArray.azimuth"
+            v-model="solarArraysStore.arrays[arrayIdx].array.azimuth"
             :min="-90"
             :max="90"
             :suffix="'°'"
@@ -68,32 +68,25 @@
         </IftaLabel>
       </div>
     </Fluid>
-    <Button
-      :label="t('solar_array.consult_pvgis')"
-      :loading="solarArrayStore.pvgisData?.fetching"
-      :disabled="!isValidRequest"
-      :badge="badgeText"
-      :badgeSeverity="badgeSeverity"
-      icon="pi pi-search"
-      @click="solarArrayStore.fetchPvgisData"
-    />
+    <PvgisButton :arrayIdx="arrayIdx"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useSolarArrayStore } from '@/stores/solarArray.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { usePanelsStore } from '@/stores/panels.ts'
 import { computed, onMounted, ref, watch } from 'vue'
 import type { Panel } from '@/models/panel.ts'
-import { useProjectInfoStore } from '@/stores/projectInfo.ts'
 import { useToast } from 'primevue/usetoast'
+import PvgisButton from '@/components/solar_arrays/PvgisButton.vue'
 
 const { t } = useI18n()
 const toast = useToast()
-const projectInfoStore = useProjectInfoStore()
-const solarArrayStore = useSolarArrayStore()
+const solarArraysStore = useSolarArraysStore()
 const panelsStore = usePanelsStore()
+
+const { arrayIdx } = defineProps<{ arrayIdx: number }>()
 
 const panelFetchingError = ref(false)
 
@@ -114,61 +107,28 @@ onMounted(() => {
   })
 })
 
-const isValidRequest = computed(() => {
-  return (
-    projectInfoStore.projectInfo.location.latitude !== 0.0 &&
-    projectInfoStore.projectInfo.location.longitude !== 0.0 &&
-    Object.keys(solarArrayStore.solarArray.panel).length !== 0 &&
-    solarArrayStore.solarArray.panelNumber > 0
-  )
-})
-
 const getTotalPowerText = computed(() => {
-  const peakPowerKw = solarArrayStore.solarArray.calcPeakPowerKw()
+  const peakPowerKw = solarArraysStore.arrays[arrayIdx].array.calcPeakPowerKw()
   return isNaN(peakPowerKw) ? '' : `(${peakPowerKw} kW)`
 })
 
-const badgeText = computed(() => {
-  if (!isValidRequest.value) {
-    return t('pvgis_button.missing_data')
-  } else if (solarArrayStore.pvgisData?.error) {
-    return t('pvgis_button.error')
-  } else if (solarArrayStore.pvgisData?.fetching) {
-    return t('pvgis_button.fetching')
-  } else if (solarArrayStore.isDirty) {
-    return t('pvgis_button.needs_update')
-  } else if (!solarArrayStore.isDirty && !solarArrayStore.pvgisData?.error) {
-    return t('pvgis_button.updated')
-  } else {
-    return ''
-  }
-})
-
-const badgeSeverity = computed(() => {
-  if (!isValidRequest.value) {
-    return 'secondary'
-  } else if (solarArrayStore.pvgisData?.error) {
-    return 'danger'
-  } else if (solarArrayStore.pvgisData?.fetching) {
-    return 'secondary'
-  } else if (solarArrayStore.isDirty) {
-    return 'contrast'
-  } else if (!solarArrayStore.isDirty && !solarArrayStore.pvgisData?.error) {
-    return 'success'
-  } else {
-    return 'secondary'
-  }
-})
+watch (
+  () => solarArraysStore.arrays[arrayIdx].array,
+  () => {
+    solarArraysStore.arrays[arrayIdx].isDirty = true
+  },
+  { deep: true }
+)
 
 watch (
-  () => solarArrayStore.pvgisData?.error,
+  () => solarArraysStore.arrays[arrayIdx].pvgisData?.error,
   (newValue) => {
     if (newValue) {
       toast.add({
         severity: 'error',
         summary: t('toast_messages.error'),
         detail: t('toast_messages.error_querying_pvgis') + ': '
-          + solarArrayStore.pvgisData?.errorDetails,
+          + solarArraysStore.arrays[arrayIdx].pvgisData?.errorDetails,
         life: 3000,
       })
     }
@@ -179,13 +139,6 @@ watch (
 <i18n>
 {
   "en": {
-    "pvgis_button": {
-      "missing_data": "Missing data",
-      "needs_update": "Needs update",
-      "updated": "Updated",
-      "error": "Error performing query",
-      "fetching": "Querying"
-    },
     "toast_messages": {
       "error": "Error",
       "error_fetching_panels": "Error loading the list of solar panels",
@@ -198,18 +151,10 @@ watch (
       "loss": "Loss (%)",
       "angle": "Tilt angle (°)",
       "azimuth": "Azimuth (°)",
-      "consult_pvgis": "Consult PVGIS Data",
       "select_panel": "Select a panel model"
     }
   },
   "es": {
-    "pvgis_button": {
-      "missing_data": "Faltan datos",
-      "needs_update": "Actualizar",
-      "updated": "Actualizado",
-      "error": "Error al consultar",
-      "fetching": "Consultando"
-    },
     "toast_messages": {
       "error": "Error",
       "error_fetching_panels": "Error al cargar la lista de paneles solares",
@@ -222,7 +167,6 @@ watch (
       "loss": "Pérdidas (%)",
       "angle": "Ángulo de inclinación (°)",
       "azimuth": "Azimut (°)",
-      "consult_pvgis": "Consultar Datos PVGIS",
       "select_panel": "Selecciona un modelo de panel"
     }
   }

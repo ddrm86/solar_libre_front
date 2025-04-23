@@ -79,7 +79,7 @@ export interface PvgisInterface {
   error: boolean
   errorDetails?: AxiosError
 
-  fetch: () => void
+  fetch: () => Promise<void>
 }
 
 export class Pvgis implements PvgisInterface {
@@ -93,9 +93,9 @@ export class Pvgis implements PvgisInterface {
     this.request = request
   }
 
-  fetch() {
+  async fetch () {
     this.fetching = true
-    axios
+    return axios
       .get('/pvgis', {
         params: {
           latitude: this.request.latitude,

@@ -1,39 +1,43 @@
+import { SolarArrayData, type SolarArrayDataModel } from '@/models/solarArrayData.ts'
+import { Pvgis, type PvgisInterface } from '@/models/pvgis.ts'
 import type { Panel } from '@/models/panel.ts'
+import type { ProjectInfo } from '@/models/projectInfo.ts'
 
 export interface SolarArrayModel {
-  id?: string
-  panel: Panel
-  panelNumber: number
-  loss: number
-  angle: number
-  azimuth: number
+  array: SolarArrayDataModel
+  pvgisData?: PvgisInterface
+  isDirty: boolean
 
-  calcPeakPowerKw: () => number
+  fetchPvgisData: (projectInfo: ProjectInfo) => void
 }
 
 export class SolarArray implements SolarArrayModel {
-  id?: string
-  panel: Panel
-  panelNumber: number
-  loss: number
-  angle: number
-  azimuth: number
+  array: SolarArrayData
+  pvgisData?: Pvgis
+  isDirty: boolean
 
-  constructor(
-    panel: Panel,
-    panelNumber: number,
-    loss: number,
-    angle: number,
-    azimuth: number,
-  ) {
-    this.panel = panel
-    this.panelNumber = panelNumber
-    this.loss = loss
-    this.angle = angle
-    this.azimuth = azimuth
+  constructor(arrayData?: SolarArrayData) {
+    if (!arrayData) {
+      this.array = new SolarArrayData({} as Panel, 0, 14, 35, 0)
+    } else {
+      this.array = arrayData
+    }
+    this.isDirty = true
   }
 
-  calcPeakPowerKw(): number {
-    return (this.panel.nominal_power * this.panelNumber) / 1000
+  fetchPvgisData(projectInfo: ProjectInfo): void {
+    const pvgisRequest = {
+      latitude: projectInfo.location.latitude,
+      longitude: projectInfo.location.longitude,
+      peakPower: this.array.calcPeakPowerKw(),
+      loss: this.array.loss,
+      angle: this.array.angle,
+      azimuth: this.array.azimuth,
+    }
+
+    this.pvgisData = new Pvgis(pvgisRequest)
+    this.pvgisData.fetch().then(() => {
+      this.isDirty = !this.pvgisData ? true : this.pvgisData.error
+    })
   }
 }
