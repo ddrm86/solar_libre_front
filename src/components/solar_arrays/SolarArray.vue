@@ -1,7 +1,7 @@
 <template>
   <Panel toggleable @update:collapsed="onPanelToggle">
     <template #header>
-      <div class="flex justify-between items-center w-full">
+      <div class="flex justify-between items-center w-full pr-4">
         <span>{{ headerText }}</span>
         <Button
           icon="pi pi-trash"
