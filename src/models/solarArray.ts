@@ -36,8 +36,8 @@ export class SolarArray implements SolarArrayModel {
     }
 
     this.pvgisData = new Pvgis(pvgisRequest)
-    this.pvgisData.fetch()
-
-    this.isDirty = this.pvgisData.error
+    this.pvgisData.fetch().then(() => {
+      this.isDirty = !this.pvgisData ? true : this.pvgisData.error
+    })
   }
 }
