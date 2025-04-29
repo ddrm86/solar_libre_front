@@ -6,11 +6,11 @@
 import 'leaflet/dist/leaflet.css'
 import "leaflet-geosearch/assets/css/leaflet.css";
 
-import markerIconUrl from "../../node_modules/leaflet/dist/images/marker-icon.png";
-import markerIconRetinaUrl from "../../node_modules/leaflet/dist/images/marker-icon-2x.png";
-import markerShadowUrl from "../../node_modules/leaflet/dist/images/marker-shadow.png";
+import markerIconUrl from "leaflet/dist/images/marker-icon.png";
+import markerIconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
-import { type Location } from '@/models/location.ts'
+import { type Location } from '@/models/project_info/location.ts'
 import L from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { onMounted } from 'vue'

@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import ProjectInfo from '@/components/ProjectInfo.vue'
+import ProjectInfo from '@/components/project_info/ProjectInfo.vue'
 </script>

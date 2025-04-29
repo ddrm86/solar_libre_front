@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { ProjectInfo } from '@/models/projectInfo.ts'
+import type { ProjectInfo } from '@/models/project_info/projectInfo.ts'
 
 export const useProjectInfoStore =
   defineStore('project_info', () => {
