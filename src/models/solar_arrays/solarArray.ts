@@ -1,5 +1,5 @@
-import { SolarArrayData, type SolarArrayDataModel } from '@/models/solarArrayData.ts'
-import { Pvgis, type PvgisInterface } from '@/models/pvgis.ts'
+import { SolarArrayData, type SolarArrayDataModel } from '@/models/solar_arrays/solarArrayData.ts'
+import { Pvgis, type PvgisInterface } from '@/models/solar_arrays/pvgis.ts'
 import type { Panel } from '@/models/inventory/panel.ts'
 import type { ProjectInfo } from '@/models/project_info/projectInfo.ts'
 
