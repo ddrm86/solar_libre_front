@@ -1,4 +1,4 @@
-import type { Panel } from '@/models/panel.ts'
+import type { Panel } from '@/models/inventory/panel.ts'
 
 export interface SolarArrayDataModel {
   id?: string

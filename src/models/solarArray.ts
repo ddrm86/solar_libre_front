@@ -1,6 +1,6 @@
 import { SolarArrayData, type SolarArrayDataModel } from '@/models/solarArrayData.ts'
 import { Pvgis, type PvgisInterface } from '@/models/pvgis.ts'
-import type { Panel } from '@/models/panel.ts'
+import type { Panel } from '@/models/inventory/panel.ts'
 import type { ProjectInfo } from '@/models/project_info/projectInfo.ts'
 
 export interface SolarArrayModel {

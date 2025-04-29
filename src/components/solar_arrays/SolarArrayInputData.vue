@@ -75,9 +75,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
-import { usePanelsStore } from '@/stores/panels.ts'
+import { usePanelsStore } from '@/stores/inventory/panels.ts'
 import { computed, onMounted, ref, watch } from 'vue'
-import type { Panel } from '@/models/panel.ts'
+import type { Panel } from '@/models/inventory/panel.ts'
 import { useToast } from 'primevue/usetoast'
 import PvgisButton from '@/components/solar_arrays/PvgisButton.vue'
 
