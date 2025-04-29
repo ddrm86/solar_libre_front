@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { AxiosError } from 'axios'
-import type { Panel } from '@/models/panel.ts'
+import type { Panel } from '@/models/inventory/panel.ts'
 
 export const usePanelsStore =
   defineStore('panels', () => {

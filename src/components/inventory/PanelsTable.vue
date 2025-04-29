@@ -248,12 +248,12 @@
 </template>
 
 <script setup lang="ts">
-import { usePanelsStore, } from '@/stores/panels.ts'
+import { usePanelsStore, } from '@/stores/inventory/panels.ts'
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
-import {type Panel, validatePanel } from '@/models/panel.ts'
+import {type Panel, validatePanel } from '@/models/inventory/panel.ts'
 
 const { t } = useI18n()
 const toast = useToast()

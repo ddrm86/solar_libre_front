@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
-import { SolarArray } from '@/models/solarArray.ts'
-import { useProjectInfoStore } from '@/stores/projectInfo.ts'
+import { SolarArray } from '@/models/solar_arrays/solarArray.ts'
+import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
 
 export const useSolarArraysStore = defineStore('solar_arrays', () => {

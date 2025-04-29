@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { ProjectInfo } from '@/models/projectInfo.ts'
+import type { ProjectInfo } from '@/models/project_info/projectInfo.ts'
 
 export const useProjectInfoStore =
   defineStore('project_info', () => {
@@ -9,8 +9,8 @@ export const useProjectInfoStore =
     name: '',
     location:
       {
-        latitude: 0.0,
-        longitude: 0.0,
+        latitude: 36.934232,
+        longitude: -5.258991,
         address: ''
       }
   })

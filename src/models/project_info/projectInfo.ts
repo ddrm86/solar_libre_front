@@ -1,4 +1,4 @@
-import { type Location } from '@/models/location.ts'
+import { type Location } from '@/models/project_info/location.ts'
 
 export interface ProjectInfo {
   id?: string;

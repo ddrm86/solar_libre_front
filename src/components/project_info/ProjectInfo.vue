@@ -3,6 +3,8 @@
   <div id="location-selection" class="flex-2/3">
     <MapSearch
       map-height="400px"
+      :init-view="[projectInfoStore.projectInfo.location.latitude,
+        projectInfoStore.projectInfo.location.longitude]"
       @location-selected="
         (location: Location) => {
           projectInfoStore.projectInfo.location.latitude = location.latitude
@@ -62,9 +64,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import MapSearch from '@/components/MapSearch.vue'
-import { type Location } from '@/models/location.ts'
-import { useProjectInfoStore } from '@/stores/projectInfo.ts'
+import MapSearch from '@/components/project_info/MapSearch.vue'
+import { type Location } from '@/models/project_info/location.ts'
+import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
 const { t } = useI18n()
 const projectInfoStore = useProjectInfoStore()

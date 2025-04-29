@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { type AxiosError } from 'axios'
-import type { MonophaseInverter } from '@/models/monophaseInverter.ts'
+import type { MonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 
 export const useMonophaseInvertersStore =
   defineStore('monophase_inverters', () => {

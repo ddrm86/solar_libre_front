@@ -1,4 +1,4 @@
-import { type Component, validateComponent } from '@/models/component.ts'
+import { type Component, validateComponent } from '@/models/inventory/component.ts'
 
 export interface MonophaseInverter extends Component {
   recommended_max_input_power: number;
