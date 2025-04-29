@@ -15,10 +15,13 @@ import L from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useMapSearchStore } from '@/stores/project_info/mapSearch.ts'
 
 const { t } = useI18n()
+const mapSearchStore = useMapSearchStore()
 
-const { mapHeight = '500px' } = defineProps<{ mapHeight?: string }>()
+const { mapHeight = '500px', initView } =
+  defineProps<{ mapHeight?: string, initView: [number, number] }>()
 
 const emit = defineEmits(['locationSelected'])
 
@@ -44,7 +47,9 @@ onMounted(() => {
   });
   map.addControl(searchControl);
 
-  map.setView([36.934232, -5.258991], 15);
+  map.setView(initView, mapSearchStore.zoom);
+  const marker = L.marker(initView, { draggable: true }).addTo(map);
+
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -64,6 +69,18 @@ onMounted(() => {
     emit('locationSelected', {
       latitude: result.location.lat,
       longitude: result.location.lng,
+      address: t('unknown_address'),
+    } as Location);
+  })
+
+  map.on('zoomend', () => {
+    mapSearchStore.zoom = map.getZoom();
+  });
+
+  marker.on('dragend', () => {
+    emit('locationSelected', {
+      latitude: marker.getLatLng().lat,
+      longitude: marker.getLatLng().lng,
       address: t('unknown_address'),
     } as Location);
   })

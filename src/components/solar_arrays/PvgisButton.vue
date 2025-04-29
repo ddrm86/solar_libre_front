@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
-import { useProjectInfoStore } from '@/stores/projectInfo.ts'
+import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
