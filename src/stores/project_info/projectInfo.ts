@@ -9,8 +9,8 @@ export const useProjectInfoStore =
     name: '',
     location:
       {
-        latitude: 0.0,
-        longitude: 0.0,
+        latitude: 36.934232,
+        longitude: -5.258991,
         address: ''
       }
   })
