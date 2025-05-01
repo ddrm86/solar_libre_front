@@ -1,4 +1,4 @@
-export interface Component {
+export interface IComponent {
   id?: string;
   maker: string;
   model: string;
@@ -7,7 +7,7 @@ export interface Component {
   deleted: boolean;
 }
 
-export const validateComponent = (component: Component): boolean => {
+export const validateComponent = (component: IComponent): boolean => {
   if (!component.maker?.trim()) {
     return false;
   }

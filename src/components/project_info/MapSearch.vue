@@ -10,7 +10,7 @@ import markerIconUrl from "leaflet/dist/images/marker-icon.png";
 import markerIconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
-import { type Location } from '@/models/project_info/location.ts'
+import { type ILocation } from '@/models/project_info/location.ts'
 import L from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { onMounted } from 'vue'
@@ -61,7 +61,7 @@ onMounted(() => {
       latitude: result.location.y,
       longitude: result.location.x,
       address: result.location.label,
-    } as Location);
+    } as ILocation);
   })
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -70,7 +70,7 @@ onMounted(() => {
       latitude: result.location.lat,
       longitude: result.location.lng,
       address: t('unknown_address'),
-    } as Location);
+    } as ILocation);
   })
 
   map.on('zoomend', () => {
@@ -82,7 +82,7 @@ onMounted(() => {
       latitude: marker.getLatLng().lat,
       longitude: marker.getLatLng().lng,
       address: t('unknown_address'),
-    } as Location);
+    } as ILocation);
   })
 });
 

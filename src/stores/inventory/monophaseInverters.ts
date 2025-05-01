@@ -1,12 +1,12 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { type AxiosError } from 'axios'
-import type { MonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
+import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 
 export const useMonophaseInvertersStore =
   defineStore('monophase_inverters', () => {
 
-  const monophaseInverters = ref<MonophaseInverter[]>([])
+  const monophaseInverters = ref<IMonophaseInverter[]>([])
   const availableMonophaseInverters = computed(() =>
     monophaseInverters.value.filter(inverter => !inverter.deleted));
   const fetching = ref(false);
@@ -30,7 +30,7 @@ export const useMonophaseInvertersStore =
       })
   }
 
-  const addMonophaseInverter = async (inverter: MonophaseInverter) => {
+  const addMonophaseInverter = async (inverter: IMonophaseInverter) => {
     return axios
       .post('/monophase_inverters/', inverter)
       .then(() => {
@@ -43,7 +43,7 @@ export const useMonophaseInvertersStore =
       });
   }
 
-  const editMonophaseInverter = async (inverter: MonophaseInverter) => {
+  const editMonophaseInverter = async (inverter: IMonophaseInverter) => {
     return axios
       .patch(`/monophase_inverters/${inverter.id}`, inverter)
       .then(() => {

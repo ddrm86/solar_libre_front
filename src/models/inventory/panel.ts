@@ -1,6 +1,6 @@
-import { type Component, validateComponent } from '@/models/inventory/component.ts'
+import { type IComponent, validateComponent } from '@/models/inventory/component.ts'
 
-export interface Panel extends Component {
+export interface IPanel extends IComponent {
   nominal_power: number;
   vmpp: number;
   impp: number;
@@ -10,7 +10,7 @@ export interface Panel extends Component {
   width: number;
 }
 
-export const validatePanel = (panel: Panel): boolean => {
+export const validatePanel = (panel: IPanel): boolean => {
   if (!validateComponent(panel)) {
     return false;
   }

@@ -1,8 +1,8 @@
-import type { Panel } from '@/models/inventory/panel.ts'
+import type { IPanel } from '@/models/inventory/panel.ts'
 
-export interface SolarArrayDataModel {
+export interface ISolarArrayData {
   id?: string
-  panel: Panel
+  panel: IPanel
   panelNumber: number
   loss: number
   angle: number
@@ -11,16 +11,16 @@ export interface SolarArrayDataModel {
   calcPeakPowerKw: () => number
 }
 
-export class SolarArrayData implements SolarArrayDataModel {
+export class SolarArrayData implements ISolarArrayData {
   id?: string
-  panel: Panel
+  panel: IPanel
   panelNumber: number
   loss: number
   angle: number
   azimuth: number
 
   constructor(
-    panel: Panel,
+    panel: IPanel,
     panelNumber: number,
     loss: number,
     angle: number,

@@ -1,12 +1,12 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { AxiosError } from 'axios'
-import type { Panel } from '@/models/inventory/panel.ts'
+import type { IPanel } from '@/models/inventory/panel.ts'
 
 export const usePanelsStore =
   defineStore('panels', () => {
 
-  const panels = ref<Panel[]>([])
+  const panels = ref<IPanel[]>([])
   const availablePanels = computed(() =>
     panels.value.filter(panel => !panel.deleted));
   const fetching = ref(false);
@@ -30,7 +30,7 @@ export const usePanelsStore =
       })
   }
 
-  const addPanel = async (panel: Panel) => {
+  const addPanel = async (panel: IPanel) => {
     return axios
       .post('/panels/', panel)
       .then(() => {
@@ -43,7 +43,7 @@ export const usePanelsStore =
       });
   }
 
-  const editPanel = async (panel: Panel) => {
+  const editPanel = async (panel: IPanel) => {
     return axios
       .patch(`/panels/${panel.id}`, panel)
       .then(() => {

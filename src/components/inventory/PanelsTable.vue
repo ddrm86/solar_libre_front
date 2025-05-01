@@ -253,7 +253,7 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
-import {type Panel, validatePanel } from '@/models/inventory/panel.ts'
+import {type IPanel, validatePanel } from '@/models/inventory/panel.ts'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -264,7 +264,7 @@ const filters = ref({
 })
 
 const fetchingError = ref(false)
-const selectedPanel = ref({} as Panel)
+const selectedPanel = ref({} as IPanel)
 const panelDialog = ref(false)
 const deletePanelDialog = ref(false)
 const submitted = ref(false)
@@ -278,7 +278,7 @@ onMounted(() => {
 })
 
 const openNew = () => {
-  selectedPanel.value = {} as Panel
+  selectedPanel.value = {} as IPanel
   submitted.value = false
   panelDialog.value = true
 }
@@ -320,7 +320,7 @@ const savePanel = () => {
         })
       }
     })
-    selectedPanel.value = {} as Panel
+    selectedPanel.value = {} as IPanel
     panelDialog.value = false
   }
 
@@ -342,17 +342,17 @@ const savePanel = () => {
         })
       }
     })
-    selectedPanel.value = {} as Panel
+    selectedPanel.value = {} as IPanel
     panelDialog.value = false
   }
 }
 
-const editPanel = (panel: Panel) => {
+const editPanel = (panel: IPanel) => {
   selectedPanel.value = { ...panel }
   panelDialog.value = true
 }
 
-const confirmDeletePanel = (panel: Panel) => {
+const confirmDeletePanel = (panel: IPanel) => {
   selectedPanel.value = panel
   deletePanelDialog.value = true
 }
@@ -383,7 +383,7 @@ const deletePanel = () => {
       }
     })
     .finally(() => {
-      selectedPanel.value = {} as Panel
+      selectedPanel.value = {} as IPanel
       deletePanelDialog.value = false
       deletingPanel.value = false
     })

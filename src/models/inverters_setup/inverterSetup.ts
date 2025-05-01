@@ -1,16 +1,16 @@
-import type { MonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
+import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 import type { IMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 
 export interface IInverterSetup {
-  inverter: MonophaseInverter
+  inverter: IMonophaseInverter
   setup: IMpptSetup[]
 }
 
 export class InverterSetup implements IInverterSetup {
-  inverter: MonophaseInverter
+  inverter: IMonophaseInverter
   setup: IMpptSetup[]
 
-  constructor(inverter: MonophaseInverter, setup: IMpptSetup[]) {
+  constructor(inverter: IMonophaseInverter, setup: IMpptSetup[]) {
     this.inverter = inverter
     this.setup = setup
   }

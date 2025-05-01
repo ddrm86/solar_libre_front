@@ -1,31 +1,31 @@
-import { SolarArrayData, type SolarArrayDataModel } from '@/models/solar_arrays/solarArrayData.ts'
-import { Pvgis, type PvgisInterface } from '@/models/solar_arrays/pvgis.ts'
-import type { Panel } from '@/models/inventory/panel.ts'
-import type { ProjectInfo } from '@/models/project_info/projectInfo.ts'
+import { SolarArrayData, type ISolarArrayData } from '@/models/solar_arrays/solarArrayData.ts'
+import { Pvgis, type IPvgis } from '@/models/solar_arrays/pvgis.ts'
+import type { IPanel } from '@/models/inventory/panel.ts'
+import type { IProjectInfo } from '@/models/project_info/projectInfo.ts'
 
-export interface SolarArrayModel {
-  array: SolarArrayDataModel
-  pvgisData?: PvgisInterface
+export interface ISolarArray {
+  array: ISolarArrayData
+  pvgisData?: IPvgis
   isDirty: boolean
 
-  fetchPvgisData: (projectInfo: ProjectInfo) => void
+  fetchPvgisData: (projectInfo: IProjectInfo) => void
 }
 
-export class SolarArray implements SolarArrayModel {
+export class SolarArray implements ISolarArray {
   array: SolarArrayData
   pvgisData?: Pvgis
   isDirty: boolean
 
   constructor(arrayData?: SolarArrayData) {
     if (!arrayData) {
-      this.array = new SolarArrayData({} as Panel, 0, 14, 35, 0)
+      this.array = new SolarArrayData({} as IPanel, 0, 14, 35, 0)
     } else {
       this.array = arrayData
     }
     this.isDirty = true
   }
 
-  fetchPvgisData(projectInfo: ProjectInfo): void {
+  fetchPvgisData(projectInfo: IProjectInfo): void {
     const pvgisRequest = {
       latitude: projectInfo.location.latitude,
       longitude: projectInfo.location.longitude,
