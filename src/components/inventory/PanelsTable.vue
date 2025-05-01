@@ -11,7 +11,7 @@
       :loading="panelsStore.fetching"
       dataKey="id"
       stripedRows
-      sortField="model"
+      sortField="maker"
       :sortOrder="1"
       v-model:filters="filters"
       :globalFilterFields="['maker', 'model', 'description']"
@@ -35,17 +35,17 @@
           </div>
         </div>
       </template>
-      <Column field="maker" :header="t('panel.maker')" sortable></Column>
-      <Column field="model" :header="t('panel.model')" sortable></Column>
-      <Column field="nominal_power" :header="t('panel.nominal_power')" sortable></Column>
-      <Column field="vmpp" :header="t('panel.vmpp')" sortable></Column>
-      <Column field="impp" :header="t('panel.impp')" sortable></Column>
-      <Column field="voc" :header="t('panel.voc')" sortable></Column>
-      <Column field="isc" :header="t('panel.isc')" sortable></Column>
-      <Column field="length" :header="t('panel.length')" sortable></Column>
-      <Column field="width" :header="t('panel.width')" sortable></Column>
-      <Column field="reference" :header="t('panel.reference')" sortable></Column>
-      <Column field="description" :header="t('panel.description')" sortable></Column>
+      <Column field="maker" :header="t('panel.maker')" :sortable="true"></Column>
+      <Column field="model" :header="t('panel.model')" :sortable="true"></Column>
+      <Column field="nominal_power" :header="t('panel.nominal_power')" :sortable="true"></Column>
+      <Column field="vmpp" :header="t('panel.vmpp')" :sortable="true"></Column>
+      <Column field="impp" :header="t('panel.impp')" :sortable="true"></Column>
+      <Column field="voc" :header="t('panel.voc')" :sortable="true"></Column>
+      <Column field="isc" :header="t('panel.isc')" :sortable="true"></Column>
+      <Column field="length" :header="t('panel.length')" :sortable="true"></Column>
+      <Column field="width" :header="t('panel.width')" :sortable="true"></Column>
+      <Column field="reference" :header="t('panel.reference')" :sortable="true"></Column>
+      <Column field="description" :header="t('panel.description')" :sortable="true"></Column>
       <Column :exportable="false">
         <template #body="slotProps">
           <Button

@@ -11,7 +11,7 @@
           :loading="monophaseInvertersStore.fetching"
           dataKey="id"
           stripedRows
-          sortField="model"
+          sortField="maker"
           :sortOrder="1"
           v-model:filters="filters"
           :globalFilterFields="['maker', 'model', 'description']"
@@ -35,21 +35,21 @@
               </div>
             </div>
           </template>
-          <Column field="maker" :header="t('monophaseInverter.maker')" sortable></Column>
-          <Column field="model" :header="t('monophaseInverter.model')" sortable></Column>
-          <Column field="recommended_max_input_power" :header="t('monophaseInverter.recommended_max_input_power')" sortable></Column>
-          <Column field="nominal_output_power" :header="t('monophaseInverter.nominal_output_power')" sortable></Column>
-          <Column field="max_input_voltage" :header="t('monophaseInverter.max_input_voltage')" sortable></Column>
-          <Column field="startup_voltage" :header="t('monophaseInverter.startup_voltage')" sortable></Column>
-          <Column field="min_mppt_operating_voltage" :header="t('monophaseInverter.min_mppt_operating_voltage')" sortable></Column>
-          <Column field="max_mppt_operating_voltage" :header="t('monophaseInverter.max_mppt_operating_voltage')" sortable></Column>
-          <Column field="max_input_current_per_mppt" :header="t('monophaseInverter.max_input_current_per_mppt')" sortable></Column>
-          <Column field="max_short_circuit_current" :header="t('monophaseInverter.max_short_circuit_current')" sortable></Column>
-          <Column field="number_of_mppts" :header="t('monophaseInverter.number_of_mppts')" sortable></Column>
-          <Column field="max_inputs_per_mppt" :header="t('monophaseInverter.max_inputs_per_mppt')" sortable></Column>
-          <Column field="max_output_current" :header="t('monophaseInverter.max_output_current')" sortable></Column>
-          <Column field="reference" :header="t('monophaseInverter.reference')" sortable></Column>
-          <Column field="description" :header="t('monophaseInverter.description')" sortable></Column>
+          <Column field="maker" :header="t('monophaseInverter.maker')" :sortable="true"></Column>
+          <Column field="model" :header="t('monophaseInverter.model')" :sortable="true"></Column>
+          <Column field="recommended_max_input_power" :header="t('monophaseInverter.recommended_max_input_power')" :sortable="true"></Column>
+          <Column field="nominal_output_power" :header="t('monophaseInverter.nominal_output_power')" :sortable="true"></Column>
+          <Column field="max_input_voltage" :header="t('monophaseInverter.max_input_voltage')" :sortable="true"></Column>
+          <Column field="startup_voltage" :header="t('monophaseInverter.startup_voltage')" :sortable="true"></Column>
+          <Column field="min_mppt_operating_voltage" :header="t('monophaseInverter.min_mppt_operating_voltage')" :sortable="true"></Column>
+          <Column field="max_mppt_operating_voltage" :header="t('monophaseInverter.max_mppt_operating_voltage')" :sortable="true"></Column>
+          <Column field="max_input_current_per_mppt" :header="t('monophaseInverter.max_input_current_per_mppt')" :sortable="true"></Column>
+          <Column field="max_short_circuit_current" :header="t('monophaseInverter.max_short_circuit_current')" :sortable="true"></Column>
+          <Column field="number_of_mppts" :header="t('monophaseInverter.number_of_mppts')" :sortable="true"></Column>
+          <Column field="max_inputs_per_mppt" :header="t('monophaseInverter.max_inputs_per_mppt')" :sortable="true"></Column>
+          <Column field="max_output_current" :header="t('monophaseInverter.max_output_current')" :sortable="true"></Column>
+          <Column field="reference" :header="t('monophaseInverter.reference')" :sortable="true"></Column>
+          <Column field="description" :header="t('monophaseInverter.description')" :sortable="true"></Column>
           <Column :exportable="false">
             <template #body="slotProps">
               <Button
