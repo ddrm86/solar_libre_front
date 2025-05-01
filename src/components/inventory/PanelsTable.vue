@@ -223,9 +223,9 @@
         <span>{{ t('dialog.confirm_delete') }}</span>
       </div>
       <div class="flex items-center max-w-64 bg-slate-100 rounded shadow mx-auto">
-        <small class="truncate ..."
-          >{{ selectedPanel.model }} - {{ selectedPanel.description }}</small
-        >
+        <small class="truncate ...">
+          {{ selectedPanel.maker }} {{ selectedPanel.model }} - {{ selectedPanel.description }}
+        </small>
       </div>
     </div>
     <template #footer>
