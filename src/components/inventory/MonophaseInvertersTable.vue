@@ -269,9 +269,9 @@
         <span>{{ t('dialog.confirm_delete') }}</span>
       </div>
       <div class="flex items-center max-w-64 bg-slate-100 rounded shadow mx-auto">
-        <small class="truncate ..."
-        >{{ selectedMonophaseInverter.model }} - {{ selectedMonophaseInverter.description }}</small
-        >
+        <small class="truncate ...">
+          {{ selectedMonophaseInverter.maker }} {{ selectedMonophaseInverter.model }} - {{ selectedMonophaseInverter.description }}
+        </small>
       </div>
     </div>
     <template #footer>
