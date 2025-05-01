@@ -91,7 +91,7 @@ const { arrayIdx } = defineProps<{ arrayIdx: number }>()
 const panelFetchingError = ref(false)
 
 const getPanelLabel = (panel: IPanel) => panel.maker + ' ' + panel.model
-  + ' (' + panel.nominal_power + 'W)'
+  + ' (' + panel.nominalPower + 'W)'
 
 onMounted(() => {
   panelsStore.fetchPanels().then(() => {
