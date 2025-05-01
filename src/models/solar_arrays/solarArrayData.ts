@@ -34,6 +34,6 @@ export class SolarArrayData implements ISolarArrayData {
   }
 
   calcPeakPowerKw(): number {
-    return (this.panel.nominalPower * this.panelNumber) / 1000
+    return (this.panel.nominal_power * this.panelNumber) / 1000
   }
 }

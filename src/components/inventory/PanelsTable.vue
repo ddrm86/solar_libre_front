@@ -101,9 +101,9 @@
       <IftaLabel>
         <InputNumber
           id="nominal_power"
-          v-model="selectedPanel.nominalPower"
+          v-model="selectedPanel.nominal_power"
           required="true"
-          :invalid="submitted && !selectedPanel.nominalPower"
+          :invalid="submitted && !selectedPanel.nominal_power"
           :min="0"
         />
         <label for="nominal_power">{{ t('panel.nominal_power') }}*</label>

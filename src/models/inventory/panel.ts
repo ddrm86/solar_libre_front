@@ -1,7 +1,7 @@
 import { type IComponent, validateComponent } from '@/models/inventory/component.ts'
 
 export interface IPanel extends IComponent {
-  nominalPower: number;
+  nominal_power: number;
   vmpp: number;
   impp: number;
   voc: number;
@@ -14,7 +14,7 @@ export const validatePanel = (panel: IPanel): boolean => {
   if (!validateComponent(panel)) {
     return false;
   }
-  if (!panel.nominalPower) {
+  if (!panel.nominal_power) {
     return false;
   }
   if (!panel.vmpp) {

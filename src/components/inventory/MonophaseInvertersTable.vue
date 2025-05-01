@@ -105,9 +105,9 @@
       <IftaLabel>
         <InputNumber
           id="recommended_max_input_power"
-          v-model="selectedMonophaseInverter.recommendedMaxInputPower"
+          v-model="selectedMonophaseInverter.recommended_max_input_power"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.recommendedMaxInputPower"
+          :invalid="submitted && !selectedMonophaseInverter.recommended_max_input_power"
           :min="0"
         />
         <label for="recommended_max_input_power">{{ t('monophaseInverter.recommended_max_input_power') }}*</label>
@@ -117,9 +117,9 @@
       <IftaLabel>
         <InputNumber
           id="nominal_output_power"
-          v-model="selectedMonophaseInverter.nominalOutputPower"
+          v-model="selectedMonophaseInverter.nominal_output_power"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.nominalOutputPower"
+          :invalid="submitted && !selectedMonophaseInverter.nominal_output_power"
           :min="0"
         />
         <label for="nominal_output_power">{{ t('monophaseInverter.nominal_output_power') }}*</label>
@@ -129,9 +129,9 @@
       <IftaLabel>
         <InputNumber
           id="max_input_voltage"
-          v-model="selectedMonophaseInverter.maxInputVoltage"
+          v-model="selectedMonophaseInverter.max_input_voltage"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.maxInputVoltage"
+          :invalid="submitted && !selectedMonophaseInverter.max_input_voltage"
           :min="0"
         />
         <label for="max_input_voltage">{{ t('monophaseInverter.max_input_voltage') }}*</label>
@@ -141,9 +141,9 @@
       <IftaLabel>
         <InputNumber
           id="startup_voltage"
-          v-model="selectedMonophaseInverter.startupVoltage"
+          v-model="selectedMonophaseInverter.startup_voltage"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.startupVoltage"
+          :invalid="submitted && !selectedMonophaseInverter.startup_voltage"
           :min="0"
         />
         <label for="startup_voltage">{{ t('monophaseInverter.startup_voltage') }}*</label>
@@ -153,9 +153,9 @@
       <IftaLabel>
         <InputNumber
           id="min_mppt_operating_voltage"
-          v-model="selectedMonophaseInverter.minMpptOperatingVoltage"
+          v-model="selectedMonophaseInverter.min_mppt_operating_voltage"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.minMpptOperatingVoltage"
+          :invalid="submitted && !selectedMonophaseInverter.min_mppt_operating_voltage"
           :min="0"
         />
         <label for="min_mppt_operating_voltage">{{ t('monophaseInverter.min_mppt_operating_voltage') }}*</label>
@@ -165,9 +165,9 @@
       <IftaLabel>
         <InputNumber
           id="max_mppt_operating_voltage"
-          v-model="selectedMonophaseInverter.maxMpptOperatingVoltage"
+          v-model="selectedMonophaseInverter.max_mppt_operating_voltage"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.maxMpptOperatingVoltage"
+          :invalid="submitted && !selectedMonophaseInverter.max_mppt_operating_voltage"
           :min="0"
         />
         <label for="max_mppt_operating_voltage">{{ t('monophaseInverter.max_mppt_operating_voltage') }}*</label>
@@ -177,9 +177,9 @@
       <IftaLabel>
         <InputNumber
           id="max_input_current_per_mppt"
-          v-model="selectedMonophaseInverter.maxInputCurrentPerMppt"
+          v-model="selectedMonophaseInverter.max_input_current_per_mppt"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.maxInputCurrentPerMppt"
+          :invalid="submitted && !selectedMonophaseInverter.max_input_current_per_mppt"
           :minFractionDigits="2"
           :maxFractionDigits="2"
           :min="0"
@@ -191,9 +191,9 @@
       <IftaLabel>
         <InputNumber
           id="max_short_circuit_current"
-          v-model="selectedMonophaseInverter.maxShortCircuitCurrent"
+          v-model="selectedMonophaseInverter.max_short_circuit_current"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.maxShortCircuitCurrent"
+          :invalid="submitted && !selectedMonophaseInverter.max_short_circuit_current"
           :minFractionDigits="2"
           :maxFractionDigits="2"
           :min="0"
@@ -205,9 +205,9 @@
       <IftaLabel>
         <InputNumber
           id="number_of_mppts"
-          v-model="selectedMonophaseInverter.numberOfMppts"
+          v-model="selectedMonophaseInverter.number_of_mppts"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.numberOfMppts"
+          :invalid="submitted && !selectedMonophaseInverter.number_of_mppts"
           :min="0"
         />
         <label for="number_of_mppts">{{ t('monophaseInverter.number_of_mppts') }}*</label>
@@ -217,9 +217,9 @@
       <IftaLabel>
         <InputNumber
           id="max_inputs_per_mppt"
-          v-model="selectedMonophaseInverter.maxInputsPerMppt"
+          v-model="selectedMonophaseInverter.max_inputs_per_mppt"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.maxInputsPerMppt"
+          :invalid="submitted && !selectedMonophaseInverter.max_inputs_per_mppt"
           :min="0"
         />
         <label for="max_inputs_per_mppt">{{ t('monophaseInverter.max_inputs_per_mppt') }}*</label>
@@ -229,9 +229,9 @@
       <IftaLabel>
         <InputNumber
           id="max_output_current"
-          v-model="selectedMonophaseInverter.maxOutputCurrent"
+          v-model="selectedMonophaseInverter.max_output_current"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.maxOutputCurrent"
+          :invalid="submitted && !selectedMonophaseInverter.max_output_current"
           :minFractionDigits="2"
           :maxFractionDigits="2"
           :min="0"
