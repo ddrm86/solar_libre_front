@@ -12,11 +12,11 @@ export interface ISolarArray {
 }
 
 export class SolarArray implements ISolarArray {
-  array: SolarArrayData
-  pvgisData?: Pvgis
+  array: ISolarArrayData
+  pvgisData?: IPvgis
   isDirty: boolean
 
-  constructor(arrayData?: SolarArrayData) {
+  constructor(arrayData?: ISolarArrayData) {
     if (!arrayData) {
       this.array = new SolarArrayData({} as IPanel, 0, 14, 35, 0)
     } else {
