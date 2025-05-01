@@ -5,3 +5,13 @@ export interface IInverterSetup {
   inverter: MonophaseInverter
   setup: IMpptSetup[]
 }
+
+export class InverterSetup implements IInverterSetup {
+  inverter: MonophaseInverter
+  setup: IMpptSetup[]
+
+  constructor(inverter: MonophaseInverter, setup: IMpptSetup[]) {
+    this.inverter = inverter
+    this.setup = setup
+  }
+}
