@@ -5,7 +5,8 @@
     @click="invertersStore.addInverterSetup()"
   />
   Inversores añadidos: {{ invertersStore.inverters.length }}
-  <StringSetup :idx="1" :available-setups="availableSetups"></StringSetup>
+  <StringSetup :idx="1" :available-setups="availableSetups" @update-string="onStringChange"></StringSetup>
+  String actual: {{currentPanelNumber}} x {{currentArray?.array.panel.maker}}
 </template>
 
 <script setup lang="ts">
@@ -27,6 +28,19 @@ const availableSetups = computed(() =>
     maxPanels: array.array.panelNumber,
   })) as [{ array: ISolarArray; maxPanels: number; }],
 )
+
+const currentArray = ref<ISolarArray | null>(null)
+const currentPanelNumber = ref<number>(0)
+
+const onStringChange = (solarArray: ISolarArray | null, panelCount: number) => {
+  if (solarArray) {
+    currentArray.value = solarArray
+    currentPanelNumber.value = panelCount
+  } else {
+    currentArray.value = null
+    currentPanelNumber.value = 0
+  }
+}
 </script>
 
 <i18n>

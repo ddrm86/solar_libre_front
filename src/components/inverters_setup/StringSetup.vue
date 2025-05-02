@@ -8,6 +8,7 @@
         :options="availableArrays"
         :optionLabel="getArrayLabel"
         :placeholder="t('string_setup.select_array')"
+        @change="onSelectedArrayChange"
       />
       <label for="solarArray">{{ t('string_setup.select_array') }}</label>
     </IftaLabel>
@@ -19,6 +20,7 @@
         :min="1"
         :max="maxPanelsForSelectedArray"
         :placeholder="t('string_setup.panel_count')"
+        @value-change="onPanelCountChange"
       />
       <label for="panelCount">{{ t('string_setup.panel_count') }}</label>
     </IftaLabel>
@@ -26,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 
@@ -54,12 +56,18 @@ const panelCount = ref<number>(1)
 const getArrayLabel = (array: ISolarArray) =>
   `${array.array.panelNumber} x ${array.array.panel.maker} ${array.array.panel.model} 🧭${array.array.azimuth}º`
 
+const onSelectedArrayChange = () => {
+  panelCount.value = 1
+  emitChanges()
+}
+
+const onPanelCountChange = () => {
+  emitChanges()
+}
+
 const emitChanges = () => {
   emit('updateString', selectedArray.value, panelCount.value)
 }
-
-// TODO probar con @change en vez de un watcher
-watch([selectedArray, panelCount], emitChanges)
 </script>
 
 <style scoped>
