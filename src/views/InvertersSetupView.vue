@@ -16,6 +16,7 @@ import StringSetup from '@/components/inverters_setup/StringSetup.vue'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { computed, ref } from 'vue'
 import { type ISolarArray } from '@/models/solar_arrays/solarArray.ts'
+import type { IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 
 const { t } = useI18n()
 const invertersStore = useInvertersSetupStore()
@@ -32,10 +33,10 @@ const availableSetups = computed(() =>
 const currentArray = ref<ISolarArray | null>(null)
 const currentPanelNumber = ref<number>(0)
 
-const onStringChange = (solarArray: ISolarArray | null, panelCount: number) => {
-  if (solarArray) {
-    currentArray.value = solarArray
-    currentPanelNumber.value = panelCount
+const onStringChange = (stringSetup: IStringSetup) => {
+  if (stringSetup) {
+    currentArray.value = stringSetup.solarArray
+    currentPanelNumber.value = stringSetup.panelNumber
   } else {
     currentArray.value = null
     currentPanelNumber.value = 0

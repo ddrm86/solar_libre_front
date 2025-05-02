@@ -31,6 +31,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
+import { type IStringSetup, StringSetup } from '@/models/inverters_setup/stringSetup.ts'
 
 const { t } = useI18n()
 
@@ -42,13 +43,14 @@ const props = defineProps<{
   }]
 }>()
 
+const emit = defineEmits<{
+  updateString: [ IStringSetup ]
+}>()
+
 const availableArrays = computed(() => props.availableSetups.map(setup => setup.array))
 const maxPanelsForSelectedArray = computed(() => selectedArray.value ?
   props.availableSetups.find(setup => setup.array === selectedArray.value)?.maxPanels || 0 : 0)
 
-const emit = defineEmits<{
-  updateString: [ solarArray: ISolarArray | null, panelCount: number ]
-}>()
 
 const selectedArray = ref<ISolarArray | null>(null)
 const panelCount = ref<number>(1)
@@ -66,7 +68,9 @@ const onPanelCountChange = () => {
 }
 
 const emitChanges = () => {
-  emit('updateString', selectedArray.value, panelCount.value)
+  if (selectedArray.value) {
+    emit('updateString', new StringSetup(selectedArray.value, panelCount.value))
+  }
 }
 </script>
 
