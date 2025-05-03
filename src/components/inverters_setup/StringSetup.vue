@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { type IStringSetup, StringSetup } from '@/models/inverters_setup/stringSetup.ts'
@@ -41,6 +41,7 @@ const props = defineProps<{
     array: ISolarArray
     maxPanels: number
   }]
+  currentSetup?: IStringSetup
 }>()
 
 const emit = defineEmits<{
@@ -57,6 +58,13 @@ const panelCount = ref<number>(1)
 
 const getArrayLabel = (array: ISolarArray) =>
   `${array.array.panelNumber} x ${array.array.panel.maker} ${array.array.panel.model} 🧭${array.array.azimuth}º`
+
+onMounted(() => {
+  if (props.currentSetup) {
+    selectedArray.value = props.currentSetup.solarArray
+    panelCount.value = props.currentSetup.panelNumber
+  }
+})
 
 const onSelectedArrayChange = () => {
   panelCount.value = 1
