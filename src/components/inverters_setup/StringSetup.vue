@@ -1,5 +1,5 @@
 <template>
-  <div class="string-setup">
+  <div class="flex items-center gap-4">
     <span>{{ t('string_setup.string') }} {{ idx }}</span>
     <IftaLabel>
       <Select
@@ -81,14 +81,6 @@ const emitChanges = () => {
   }
 }
 </script>
-
-<style scoped>
-.string-setup {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-</style>
 
 <i18n>
 {
