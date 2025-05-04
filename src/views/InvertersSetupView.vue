@@ -5,25 +5,25 @@
     @click="invertersStore.addInverterSetup()"
   />
   Inversores añadidos: {{ invertersStore.inverters.length }}
-  <StringSetup :idx="1" :available-setups="availableSetups" @update-string="onStringChange"></StringSetup>
+  <MpptSetup :idx="0" :available-setups="availableStringSetups"></MpptSetup>
   String actual: {{currentPanelNumber}} x {{currentArray?.array.panel.maker}}
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
-import StringSetup from '@/components/inverters_setup/StringSetup.vue'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { computed, ref } from 'vue'
 import { type ISolarArray } from '@/models/solar_arrays/solarArray.ts'
-import type { IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import { type IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import MpptSetup from '@/components/inverters_setup/MpptSetup.vue'
 
 const { t } = useI18n()
 const invertersStore = useInvertersSetupStore()
 const solarArraysStore = useSolarArraysStore()
 
 const solarArrays = ref<ISolarArray[]>(solarArraysStore.arrays)
-const availableSetups = computed(() =>
+const availableStringSetups = computed(() =>
   solarArrays.value.map((array) => ({
     array: array,
     maxPanels: array.array.panelNumber,
@@ -34,7 +34,7 @@ const currentArray = ref<ISolarArray | null>(null)
 const currentPanelNumber = ref<number>(0)
 
 const onStringChange = (stringSetup: IStringSetup) => {
-  if (stringSetup) {
+  if (stringSetup.panelNumber && stringSetup.solarArray) {
     currentArray.value = stringSetup.solarArray
     currentPanelNumber.value = stringSetup.panelNumber
   } else {

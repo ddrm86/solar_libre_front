@@ -60,7 +60,7 @@ const getArrayLabel = (array: ISolarArray) =>
   `${array.array.panelNumber} x ${array.array.panel.maker} ${array.array.panel.model} 🧭${array.array.azimuth}º`
 
 onMounted(() => {
-  if (props.currentSetup) {
+  if (props.currentSetup?.solarArray && props.currentSetup?.panelNumber) {
     selectedArray.value = props.currentSetup.solarArray
     panelCount.value = props.currentSetup.panelNumber
   }
@@ -77,7 +77,7 @@ const onPanelCountChange = () => {
 
 const emitChanges = () => {
   if (selectedArray.value) {
-    emit('updateString', new StringSetup(selectedArray.value, panelCount.value))
+    emit('updateString', StringSetup.of(selectedArray.value, panelCount.value))
   }
 }
 </script>
