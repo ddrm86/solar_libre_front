@@ -11,7 +11,7 @@ export interface ISolarArrayData {
   calcPeakPowerKw: () => number
 }
 
-export class SolarArrayData implements ISolarArrayData {
+export class CSolarArrayData implements ISolarArrayData {
   id?: string
   panel: IPanel
   panelNumber: number

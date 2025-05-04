@@ -5,12 +5,12 @@ export interface IStringSetup {
   panelNumber?: number
 }
 
-export class StringSetup implements IStringSetup {
+export class CStringSetup implements IStringSetup {
   solarArray?: ISolarArray
   panelNumber?: number
 
-  static of(solarArray: ISolarArray, panelNumber: number): StringSetup {
-    const instance = new StringSetup()
+  static of(solarArray: ISolarArray, panelNumber: number): CStringSetup {
+    const instance = new CStringSetup()
     instance.solarArray = solarArray
     instance.panelNumber = panelNumber
     return instance

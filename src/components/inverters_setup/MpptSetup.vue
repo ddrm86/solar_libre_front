@@ -11,7 +11,7 @@
       toggleable
     >
       <div v-for="(stringSetup, index) in stringSetups.strings" :key="index" class="mb-3">
-        <StringSetupComponent
+        <StringSetup
           :idx="index"
           :availableSetups="availableSetups"
         />
@@ -22,10 +22,10 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { StringSetup } from '@/models/inverters_setup/stringSetup.ts'
-import StringSetupComponent from '@/components/inverters_setup/StringSetup.vue'
+import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import StringSetup from '@/components/inverters_setup/StringSetup.vue'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
-import { type IMpptSetup, MpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
+import { type IMpptSetup, CMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 import { onMounted, ref } from 'vue'
 
 const { t } = useI18n()
@@ -39,7 +39,7 @@ const props = defineProps<{
   }]
 }>()
 
-const stringSetups = ref<IMpptSetup>(new MpptSetup([]))
+const stringSetups = ref<IMpptSetup>(new CMpptSetup([]))
 
 onMounted(() => {
   if (props.currentSetup) {
@@ -48,7 +48,7 @@ onMounted(() => {
 })
 
 const addStringSetup = () => {
-  stringSetups.value.strings.push(new StringSetup())
+  stringSetups.value.strings.push(new CStringSetup())
 }
 
 </script>

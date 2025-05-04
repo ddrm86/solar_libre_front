@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
-import { type ISolarArray, SolarArray } from '@/models/solar_arrays/solarArray.ts'
+import { type ISolarArray, CSolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
 
@@ -10,7 +10,7 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
   const arrays = ref<ISolarArray[]>([])
 
   const addSolarArray = () => {
-    arrays.value.push(new SolarArray())
+    arrays.value.push(new CSolarArray())
   }
 
   const deleteSolarArray = (index: number) => {

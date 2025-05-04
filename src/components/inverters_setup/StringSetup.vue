@@ -31,7 +31,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
-import { type IStringSetup, StringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import { type IStringSetup, CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 
 const { t } = useI18n()
 
@@ -77,7 +77,7 @@ const onPanelCountChange = () => {
 
 const emitChanges = () => {
   if (selectedArray.value) {
-    emit('updateString', StringSetup.of(selectedArray.value, panelCount.value))
+    emit('updateString', CStringSetup.of(selectedArray.value, panelCount.value))
   }
 }
 </script>

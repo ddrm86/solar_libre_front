@@ -4,7 +4,7 @@ export interface IMpptSetup {
   strings: IStringSetup[]
 }
 
-export class MpptSetup implements IMpptSetup {
+export class CMpptSetup implements IMpptSetup {
   strings: IStringSetup[]
 
   constructor(strings: IStringSetup[]) {
