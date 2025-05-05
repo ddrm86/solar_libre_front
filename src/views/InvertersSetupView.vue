@@ -5,7 +5,7 @@
     @click="invertersStore.addInverterSetup()"
   />
   Inversores añadidos: {{ invertersStore.inverters.length }}
-  <MpptSetup :idx="0" :available-setups="availableStringSetups" :currentSetup="currentMpptSetup"></MpptSetup>
+  <MpptSetup :idx="0" :available-setups="availableStringSetups" :currentSetup="currentMpptSetup" class="pt-8"></MpptSetup>
   String actual: {{currentPanelNumber}} x {{currentArray?.array.panel.maker}}
 </template>
 

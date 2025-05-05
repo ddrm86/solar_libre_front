@@ -1,11 +1,13 @@
 <template>
   <div>
-    <span>{{ t('mppt_setup.mppt') }} {{ idx + 1 }}</span>
-    <Button
-      icon="pi pi-plus"
-      :label="t('mppt_setup.add_string')"
-      @click="addStringSetup"
-    />
+    <div class="pb-2">
+      <span class="pe-2">{{ t('mppt_setup.mppt') }} {{ idx + 1 }}</span>
+      <Button
+        icon="pi pi-plus"
+        :label="t('mppt_setup.add_string')"
+        @click="addStringSetup"
+      />
+    </div>
     <Panel
       :header="headerText"
       toggleable
@@ -78,7 +80,8 @@ const headerText = computed(() => {
   stringLabel = stringLabel + ' ➡️ ' + mpptSetup.value.strings
     .filter(string => string.solarArray)
     .map(string =>
-      `${string.panelNumber} x ${string.solarArray?.array.panel.maker} ${string.solarArray?.array.panel.maker} 🧭${string.solarArray?.array.azimuth}º`
+      `${string.panelNumber} x ${string.solarArray?.array.panel.maker} ${string.solarArray?.array.panel.maker}
+      🧭${string.solarArray?.array.azimuth}º`
   ).join(' | ')
   return `${stringLabel}`
 })
