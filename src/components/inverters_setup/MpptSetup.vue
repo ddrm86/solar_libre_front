@@ -15,6 +15,7 @@
           :idx="index"
           :availableSetups="availableSetups"
           :currentSetup="stringSetup"
+          @updateString="onStringChange"
         />
       </div>
     </Panel>
@@ -33,11 +34,15 @@ const { t } = useI18n()
 
 const props = defineProps<{
   idx: number
-  currentSetup?: IMpptSetup
   availableSetups: [{
     array: ISolarArray
     maxPanels: number
   }]
+  currentSetup?: IMpptSetup
+}>()
+
+const emit = defineEmits<{
+  updateMppt: [IMpptSetup, idx: number]
 }>()
 
 const mpptSetup = ref<IMpptSetup>(new CMpptSetup([]))
@@ -48,8 +53,14 @@ onMounted(() => {
   }
 })
 
+const onStringChange = (stringSetup: CStringSetup, idx: number) => {
+  mpptSetup.value.strings[idx] = stringSetup
+  emit('updateMppt', mpptSetup.value, props.idx)
+}
+
 const addStringSetup = () => {
   mpptSetup.value.strings.push(new CStringSetup())
+  emit('updateMppt', mpptSetup.value, props.idx)
 }
 
 </script>

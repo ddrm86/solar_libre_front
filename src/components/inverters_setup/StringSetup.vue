@@ -45,7 +45,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  updateString: [ IStringSetup ]
+  updateString: [ IStringSetup, idx: number ]
 }>()
 
 const availableArrays = computed(() => props.availableSetups.map(setup => setup.array))
@@ -77,7 +77,7 @@ const onPanelCountChange = () => {
 
 const emitChanges = () => {
   if (selectedArray.value) {
-    emit('updateString', CStringSetup.of(selectedArray.value, panelCount.value))
+    emit('updateString', CStringSetup.of(selectedArray.value, panelCount.value), props.idx)
   }
 }
 </script>
