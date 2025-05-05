@@ -10,10 +10,11 @@
       :header="t('mppt_setup.strings')"
       toggleable
     >
-      <div v-for="(stringSetup, index) in stringSetups.strings" :key="index" class="mb-3">
+      <div v-for="(stringSetup, index) in mpptSetup.strings" :key="index" class="mb-3">
         <StringSetup
           :idx="index"
           :availableSetups="availableSetups"
+          :currentSetup="stringSetup"
         />
       </div>
     </Panel>
@@ -39,16 +40,16 @@ const props = defineProps<{
   }]
 }>()
 
-const stringSetups = ref<IMpptSetup>(new CMpptSetup([]))
+const mpptSetup = ref<IMpptSetup>(new CMpptSetup([]))
 
 onMounted(() => {
   if (props.currentSetup) {
-    stringSetups.value = props.currentSetup
+    mpptSetup.value = props.currentSetup
   }
 })
 
 const addStringSetup = () => {
-  stringSetups.value.strings.push(new CStringSetup())
+  mpptSetup.value.strings.push(new CStringSetup())
 }
 
 </script>

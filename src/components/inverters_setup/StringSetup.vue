@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-4">
-    <span>{{ t('string_setup.string') }} {{ idx }}</span>
+    <span>{{ t('string_setup.string') }} {{ idx + 1}}</span>
     <IftaLabel>
       <Select
         id="solarArray"
