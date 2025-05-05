@@ -10,12 +10,19 @@
       :header="t('mppt_setup.strings')"
       toggleable
     >
-      <div v-for="(stringSetup, index) in mpptSetup.strings" :key="index" class="mb-3">
+      <div v-for="(stringSetup, index) in mpptSetup.strings" :key="index" class="pt-4 flex items-center justify-between">
         <StringSetup
           :idx="index"
           :availableSetups="availableSetups"
           :currentSetup="stringSetup"
           @updateString="onStringChange"
+        />
+        <Button
+          icon="pi pi-trash"
+          outlined
+          rounded
+          severity="danger"
+          @click="deleteStringSetup(index)"
         />
       </div>
     </Panel>
@@ -63,6 +70,10 @@ const addStringSetup = () => {
   emit('updateMppt', mpptSetup.value, props.idx)
 }
 
+const deleteStringSetup = (idx: number) => {
+  mpptSetup.value.strings.splice(idx, 1)
+  emit('updateMppt', mpptSetup.value, props.idx)
+}
 </script>
 
 <i18n>
