@@ -7,8 +7,9 @@
       @click="addStringSetup"
     />
     <Panel
-      :header="t('mppt_setup.strings')"
+      :header="headerText"
       toggleable
+      @update:collapsed="onPanelToggle"
     >
       <div v-for="(stringSetup, index) in mpptSetup.strings" :key="index" class="pt-4 flex items-center justify-between">
         <StringSetup
@@ -35,7 +36,7 @@ import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import StringSetup from '@/components/inverters_setup/StringSetup.vue'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { type IMpptSetup, CMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const { t } = useI18n()
 
@@ -54,10 +55,32 @@ const emit = defineEmits<{
 
 const mpptSetup = ref<IMpptSetup>(new CMpptSetup([]))
 
+const isCollapsed = ref(false)
+
 onMounted(() => {
   if (props.currentSetup) {
     mpptSetup.value = props.currentSetup
   }
+})
+
+const onPanelToggle = (value: boolean) => {
+  isCollapsed.value = value
+}
+
+const headerText = computed(() => {
+  let stringLabel = `${t('mppt_setup.strings')}`
+  const stringCount = mpptSetup.value.strings.length
+
+  if (!isCollapsed.value || stringCount === 0) {
+    return stringLabel
+  }
+
+  stringLabel = stringLabel + ' ➡️ ' + mpptSetup.value.strings
+    .filter(string => string.solarArray)
+    .map(string =>
+      `${string.panelNumber} x ${string.solarArray?.array.panel.maker} ${string.solarArray?.array.panel.maker} 🧭${string.solarArray?.array.azimuth}º`
+  ).join(' | ')
+  return `${stringLabel}`
 })
 
 const onStringChange = (stringSetup: CStringSetup, idx: number) => {
