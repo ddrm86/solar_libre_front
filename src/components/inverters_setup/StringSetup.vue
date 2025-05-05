@@ -54,7 +54,7 @@ const maxPanelsForSelectedArray = computed(() => selectedArray.value ?
 
 
 const selectedArray = ref<ISolarArray | null>(null)
-const panelCount = ref<number>(1)
+const panelCount = ref<number>(0)
 
 const getArrayLabel = (array: ISolarArray) =>
   `${array.array.panelNumber} x ${array.array.panel.maker} ${array.array.panel.model} 🧭${array.array.azimuth}º`
