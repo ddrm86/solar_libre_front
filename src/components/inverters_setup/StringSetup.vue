@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-4">
-    <span>{{ t('string_setup.string') }} {{ idx }}</span>
+    <span>{{ t('string_setup.string') }} {{ idx + 1}}</span>
     <IftaLabel>
       <Select
         id="solarArray"
@@ -31,7 +31,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
-import { type IStringSetup, StringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import { type IStringSetup, CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 
 const { t } = useI18n()
 
@@ -45,7 +45,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  updateString: [ IStringSetup ]
+  updateString: [ IStringSetup, idx: number ]
 }>()
 
 const availableArrays = computed(() => props.availableSetups.map(setup => setup.array))
@@ -54,13 +54,13 @@ const maxPanelsForSelectedArray = computed(() => selectedArray.value ?
 
 
 const selectedArray = ref<ISolarArray | null>(null)
-const panelCount = ref<number>(1)
+const panelCount = ref<number>(0)
 
 const getArrayLabel = (array: ISolarArray) =>
   `${array.array.panelNumber} x ${array.array.panel.maker} ${array.array.panel.model} 🧭${array.array.azimuth}º`
 
 onMounted(() => {
-  if (props.currentSetup) {
+  if (props.currentSetup?.solarArray && props.currentSetup?.panelNumber) {
     selectedArray.value = props.currentSetup.solarArray
     panelCount.value = props.currentSetup.panelNumber
   }
@@ -77,7 +77,7 @@ const onPanelCountChange = () => {
 
 const emitChanges = () => {
   if (selectedArray.value) {
-    emit('updateString', new StringSetup(selectedArray.value, panelCount.value))
+    emit('updateString', CStringSetup.of(selectedArray.value, panelCount.value), props.idx)
   }
 }
 </script>

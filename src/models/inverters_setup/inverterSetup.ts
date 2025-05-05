@@ -6,7 +6,7 @@ export interface IInverterSetup {
   setup: IMpptSetup[]
 }
 
-export class InverterSetup implements IInverterSetup {
+export class CInverterSetup implements IInverterSetup {
   inverter: IMonophaseInverter
   setup: IMpptSetup[]
 

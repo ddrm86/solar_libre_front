@@ -1,5 +1,5 @@
-import { SolarArrayData, type ISolarArrayData } from '@/models/solar_arrays/solarArrayData.ts'
-import { Pvgis, type IPvgis } from '@/models/solar_arrays/pvgis.ts'
+import { CSolarArrayData, type ISolarArrayData } from '@/models/solar_arrays/solarArrayData.ts'
+import { CPvgis, type IPvgis } from '@/models/solar_arrays/pvgis.ts'
 import type { IPanel } from '@/models/inventory/panel.ts'
 import type { IProjectInfo } from '@/models/project_info/projectInfo.ts'
 
@@ -11,14 +11,14 @@ export interface ISolarArray {
   fetchPvgisData: (projectInfo: IProjectInfo) => void
 }
 
-export class SolarArray implements ISolarArray {
+export class CSolarArray implements ISolarArray {
   array: ISolarArrayData
   pvgisData?: IPvgis
   isDirty: boolean
 
   constructor(arrayData?: ISolarArrayData) {
     if (!arrayData) {
-      this.array = new SolarArrayData({} as IPanel, 0, 14, 35, 0)
+      this.array = new CSolarArrayData({} as IPanel, 0, 14, 35, 0)
     } else {
       this.array = arrayData
     }
@@ -35,7 +35,7 @@ export class SolarArray implements ISolarArray {
       azimuth: this.array.azimuth,
     }
 
-    this.pvgisData = new Pvgis(pvgisRequest)
+    this.pvgisData = new CPvgis(pvgisRequest)
     this.pvgisData.fetch().then(() => {
       this.isDirty = !this.pvgisData ? true : this.pvgisData.error
     })

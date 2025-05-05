@@ -82,7 +82,7 @@ export interface IPvgis {
   fetch: () => Promise<void>
 }
 
-export class Pvgis implements IPvgis {
+export class CPvgis implements IPvgis {
   request: IPvgisRequest
   response?: IPvgisResponse
   fetching = false
@@ -108,7 +108,7 @@ export class Pvgis implements IPvgis {
       })
       .then((apiResponse) => {
         this.error = false
-        this.response = Pvgis.readPvgisResponse(apiResponse.data);
+        this.response = CPvgis.readPvgisResponse(apiResponse.data);
       })
       .catch((errorResponse) => {
         this.error = true
