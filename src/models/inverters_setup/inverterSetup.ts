@@ -8,7 +8,7 @@ export interface IInverterSetup {
 
 export class CInverterSetup implements IInverterSetup {
   inverter?: IMonophaseInverter
-  setup?: IMpptSetup[]
+  setup : IMpptSetup[] = []
 
   static of(inverter: IMonophaseInverter, setup: IMpptSetup[]): CInverterSetup {
     const instance = new CInverterSetup();
