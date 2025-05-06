@@ -1,26 +1,28 @@
 <template>
   <div>
     <div class="pb-2">
-      <span class="pe-2">{{ t('inverter_setup.inverter') }} {{ idx + 1 }}</span>
-      <IftaLabel>
-        <Select
-          id="inverter"
-          filter
-          v-model="selectedInverter"
-          :options="inverterOptions"
-          :optionLabel="getInverterLabel"
-          :placeholder="t('inverter_setup.select_inverter')"
-          @change="onInverterChange"
+      <span>⚡ {{ t('inverter_setup.inverter') }} {{ idx + 1 }}</span>
+      <div class="pt-2 flex gap-2">
+        <IftaLabel>
+          <Select
+            id="inverter"
+            filter
+            v-model="selectedInverter"
+            :options="inverterOptions"
+            :optionLabel="getInverterLabel"
+            :placeholder="t('inverter_setup.select_inverter')"
+            @change="onInverterChange"
+          />
+          <label for="inverter">{{ t('inverter_setup.inverter') }}</label>
+        </IftaLabel>
+        <Button
+          icon="pi pi-plus"
+          :label="`${t('inverter_setup.add_mppt')} (${getNumberOfMpptsLeft} ${t('inverter_setup.remaining')})`"
+          :disabled="disableAddMpptButton"
+          @click="addMpptSetup"
         />
-        <label for="inverter">{{ t('inverter_setup.inverter') }}</label>
-      </IftaLabel>
+      </div>
     </div>
-    <Button
-      icon="pi pi-plus"
-      :label="`${t('inverter_setup.add_mppt')} (${getNumberOfMpptsLeft} ${t('inverter_setup.remaining')})`"
-      :disabled="disableAddMpptButton"
-      @click="addMpptSetup"
-    />
     <Panel
       :header="headerText"
       toggleable
