@@ -4,7 +4,7 @@
       <span class="pe-2">{{ t('inverter_setup.inverter') }} {{ idx + 1 }}</span>
       <IftaLabel>
         <Select
-          id="solarArray"
+          id="inverter"
           filter
           v-model="selectedInverter"
           :options="inverterOptions"
@@ -12,7 +12,7 @@
           :placeholder="t('inverter_setup.select_inverter')"
           @change="onInverterChange"
         />
-        <label for="solarArray">{{ t('inverter_setup.inverter') }}</label>
+        <label for="inverter">{{ t('inverter_setup.inverter') }}</label>
       </IftaLabel>
     </div>
     <Button
@@ -21,21 +21,21 @@
       :disabled="disableAddMpptButton"
       @click="addMpptSetup"
     />
-    <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="mpptSetup.id" class="pt-4 flex items-center justify-between">
-      <MpptSetup
-        :idx="index"
-        :available-setups="availableSetups"
-        :currentSetup="mpptSetup"
-        @updateMppt="onMpptChange"
-      />
-      <Button
-        icon="pi pi-trash"
-        outlined
-        rounded
-        severity="danger"
-        @click="deleteMpptSetup(index)"
-      />
-    </div>
+    <Panel
+      :header="headerText"
+      toggleable
+      @update:collapsed="onPanelToggle"
+    >
+      <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="mpptSetup.id" class="pt-4">
+        <MpptSetup
+          :idx="index"
+          :available-setups="availableSetups"
+          :currentSetup="mpptSetup"
+          @updateMppt="onMpptChange"
+          @deleteMppt="deleteMpptSetup"
+        />
+      </div>
+    </Panel>
   </div>
 </template>
 
@@ -68,6 +68,24 @@ onMounted(() => {
   if (props.currentSetup) {
     inverterSetup.value = props.currentSetup
   }
+})
+
+const isCollapsed = ref(false)
+
+const onPanelToggle = (value: boolean) => {
+  isCollapsed.value = value
+}
+
+const headerText = computed(() => {
+  if (!isCollapsed.value || inverterSetup.value.setup.length === 0) {
+    return 'MPPTs'
+  }
+
+  return inverterSetup.value.setup
+    .map((stringSetup, index) =>
+      `MPPT ${index + 1} 🔌 ${stringSetup.toString()}`
+    )
+    .join(' || ')
 })
 
 const selectedInverter = ref<IMonophaseInverter | null>(null)
