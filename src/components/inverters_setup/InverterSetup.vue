@@ -73,6 +73,7 @@ const getInverterLabel = (inverter: IMonophaseInverter) =>
 
 const onInverterChange = () => {
   if (selectedInverter.value) {
+    inverterSetup.value = new CInverterSetup()
     inverterSetup.value.inverter = selectedInverter.value
     emit('updateInverterSetup', inverterSetup.value, props.idx)
   }
