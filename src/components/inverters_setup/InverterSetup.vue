@@ -21,12 +21,19 @@
       :disabled="disableAddMpptButton"
       @click="addMpptSetup"
     />
-    <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="index" class="pt-4">
+    <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="mpptSetup.id" class="pt-4 flex items-center justify-between">
       <MpptSetup
         :idx="index"
         :available-setups="availableSetups"
         :currentSetup="mpptSetup"
         @updateMppt="onMpptChange"
+      />
+      <Button
+        icon="pi pi-trash"
+        outlined
+        rounded
+        severity="danger"
+        @click="deleteMpptSetup(index)"
       />
     </div>
   </div>
@@ -90,6 +97,11 @@ const getNumberOfMpptsLeft = computed(() => {
 
 const addMpptSetup = () => {
   inverterSetup.value.setup.push(new CMpptSetup([]))
+  emit('updateInverterSetup', inverterSetup.value, props.idx)
+}
+
+const deleteMpptSetup = (idx: number) => {
+  inverterSetup.value.setup.splice(idx, 1)
   emit('updateInverterSetup', inverterSetup.value, props.idx)
 }
 
