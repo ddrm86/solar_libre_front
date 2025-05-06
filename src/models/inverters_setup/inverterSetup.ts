@@ -3,7 +3,7 @@ import type { IMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 
 export interface IInverterSetup {
   inverter?: IMonophaseInverter
-  setup?: IMpptSetup[]
+  setup: IMpptSetup[]
 }
 
 export class CInverterSetup implements IInverterSetup {

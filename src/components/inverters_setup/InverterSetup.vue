@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MpptSetup from '@/components/inverters_setup/MpptSetup.vue'
 import { CInverterSetup, type IInverterSetup } from '@/models/inverters_setup/inverterSetup.ts'
@@ -50,14 +50,21 @@ const props = defineProps<{
     maxPanels: number
   }]
   inventory: IMonophaseInverter[]
+  currentSetup?: IInverterSetup
 }>()
 
 const emit = defineEmits<{
   updateInverterSetup:  [IInverterSetup, idx: number]
 }>()
 
+onMounted(() => {
+  if (props.currentSetup) {
+    inverterSetup.value = props.currentSetup
+  }
+})
+
 const selectedInverter = ref<IMonophaseInverter | null>(null)
-const inverterSetup = ref(new CInverterSetup())
+const inverterSetup = ref<IInverterSetup>(new CInverterSetup())
 
 const inverterOptions = computed(() => props.inventory)
 
