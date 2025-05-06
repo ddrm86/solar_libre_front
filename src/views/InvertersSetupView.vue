@@ -2,26 +2,45 @@
   <Button
     icon="pi pi-plus"
     :label="t('inverters.add_inverter')"
-    @click="invertersStore.addInverterSetup()"
+    @click="invertersSetupStore.addInverterSetup()"
   />
-  Inversores añadidos: {{ invertersStore.inverters.length }}
-  <MpptSetup :idx="0" :available-setups="availableStringSetups" :currentSetup="currentMpptSetup" class="pt-8"></MpptSetup>
-  String actual: {{currentPanelNumber}} x {{currentArray?.array.panel.maker}}
+  Inversores añadidos: {{ invertersSetupStore.inverters.length }}
+  <InverterSetup :idx="0" :available-setups="availableStringSetups" :inventory="monophaseInvertersStore.availableMonophaseInverters" class="pt-8"></InverterSetup>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { type ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { CStringSetup, type IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import MpptSetup from '@/components/inverters_setup/MpptSetup.vue'
 import { CMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
+import InverterSetup from '@/components/inverters_setup/InverterSetup.vue'
+import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
+import { useToast } from 'primevue/usetoast'
 
 const { t } = useI18n()
-const invertersStore = useInvertersSetupStore()
+const toast = useToast()
+
+const invertersSetupStore = useInvertersSetupStore()
+const monophaseInvertersStore = useMonophaseInvertersStore()
 const solarArraysStore = useSolarArraysStore()
+
+onMounted(() => {
+  monophaseInvertersStore.fetchMonophaseInverters().then(() => {
+    const inverterFetchingError = monophaseInvertersStore.error
+    if (inverterFetchingError) {
+      toast.add({
+        severity: 'error',
+        summary: t('toast_messages.error'),
+        detail: t('toast_messages.error_fetching_inverters') + ': ' + monophaseInvertersStore.errorDetails,
+        life: 3000,
+      })
+    }
+  })
+})
 
 const solarArrays = ref<ISolarArray[]>(solarArraysStore.arrays)
 const availableStringSetups = computed(() =>
