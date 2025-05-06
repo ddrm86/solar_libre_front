@@ -13,7 +13,8 @@
       toggleable
       @update:collapsed="onPanelToggle"
     >
-      <div v-for="(stringSetup, index) in mpptSetup.strings" :key="index" class="pt-4 flex items-center justify-between">
+      <div v-for="(stringSetup, index) in mpptSetup.strings" :key="stringSetup.id"
+           class="pt-4 flex items-center justify-between">
         <StringSetup
           :idx="index"
           :availableSetups="availableSetups"
