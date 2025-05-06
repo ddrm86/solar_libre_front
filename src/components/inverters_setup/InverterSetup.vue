@@ -31,7 +31,6 @@
       <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="mpptSetup.id" class="pt-4">
         <MpptSetup
           :idx="index"
-          :available-setups="availableSetups"
           :currentSetup="mpptSetup"
           @updateMppt="onMpptChange"
           @deleteMppt="deleteMpptSetup"
@@ -48,16 +47,11 @@ import MpptSetup from '@/components/inverters_setup/MpptSetup.vue'
 import { CInverterSetup, type IInverterSetup } from '@/models/inverters_setup/inverterSetup.ts'
 import { CMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
-import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 
 const { t } = useI18n()
 
 const props = defineProps<{
   idx: number
-  availableSetups: [{
-    array: ISolarArray
-    maxPanels: number
-  }]
   inventory: IMonophaseInverter[]
   currentSetup?: IInverterSetup
 }>()
@@ -69,6 +63,9 @@ const emit = defineEmits<{
 onMounted(() => {
   if (props.currentSetup) {
     inverterSetup.value = props.currentSetup
+    if (props.currentSetup.inverter) {
+      selectedInverter.value = props.currentSetup.inverter
+    }
   }
 })
 

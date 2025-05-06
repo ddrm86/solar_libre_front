@@ -26,7 +26,6 @@
            class="pt-4 flex items-center justify-between">
         <StringSetup
           :idx="index"
-          :availableSetups="availableSetups"
           :currentSetup="stringSetup"
           @updateString="onStringChange"
         />
@@ -46,7 +45,6 @@
 import { useI18n } from 'vue-i18n'
 import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import StringSetup from '@/components/inverters_setup/StringSetup.vue'
-import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { type IMpptSetup, CMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 import { computed, onMounted, ref } from 'vue'
 
@@ -54,10 +52,6 @@ const { t } = useI18n()
 
 const props = defineProps<{
   idx: number
-  availableSetups: [{
-    array: ISolarArray
-    maxPanels: number
-  }]
   currentSetup?: IMpptSetup
 }>()
 

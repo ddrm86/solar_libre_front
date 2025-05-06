@@ -32,15 +32,14 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { type IStringSetup, CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
 
 const { t } = useI18n()
 
+const invertersSetupStore = useInvertersSetupStore()
+
 const props = defineProps<{
   idx: number
-  availableSetups: [{
-    array: ISolarArray
-    maxPanels: number
-  }]
   currentSetup?: IStringSetup
 }>()
 
@@ -48,9 +47,9 @@ const emit = defineEmits<{
   updateString: [ IStringSetup, idx: number ]
 }>()
 
-const availableArrays = computed(() => props.availableSetups.map(setup => setup.array))
+const availableArrays = computed(() => invertersSetupStore.availableSetups.map(setup => setup.array))
 const maxPanelsForSelectedArray = computed(() => selectedArray.value ?
-  props.availableSetups.find(setup => setup.array === selectedArray.value)?.maxPanels || 0 : 0)
+  invertersSetupStore.availableSetups.find(setup => setup.array === selectedArray.value)?.maxPanels || 0 : 0)  // TODO: BUG debería sumar lo que ya tiene
 
 
 const selectedArray = ref<ISolarArray | null>(null)

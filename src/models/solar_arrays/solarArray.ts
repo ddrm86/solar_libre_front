@@ -4,6 +4,7 @@ import type { IPanel } from '@/models/inventory/panel.ts'
 import type { IProjectInfo } from '@/models/project_info/projectInfo.ts'
 
 export interface ISolarArray {
+  id: string
   array: ISolarArrayData
   pvgisData?: IPvgis
   isDirty: boolean
@@ -12,6 +13,7 @@ export interface ISolarArray {
 }
 
 export class CSolarArray implements ISolarArray {
+  id: string = crypto.randomUUID()
   array: ISolarArrayData
   pvgisData?: IPvgis
   isDirty: boolean
