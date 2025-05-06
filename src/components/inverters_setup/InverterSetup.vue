@@ -17,8 +17,8 @@
     </div>
     <Button
       icon="pi pi-plus"
-      :label="t('inverter_setup.add_mppt')"
-      :disabled="!selectedInverter"
+      :label="`${t('inverter_setup.add_mppt')} (${getNumberOfMpptsLeft} ${t('inverter_setup.remaining')})`"
+      :disabled="disableAddMpptButton"
       @click="addMpptSetup"
     />
     <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="index" class="pt-4">
@@ -71,7 +71,15 @@ const onInverterChange = () => {
   }
 }
 
-// TODO no son infinitos, cada inversor tiene un máximo de mppts. (idea: indicar restantes en botón añadir)
+const disableAddMpptButton = computed(() => {
+  return !selectedInverter.value ||
+    inverterSetup.value.setup.length >= (inverterSetup.value.inverter?.number_of_mppts ?? 0)
+})
+
+const getNumberOfMpptsLeft = computed(() => {
+  return (inverterSetup.value.inverter?.number_of_mppts ?? 0) - inverterSetup.value.setup.length
+})
+
 const addMpptSetup = () => {
   inverterSetup.value.setup.push(new CMpptSetup([]))
   emit('updateInverterSetup', inverterSetup.value, props.idx)
@@ -89,14 +97,16 @@ const onMpptChange = (updatedMppt: CMpptSetup, idx: number) => {
     "inverter_setup": {
       "inverter": "Inverter",
       "select_inverter": "Select an inverter",
-      "add_mppt": "Add MPPT"
+      "add_mppt": "Add MPPT",
+      "remaining": "remaining"
     }
   },
   "es": {
     "inverter_setup": {
       "inverter": "Inversor",
       "select_inverter": "Seleccionar un inversor",
-      "add_mppt": "Añadir MPPT"
+      "add_mppt": "Añadir MPPT",
+      "remaining": "restantes"
     }
   }
 }
