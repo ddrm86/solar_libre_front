@@ -1,22 +1,24 @@
 <template>
   <div>
-    <div class="pb-2"> <!-- TODO: añadir Inversor $idx + 1 -->
-      <span class="pe-2">{{ t('inverter_setup.inverter') }}</span>
+    <div class="pb-2">
+      <span class="pe-2">{{ t('inverter_setup.inverter') }} {{ idx + 1 }}</span>
       <IftaLabel>
         <Select
           id="solarArray"
+          filter
           v-model="selectedInverter"
           :options="inverterOptions"
-          optionLabel="getInverterLabel"
-          placeholder="Select an inverter"
+          :optionLabel="getInverterLabel"
+          :placeholder="t('inverter_setup.select_inverter')"
           @change="onInverterChange"
         />
-        <label for="solarArray">{{ t('string_setup.select_array') }}</label>
+        <label for="solarArray">{{ t('inverter_setup.inverter') }}</label>
       </IftaLabel>
     </div>
     <Button
       icon="pi pi-plus"
       :label="t('inverter_setup.add_mppt')"
+      :disabled="!selectedInverter"
       @click="addMpptSetup"
     />
     <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="index" class="pt-4">
@@ -43,7 +45,7 @@ const { t } = useI18n()
 
 const props = defineProps<{
   idx: number
-  availableSetups: [{  // TODO iniciar al montar
+  availableSetups: [{
     array: ISolarArray
     maxPanels: number
   }]
@@ -58,6 +60,9 @@ const selectedInverter = ref<IMonophaseInverter | null>(null)
 const inverterSetup = ref(new CInverterSetup())
 
 const inverterOptions = computed(() => props.inventory)
+
+const getInverterLabel = (inverter: IMonophaseInverter) =>
+  `${inverter.maker} ${inverter.model} (${inverter.recommended_max_input_power}W)`
 
 const onInverterChange = () => {
   if (selectedInverter.value) {
@@ -83,12 +88,14 @@ const onMpptChange = (updatedMppt: CMpptSetup, idx: number) => {
   "en": {
     "inverter_setup": {
       "inverter": "Inverter",
+      "select_inverter": "Select an inverter",
       "add_mppt": "Add MPPT"
     }
   },
   "es": {
     "inverter_setup": {
       "inverter": "Inversor",
+      "select_inverter": "Seleccionar un inversor",
       "add_mppt": "Añadir MPPT"
     }
   }
