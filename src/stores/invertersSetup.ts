@@ -7,9 +7,12 @@ import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 export const useInvertersSetupStore = defineStore('inverters_setup', () => {
   const solarArraysStore = useSolarArraysStore()
 
+  const inverters = ref<IInverterSetup[]>([])
+
   const availableSetups = computed(() => {
     const solarArrays = solarArraysStore.arrays
     const panelUsage: Record<string, number> = {}
+
 
     // Contar paneles asignados en los inversores
     inverters.value.forEach(inverter => {
@@ -31,7 +34,9 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     }).filter(entry => entry.maxPanels > 0)
   })
 
-  const inverters = ref<IInverterSetup[]>([])
+  const numberOfAvailablePanels = computed(() => {
+    return availableSetups.value.reduce((total, setup) => total + setup.maxPanels, 0)
+  })
 
   const addInverterSetup = () => {
     inverters.value.push(CInverterSetup.of({} as IMonophaseInverter, []))
@@ -45,5 +50,6 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     inverters.value.splice(index, 1)
   }
 
-  return { inverters, availableSetups, addInverterSetup, updateInverterSetup, deleteInverterSetup }
+  return { inverters, availableSetups, numberOfAvailablePanels,
+    addInverterSetup, updateInverterSetup, deleteInverterSetup }
 })

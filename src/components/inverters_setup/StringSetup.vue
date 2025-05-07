@@ -37,7 +37,7 @@ import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 
 const { t } = useI18n()
 
-const solarArrayStore = useSolarArraysStore()
+const solarArraysStore = useSolarArraysStore()
 const invertersSetupStore = useInvertersSetupStore()
 
 const props = defineProps<{
@@ -52,7 +52,7 @@ const emit = defineEmits<{
 const availableArrays = computed(() => {
   const arrays = invertersSetupStore.availableSetups.map(setup => setup.array);
   if (selectedArray.value && !arrays.includes(selectedArray.value) &&
-    solarArrayStore.arrays.includes(selectedArray.value)) {
+    solarArraysStore.arrays.includes(selectedArray.value)) {
     arrays.push(selectedArray.value);
   }
   return arrays;
