@@ -10,6 +10,7 @@
       :inventory="monophaseInvertersStore.availableMonophaseInverters"
       :currentSetup="inverterSetup"
       @updateInverterSetup="onInverterChange"
+      @deleteInverter="invertersSetupStore.deleteInverterSetup(index)"
     />
   </div>
 </template>
