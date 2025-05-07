@@ -33,9 +33,11 @@ import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { type IStringSetup, CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 
 const { t } = useI18n()
 
+const solarArrayStore = useSolarArraysStore()
 const invertersSetupStore = useInvertersSetupStore()
 
 const props = defineProps<{
@@ -49,7 +51,8 @@ const emit = defineEmits<{
 
 const availableArrays = computed(() => {
   const arrays = invertersSetupStore.availableSetups.map(setup => setup.array);
-  if (selectedArray.value && !arrays.includes(selectedArray.value)) {
+  if (selectedArray.value && !arrays.includes(selectedArray.value) &&
+    solarArrayStore.arrays.includes(selectedArray.value)) {
     arrays.push(selectedArray.value);
   }
   return arrays;

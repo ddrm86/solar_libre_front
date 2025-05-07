@@ -21,7 +21,6 @@ import { onMounted } from 'vue'
 import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
 import { useToast } from 'primevue/usetoast'
 import InverterSetup from '@/components/inverters_setup/InverterSetup.vue'
-import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import type { IInverterSetup } from '@/models/inverters_setup/inverterSetup.ts'
 
 const { t } = useI18n()
