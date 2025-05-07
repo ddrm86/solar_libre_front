@@ -76,6 +76,7 @@ export interface IPvgisResponse {
 export interface IPvgis {
   request: IPvgisRequest
   response?: IPvgisResponse
+  fetching: boolean
   error: boolean
   errorDetails?: AxiosError
 
