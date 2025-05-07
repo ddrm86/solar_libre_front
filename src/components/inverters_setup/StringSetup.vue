@@ -48,9 +48,17 @@ const emit = defineEmits<{
 }>()
 
 const availableArrays = computed(() => invertersSetupStore.availableSetups.map(setup => setup.array))
-const maxPanelsForSelectedArray = computed(() => selectedArray.value ?
-  invertersSetupStore.availableSetups.find(setup => setup.array === selectedArray.value)?.maxPanels || 0 : 0)  // TODO: BUG debería sumar lo que ya tiene
 
+const maxPanelsForSelectedArray = computed(() => {
+  let maxPanels = panelCount.value
+  if (selectedArray.value) {
+    const selectedSetup = invertersSetupStore.availableSetups.find(setup => setup.array === selectedArray.value)
+    if (selectedSetup) {
+      maxPanels += selectedSetup.maxPanels
+    }
+  }
+  return maxPanels
+})
 
 const selectedArray = ref<ISolarArray | null>(null)
 const panelCount = ref<number>(0)
