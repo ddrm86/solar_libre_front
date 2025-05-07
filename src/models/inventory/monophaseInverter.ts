@@ -1,6 +1,6 @@
-import { type Component, validateComponent } from '@/models/inventory/component.ts'
+import { type IComponent, validateComponent } from '@/models/inventory/component.ts'
 
-export interface MonophaseInverter extends Component {
+export interface IMonophaseInverter extends IComponent {
   recommended_max_input_power: number;
   nominal_output_power: number;
   max_input_voltage: number;
@@ -14,7 +14,7 @@ export interface MonophaseInverter extends Component {
   max_output_current: number;
 }
 
-export const validateMonophaseInverter = (inverter: MonophaseInverter): boolean => {
+export const validateMonophaseInverter = (inverter: IMonophaseInverter): boolean => {
   if (!validateComponent(inverter)) {
     return false;
   }

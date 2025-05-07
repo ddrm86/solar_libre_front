@@ -11,7 +11,7 @@
       :loading="panelsStore.fetching"
       dataKey="id"
       stripedRows
-      sortField="model"
+      sortField="maker"
       :sortOrder="1"
       v-model:filters="filters"
       :globalFilterFields="['maker', 'model', 'description']"
@@ -35,17 +35,17 @@
           </div>
         </div>
       </template>
-      <Column field="maker" :header="t('panel.maker')" sortable></Column>
-      <Column field="model" :header="t('panel.model')" sortable></Column>
-      <Column field="nominal_power" :header="t('panel.nominal_power')" sortable></Column>
-      <Column field="vmpp" :header="t('panel.vmpp')" sortable></Column>
-      <Column field="impp" :header="t('panel.impp')" sortable></Column>
-      <Column field="voc" :header="t('panel.voc')" sortable></Column>
-      <Column field="isc" :header="t('panel.isc')" sortable></Column>
-      <Column field="length" :header="t('panel.length')" sortable></Column>
-      <Column field="width" :header="t('panel.width')" sortable></Column>
-      <Column field="reference" :header="t('panel.reference')" sortable></Column>
-      <Column field="description" :header="t('panel.description')" sortable></Column>
+      <Column field="maker" :header="t('panel.maker')" :sortable="true"></Column>
+      <Column field="model" :header="t('panel.model')" :sortable="true"></Column>
+      <Column field="nominal_power" :header="t('panel.nominal_power')" :sortable="true"></Column>
+      <Column field="vmpp" :header="t('panel.vmpp')" :sortable="true"></Column>
+      <Column field="impp" :header="t('panel.impp')" :sortable="true"></Column>
+      <Column field="voc" :header="t('panel.voc')" :sortable="true"></Column>
+      <Column field="isc" :header="t('panel.isc')" :sortable="true"></Column>
+      <Column field="length" :header="t('panel.length')" :sortable="true"></Column>
+      <Column field="width" :header="t('panel.width')" :sortable="true"></Column>
+      <Column field="reference" :header="t('panel.reference')" :sortable="true"></Column>
+      <Column field="description" :header="t('panel.description')" :sortable="true"></Column>
       <Column :exportable="false">
         <template #body="slotProps">
           <Button
@@ -223,9 +223,9 @@
         <span>{{ t('dialog.confirm_delete') }}</span>
       </div>
       <div class="flex items-center max-w-64 bg-slate-100 rounded shadow mx-auto">
-        <small class="truncate ..."
-          >{{ selectedPanel.model }} - {{ selectedPanel.description }}</small
-        >
+        <small class="truncate ...">
+          {{ selectedPanel.maker }} {{ selectedPanel.model }} - {{ selectedPanel.description }}
+        </small>
       </div>
     </div>
     <template #footer>
@@ -253,7 +253,7 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
-import {type Panel, validatePanel } from '@/models/inventory/panel.ts'
+import {type IPanel, validatePanel } from '@/models/inventory/panel.ts'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -264,7 +264,7 @@ const filters = ref({
 })
 
 const fetchingError = ref(false)
-const selectedPanel = ref({} as Panel)
+const selectedPanel = ref({} as IPanel)
 const panelDialog = ref(false)
 const deletePanelDialog = ref(false)
 const submitted = ref(false)
@@ -278,7 +278,7 @@ onMounted(() => {
 })
 
 const openNew = () => {
-  selectedPanel.value = {} as Panel
+  selectedPanel.value = {} as IPanel
   submitted.value = false
   panelDialog.value = true
 }
@@ -320,7 +320,7 @@ const savePanel = () => {
         })
       }
     })
-    selectedPanel.value = {} as Panel
+    selectedPanel.value = {} as IPanel
     panelDialog.value = false
   }
 
@@ -342,17 +342,17 @@ const savePanel = () => {
         })
       }
     })
-    selectedPanel.value = {} as Panel
+    selectedPanel.value = {} as IPanel
     panelDialog.value = false
   }
 }
 
-const editPanel = (panel: Panel) => {
+const editPanel = (panel: IPanel) => {
   selectedPanel.value = { ...panel }
   panelDialog.value = true
 }
 
-const confirmDeletePanel = (panel: Panel) => {
+const confirmDeletePanel = (panel: IPanel) => {
   selectedPanel.value = panel
   deletePanelDialog.value = true
 }
@@ -383,7 +383,7 @@ const deletePanel = () => {
       }
     })
     .finally(() => {
-      selectedPanel.value = {} as Panel
+      selectedPanel.value = {} as IPanel
       deletePanelDialog.value = false
       deletingPanel.value = false
     })

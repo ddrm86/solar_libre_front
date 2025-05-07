@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('@/views/SolarArraysView.vue'),
     },
     {
+      path: '/inverters_setup',
+      name: 'inverters_setup',
+      component: () => import('@/views/InvertersSetupView.vue'),
+    },
+    {
       path: '/inventory/panels',
       name: 'panels',
       component: () => import('@/views/inventory/PanelsView.vue'),

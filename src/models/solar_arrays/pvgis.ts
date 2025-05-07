@@ -11,7 +11,7 @@ import axios, { AxiosError } from 'axios'
  *   angle (number): Tilt angle of the solar panels.
  *   azimuth (number): Azimuth angle of the solar panels (0 = S, 90 = W, -90 = E).
  */
-export interface PvgisRequest {
+export interface IPvgisRequest {
   latitude: number
   longitude: number
   peakPower: number
@@ -46,7 +46,7 @@ export interface PvgisRequest {
  *     - l_tg (number): Temperature and irradiance loss (%).
  *     - l_total (number): Total loss (%).
  */
-export interface PvgisResponse {
+export interface IPvgisResponse {
   database: string
 
   monthly: [
@@ -73,23 +73,23 @@ export interface PvgisResponse {
   }
 }
 
-export interface PvgisInterface {
-  request: PvgisRequest
-  response?: PvgisResponse
+export interface IPvgis {
+  request: IPvgisRequest
+  response?: IPvgisResponse
   error: boolean
   errorDetails?: AxiosError
 
   fetch: () => Promise<void>
 }
 
-export class Pvgis implements PvgisInterface {
-  request: PvgisRequest
-  response?: PvgisResponse
+export class CPvgis implements IPvgis {
+  request: IPvgisRequest
+  response?: IPvgisResponse
   fetching = false
   error = false
   errorDetails?: AxiosError
 
-  constructor(request: PvgisRequest) {
+  constructor(request: IPvgisRequest) {
     this.request = request
   }
 
@@ -108,7 +108,7 @@ export class Pvgis implements PvgisInterface {
       })
       .then((apiResponse) => {
         this.error = false
-        this.response = Pvgis.readPvgisResponse(apiResponse.data);
+        this.response = CPvgis.readPvgisResponse(apiResponse.data);
       })
       .catch((errorResponse) => {
         this.error = true
@@ -120,7 +120,7 @@ export class Pvgis implements PvgisInterface {
   }
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  private static readPvgisResponse(apiResponse: any) : PvgisResponse {
+  private static readPvgisResponse(apiResponse: any) : IPvgisResponse {
     return {
       database: apiResponse.inputs.meteo_data.radiation_db,
       // eslint-disable-next-line  @typescript-eslint/no-explicit-any

@@ -11,7 +11,7 @@
           :loading="monophaseInvertersStore.fetching"
           dataKey="id"
           stripedRows
-          sortField="model"
+          sortField="maker"
           :sortOrder="1"
           v-model:filters="filters"
           :globalFilterFields="['maker', 'model', 'description']"
@@ -35,21 +35,21 @@
               </div>
             </div>
           </template>
-          <Column field="maker" :header="t('monophaseInverter.maker')" sortable></Column>
-          <Column field="model" :header="t('monophaseInverter.model')" sortable></Column>
-          <Column field="recommended_max_input_power" :header="t('monophaseInverter.recommended_max_input_power')" sortable></Column>
-          <Column field="nominal_output_power" :header="t('monophaseInverter.nominal_output_power')" sortable></Column>
-          <Column field="max_input_voltage" :header="t('monophaseInverter.max_input_voltage')" sortable></Column>
-          <Column field="startup_voltage" :header="t('monophaseInverter.startup_voltage')" sortable></Column>
-          <Column field="min_mppt_operating_voltage" :header="t('monophaseInverter.min_mppt_operating_voltage')" sortable></Column>
-          <Column field="max_mppt_operating_voltage" :header="t('monophaseInverter.max_mppt_operating_voltage')" sortable></Column>
-          <Column field="max_input_current_per_mppt" :header="t('monophaseInverter.max_input_current_per_mppt')" sortable></Column>
-          <Column field="max_short_circuit_current" :header="t('monophaseInverter.max_short_circuit_current')" sortable></Column>
-          <Column field="number_of_mppts" :header="t('monophaseInverter.number_of_mppts')" sortable></Column>
-          <Column field="max_inputs_per_mppt" :header="t('monophaseInverter.max_inputs_per_mppt')" sortable></Column>
-          <Column field="max_output_current" :header="t('monophaseInverter.max_output_current')" sortable></Column>
-          <Column field="reference" :header="t('monophaseInverter.reference')" sortable></Column>
-          <Column field="description" :header="t('monophaseInverter.description')" sortable></Column>
+          <Column field="maker" :header="t('monophaseInverter.maker')" :sortable="true"></Column>
+          <Column field="model" :header="t('monophaseInverter.model')" :sortable="true"></Column>
+          <Column field="recommended_max_input_power" :header="t('monophaseInverter.recommended_max_input_power')" :sortable="true"></Column>
+          <Column field="nominal_output_power" :header="t('monophaseInverter.nominal_output_power')" :sortable="true"></Column>
+          <Column field="max_input_voltage" :header="t('monophaseInverter.max_input_voltage')" :sortable="true"></Column>
+          <Column field="startup_voltage" :header="t('monophaseInverter.startup_voltage')" :sortable="true"></Column>
+          <Column field="min_mppt_operating_voltage" :header="t('monophaseInverter.min_mppt_operating_voltage')" :sortable="true"></Column>
+          <Column field="max_mppt_operating_voltage" :header="t('monophaseInverter.max_mppt_operating_voltage')" :sortable="true"></Column>
+          <Column field="max_input_current_per_mppt" :header="t('monophaseInverter.max_input_current_per_mppt')" :sortable="true"></Column>
+          <Column field="max_short_circuit_current" :header="t('monophaseInverter.max_short_circuit_current')" :sortable="true"></Column>
+          <Column field="number_of_mppts" :header="t('monophaseInverter.number_of_mppts')" :sortable="true"></Column>
+          <Column field="max_inputs_per_mppt" :header="t('monophaseInverter.max_inputs_per_mppt')" :sortable="true"></Column>
+          <Column field="max_output_current" :header="t('monophaseInverter.max_output_current')" :sortable="true"></Column>
+          <Column field="reference" :header="t('monophaseInverter.reference')" :sortable="true"></Column>
+          <Column field="description" :header="t('monophaseInverter.description')" :sortable="true"></Column>
           <Column :exportable="false">
             <template #body="slotProps">
               <Button
@@ -269,9 +269,9 @@
         <span>{{ t('dialog.confirm_delete') }}</span>
       </div>
       <div class="flex items-center max-w-64 bg-slate-100 rounded shadow mx-auto">
-        <small class="truncate ..."
-        >{{ selectedMonophaseInverter.model }} - {{ selectedMonophaseInverter.description }}</small
-        >
+        <small class="truncate ...">
+          {{ selectedMonophaseInverter.maker }} {{ selectedMonophaseInverter.model }} - {{ selectedMonophaseInverter.description }}
+        </small>
       </div>
     </div>
     <template #footer>
@@ -299,7 +299,7 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
-import { type MonophaseInverter, validateMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
+import { type IMonophaseInverter, validateMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -310,7 +310,7 @@ const filters = ref({
 })
 
 const fetchingError = ref(false)
-const selectedMonophaseInverter = ref({} as MonophaseInverter)
+const selectedMonophaseInverter = ref({} as IMonophaseInverter)
 const monophaseInverterDialog = ref(false)
 const deleteMonophaseInverterDialog = ref(false)
 const submitted = ref(false)
@@ -324,7 +324,7 @@ onMounted(() => {
 })
 
 const openNew = () => {
-  selectedMonophaseInverter.value = {} as MonophaseInverter
+  selectedMonophaseInverter.value = {} as IMonophaseInverter
   submitted.value = false
   monophaseInverterDialog.value = true
 }
@@ -366,7 +366,7 @@ const saveMonophaseInverter = () => {
         })
       }
     })
-    selectedMonophaseInverter.value = {} as MonophaseInverter
+    selectedMonophaseInverter.value = {} as IMonophaseInverter
     monophaseInverterDialog.value = false
   }
 
@@ -388,17 +388,17 @@ const saveMonophaseInverter = () => {
         })
       }
     })
-    selectedMonophaseInverter.value = {} as MonophaseInverter
+    selectedMonophaseInverter.value = {} as IMonophaseInverter
     monophaseInverterDialog.value = false
   }
 }
 
-const editMonophaseInverter = (monophaseInverter: MonophaseInverter) => {
+const editMonophaseInverter = (monophaseInverter: IMonophaseInverter) => {
   selectedMonophaseInverter.value = { ...monophaseInverter }
   monophaseInverterDialog.value = true
 }
 
-const confirmDeleteMonophaseInverter = (monophaseInverter: MonophaseInverter) => {
+const confirmDeleteMonophaseInverter = (monophaseInverter: IMonophaseInverter) => {
   selectedMonophaseInverter.value = monophaseInverter
   deleteMonophaseInverterDialog.value = true
 }
@@ -429,7 +429,7 @@ const deleteMonophaseInverter = () => {
       }
     })
     .finally(() => {
-      selectedMonophaseInverter.value = {} as MonophaseInverter
+      selectedMonophaseInverter.value = {} as IMonophaseInverter
       deleteMonophaseInverterDialog.value = false
       deletingMonophaseInverter.value = false
     })
