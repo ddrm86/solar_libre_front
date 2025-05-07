@@ -39,6 +39,11 @@ const items = ref([
     route: '/solar_arrays'
   },
   {
+    label: t('inverters_setup'),
+    icon: 'pi pi-bolt',
+    route: '/inverters_setup'
+  },
+  {
     label: t('inventory'),
     icon: 'pi pi-warehouse',
     items: [
@@ -71,6 +76,7 @@ const items = ref([
     "solar_arrays": "Solar arrays",
     "inventory": "Inventory",
     "panels": "Solar panels",
+    "inverters_setup": "Inverters setup",
     "monophase_inverters": "Monophase inverters"
   },
   "es": {
@@ -79,6 +85,7 @@ const items = ref([
     "solar_arrays": "Matrices solares",
     "inventory": "Inventario",
     "panels": "Paneles solares",
+    "inverters_setup": "Configuración de inversores",
     "monophase_inverters": "Inversores monofásicos"
   }
 }

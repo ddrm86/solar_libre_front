@@ -1,31 +1,33 @@
-import { SolarArrayData, type SolarArrayDataModel } from '@/models/solar_arrays/solarArrayData.ts'
-import { Pvgis, type PvgisInterface } from '@/models/solar_arrays/pvgis.ts'
-import type { Panel } from '@/models/inventory/panel.ts'
-import type { ProjectInfo } from '@/models/project_info/projectInfo.ts'
+import { CSolarArrayData, type ISolarArrayData } from '@/models/solar_arrays/solarArrayData.ts'
+import { CPvgis, type IPvgis } from '@/models/solar_arrays/pvgis.ts'
+import type { IPanel } from '@/models/inventory/panel.ts'
+import type { IProjectInfo } from '@/models/project_info/projectInfo.ts'
 
-export interface SolarArrayModel {
-  array: SolarArrayDataModel
-  pvgisData?: PvgisInterface
+export interface ISolarArray {
+  id: string
+  array: ISolarArrayData
+  pvgisData?: IPvgis
   isDirty: boolean
 
-  fetchPvgisData: (projectInfo: ProjectInfo) => void
+  fetchPvgisData: (projectInfo: IProjectInfo) => void
 }
 
-export class SolarArray implements SolarArrayModel {
-  array: SolarArrayData
-  pvgisData?: Pvgis
+export class CSolarArray implements ISolarArray {
+  id: string = crypto.randomUUID()
+  array: ISolarArrayData
+  pvgisData?: IPvgis
   isDirty: boolean
 
-  constructor(arrayData?: SolarArrayData) {
+  constructor(arrayData?: ISolarArrayData) {
     if (!arrayData) {
-      this.array = new SolarArrayData({} as Panel, 0, 14, 35, 0)
+      this.array = new CSolarArrayData({} as IPanel, 0, 14, 35, 0)
     } else {
       this.array = arrayData
     }
     this.isDirty = true
   }
 
-  fetchPvgisData(projectInfo: ProjectInfo): void {
+  fetchPvgisData(projectInfo: IProjectInfo): void {
     const pvgisRequest = {
       latitude: projectInfo.location.latitude,
       longitude: projectInfo.location.longitude,
@@ -35,7 +37,7 @@ export class SolarArray implements SolarArrayModel {
       azimuth: this.array.azimuth,
     }
 
-    this.pvgisData = new Pvgis(pvgisRequest)
+    this.pvgisData = new CPvgis(pvgisRequest)
     this.pvgisData.fetch().then(() => {
       this.isDirty = !this.pvgisData ? true : this.pvgisData.error
     })

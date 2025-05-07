@@ -6,7 +6,7 @@
       :init-view="[projectInfoStore.projectInfo.location.latitude,
         projectInfoStore.projectInfo.location.longitude]"
       @location-selected="
-        (location: Location) => {
+        (location: ILocation) => {
           projectInfoStore.projectInfo.location.latitude = location.latitude
           projectInfoStore.projectInfo.location.longitude = location.longitude
           projectInfoStore.projectInfo.location.address = location.address
@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import MapSearch from '@/components/project_info/MapSearch.vue'
-import { type Location } from '@/models/project_info/location.ts'
+import { type ILocation } from '@/models/project_info/location.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
 const { t } = useI18n()

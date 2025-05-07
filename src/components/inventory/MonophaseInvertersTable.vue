@@ -299,7 +299,7 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
-import { type MonophaseInverter, validateMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
+import { type IMonophaseInverter, validateMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -310,7 +310,7 @@ const filters = ref({
 })
 
 const fetchingError = ref(false)
-const selectedMonophaseInverter = ref({} as MonophaseInverter)
+const selectedMonophaseInverter = ref({} as IMonophaseInverter)
 const monophaseInverterDialog = ref(false)
 const deleteMonophaseInverterDialog = ref(false)
 const submitted = ref(false)
@@ -324,7 +324,7 @@ onMounted(() => {
 })
 
 const openNew = () => {
-  selectedMonophaseInverter.value = {} as MonophaseInverter
+  selectedMonophaseInverter.value = {} as IMonophaseInverter
   submitted.value = false
   monophaseInverterDialog.value = true
 }
@@ -366,7 +366,7 @@ const saveMonophaseInverter = () => {
         })
       }
     })
-    selectedMonophaseInverter.value = {} as MonophaseInverter
+    selectedMonophaseInverter.value = {} as IMonophaseInverter
     monophaseInverterDialog.value = false
   }
 
@@ -388,17 +388,17 @@ const saveMonophaseInverter = () => {
         })
       }
     })
-    selectedMonophaseInverter.value = {} as MonophaseInverter
+    selectedMonophaseInverter.value = {} as IMonophaseInverter
     monophaseInverterDialog.value = false
   }
 }
 
-const editMonophaseInverter = (monophaseInverter: MonophaseInverter) => {
+const editMonophaseInverter = (monophaseInverter: IMonophaseInverter) => {
   selectedMonophaseInverter.value = { ...monophaseInverter }
   monophaseInverterDialog.value = true
 }
 
-const confirmDeleteMonophaseInverter = (monophaseInverter: MonophaseInverter) => {
+const confirmDeleteMonophaseInverter = (monophaseInverter: IMonophaseInverter) => {
   selectedMonophaseInverter.value = monophaseInverter
   deleteMonophaseInverterDialog.value = true
 }
@@ -429,7 +429,7 @@ const deleteMonophaseInverter = () => {
       }
     })
     .finally(() => {
-      selectedMonophaseInverter.value = {} as MonophaseInverter
+      selectedMonophaseInverter.value = {} as IMonophaseInverter
       deleteMonophaseInverterDialog.value = false
       deletingMonophaseInverter.value = false
     })

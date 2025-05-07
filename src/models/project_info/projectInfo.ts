@@ -1,7 +1,7 @@
-import { type Location } from '@/models/project_info/location.ts'
+import { type ILocation } from '@/models/project_info/location.ts'
 
-export interface ProjectInfo {
+export interface IProjectInfo {
   id?: string;
   name: string;
-  location: Location;
+  location: ILocation;
 }
