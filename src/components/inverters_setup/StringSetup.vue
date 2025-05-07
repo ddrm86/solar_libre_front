@@ -47,7 +47,13 @@ const emit = defineEmits<{
   updateString: [ IStringSetup, idx: number ]
 }>()
 
-const availableArrays = computed(() => invertersSetupStore.availableSetups.map(setup => setup.array))
+const availableArrays = computed(() => {
+  const arrays = invertersSetupStore.availableSetups.map(setup => setup.array);
+  if (selectedArray.value && !arrays.includes(selectedArray.value)) {
+    arrays.push(selectedArray.value);
+  }
+  return arrays;
+});
 
 const maxPanelsForSelectedArray = computed(() => {
   let maxPanels = panelCount.value
