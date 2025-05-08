@@ -52,6 +52,10 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     inverters.value.splice(index, 1)
   }
 
+  /**
+   * If the panel model in a solar array is changed or the number of panels is reduced,
+   * the strings associated with that array are reset
+   */
   watch(
     () =>
       solarArraysStore.arrays.map((array) => ({
@@ -64,36 +68,26 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
         const oldArray = oldArrays[index]
 
         if (oldArray) {
-          // Si cambia el panel asociado
-          if (newArray.panelId !== oldArray.panelId) {
-            inverters.value.forEach((inverter) => {
-              inverter.setup.forEach((mppt) => {
-                mppt.strings.forEach((stringSetup, stringIndex) => {
-                  if (stringSetup.solarArray?.id === newArray.id) {
-                    mppt.strings[stringIndex] = new CStringSetup()
-                  }
-                })
-              })
-            })
-          }
-
-          // Si cambia el número de paneles y es menor que el anterior
-          if (newArray.panelNumber < oldArray.panelNumber) {
-            inverters.value.forEach((inverter) => {
-              inverter.setup.forEach((mppt) => {
-                mppt.strings.forEach((stringSetup, stringIndex) => {
-                  if (stringSetup.solarArray?.id === newArray.id) {
-                    mppt.strings[stringIndex] = new CStringSetup()
-                  }
-                })
-              })
-            })
+          if (newArray.panelId !== oldArray.panelId || newArray.panelNumber < oldArray.panelNumber) {
+            resetStringsAssociatedWithSolarArray(newArray.id)
           }
         }
       })
     },
     { deep: true },
   )
+
+  function resetStringsAssociatedWithSolarArray(arrayId: string) {
+    inverters.value.forEach((inverter) => {
+      inverter.setup.forEach((mppt) => {
+        mppt.strings.forEach((stringSetup, stringIndex) => {
+          if (stringSetup.solarArray?.id === arrayId) {
+            mppt.strings[stringIndex] = new CStringSetup()
+          }
+        })
+      })
+    })
+  }
 
   return {
     inverters,
