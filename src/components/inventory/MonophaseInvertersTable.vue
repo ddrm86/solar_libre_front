@@ -44,7 +44,7 @@
           <Column field="min_mppt_operating_voltage" :header="t('monophaseInverter.min_mppt_operating_voltage')" :sortable="true"></Column>
           <Column field="max_mppt_operating_voltage" :header="t('monophaseInverter.max_mppt_operating_voltage')" :sortable="true"></Column>
           <Column field="max_input_current_per_mppt" :header="t('monophaseInverter.max_input_current_per_mppt')" :sortable="true"></Column>
-          <Column field="max_short_circuit_current" :header="t('monophaseInverter.max_short_circuit_current')" :sortable="true"></Column>
+          <Column field="max_short_circuit_current_per_mppt" :header="t('monophaseInverter.max_short_circuit_current_per_mppt')" :sortable="true"></Column>
           <Column field="number_of_mppts" :header="t('monophaseInverter.number_of_mppts')" :sortable="true"></Column>
           <Column field="max_inputs_per_mppt" :header="t('monophaseInverter.max_inputs_per_mppt')" :sortable="true"></Column>
           <Column field="max_output_current" :header="t('monophaseInverter.max_output_current')" :sortable="true"></Column>
@@ -190,15 +190,15 @@
     <div class="pb-2">
       <IftaLabel>
         <InputNumber
-          id="max_short_circuit_current"
-          v-model="selectedMonophaseInverter.max_short_circuit_current"
+          id="max_short_circuit_current_per_mppt"
+          v-model="selectedMonophaseInverter.max_short_circuit_current_per_mppt"
           required="true"
-          :invalid="submitted && !selectedMonophaseInverter.max_short_circuit_current"
+          :invalid="submitted && !selectedMonophaseInverter.max_short_circuit_current_per_mppt"
           :minFractionDigits="2"
           :maxFractionDigits="2"
           :min="0"
         />
-        <label for="max_short_circuit_current">{{ t('monophaseInverter.max_short_circuit_current') }}*</label>
+        <label for="max_short_circuit_current">{{ t('monophaseInverter.max_short_circuit_current_per_mppt') }}*</label>
       </IftaLabel>
     </div>
     <div class="pb-2">
@@ -449,7 +449,7 @@ const deleteMonophaseInverter = () => {
       "min_mppt_operating_voltage": "Min MPPT Operating Voltage",
       "max_mppt_operating_voltage": "Max MPPT Operating Voltage",
       "max_input_current_per_mppt": "Max Input Current per MPPT",
-      "max_short_circuit_current": "Max Short Circuit Current",
+      "max_short_circuit_current_per_mppt": "Max Short Circuit Current por MPPT",
       "number_of_mppts": "Number of MPPTs",
       "max_inputs_per_mppt": "Max Inputs per MPPT",
       "max_output_current": "Max Output Current",
@@ -496,7 +496,7 @@ const deleteMonophaseInverter = () => {
       "min_mppt_operating_voltage": "Voltaje Mínimo de Operación MPPT",
       "max_mppt_operating_voltage": "Voltaje Máximo de Operación MPPT",
       "max_input_current_per_mppt": "Corriente Máxima de Entrada por MPPT",
-      "max_short_circuit_current": "Corriente Máxima de Cortocircuito",
+      "max_short_circuit_current_per_mppt": "Corriente Máxima de Cortocircuito por MPPT",
       "number_of_mppts": "Número de MPPTs",
       "max_inputs_per_mppt": "Entradas Máximas por MPPT",
       "max_output_current": "Corriente Máxima de Salida",
