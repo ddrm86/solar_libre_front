@@ -8,7 +8,7 @@ export interface IMonophaseInverter extends IComponent {
   min_mppt_operating_voltage: number;
   max_mppt_operating_voltage: number;
   max_input_current_per_mppt: number;
-  max_short_circuit_current: number;
+  max_short_circuit_current_per_mppt: number;
   number_of_mppts: number;
   max_inputs_per_mppt: number;
   max_output_current: number;
@@ -39,7 +39,7 @@ export const validateMonophaseInverter = (inverter: IMonophaseInverter): boolean
   if (!inverter.max_input_current_per_mppt) {
     return false;
   }
-  if (!inverter.max_short_circuit_current) {
+  if (!inverter.max_short_circuit_current_per_mppt) {
     return false;
   }
   if (!inverter.number_of_mppts) {
