@@ -5,6 +5,10 @@ export interface IInverterSetup {
   id: string
   inverter?: IMonophaseInverter
   setup: IMpptSetup[]
+
+  calcPeakPower(): number
+  calcPeakVoltage(): number
+  calcStartupVoltage(): number
 }
 
 export class CInverterSetup implements IInverterSetup {
@@ -17,5 +21,24 @@ export class CInverterSetup implements IInverterSetup {
     instance.inverter = inverter;
     instance.setup = setup;
     return instance;
+  }
+
+  calcPeakPower(): number {
+    return this.setup.reduce((acc, mppt) => {
+      return acc + mppt.calcPeakPower()
+    }, 0)
+  }
+
+  calcPeakVoltage(): number {
+    return this.setup.reduce((max, mppt) => {
+      return Math.max(max, mppt.calcPeakVoltage())
+    }, 0)
+  }
+
+  calcStartupVoltage(): number {
+    return this.setup
+      .map((mppt) => mppt.calcPeakVoltage())
+      .filter((voltage) => voltage > 0)
+      .reduce((min, voltage) => Math.min(min, voltage), Infinity)
   }
 }
