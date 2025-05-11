@@ -10,6 +10,7 @@
             :options="panelsStore.panels"
             :optionLabel="getPanelLabel"
             :placeholder="t('solar_array.select_panel')"
+            @change="onInputDataChange"
           />
           <label for="panel">{{ t('solar_array.panel') }}</label>
         </IftaLabel>
@@ -21,6 +22,7 @@
             showButtons
             v-model="solarArraysStore.arrays[arrayIdx].array.panelNumber"
             :min="1"
+            @value-change="onInputDataChange"
           />
           <label for="panelNumber">{{ t('solar_array.panelNumber') }}</label>
         </IftaLabel>
@@ -37,6 +39,7 @@
             :min="0"
             :max="100"
             :suffix="'%'"
+            @value-change="onInputDataChange"
           />
           <label for="loss">{{ t('solar_array.loss') }}</label>
         </IftaLabel>
@@ -50,6 +53,7 @@
             :min="0"
             :max="90"
             :suffix="'°'"
+            @value-change="onInputDataChange"
           />
           <label for="angle">{{ t('solar_array.angle') }}</label>
         </IftaLabel>
@@ -63,6 +67,7 @@
             :min="-90"
             :max="90"
             :suffix="'°'"
+            @value-change="onInputDataChange"
           />
           <label for="azimuth">{{ t('solar_array.azimuth') }}</label>
         </IftaLabel>
@@ -112,13 +117,9 @@ const getTotalPowerText = computed(() => {
   return isNaN(peakPowerKw) ? '' : `(${peakPowerKw} kW)`
 })
 
-watch (
-  () => solarArraysStore.arrays[arrayIdx].array,
-  () => {
-    solarArraysStore.arrays[arrayIdx].isDirty = true
-  },
-  { deep: true }
-)
+const onInputDataChange = () => {
+  solarArraysStore.arrays[arrayIdx].isDirty = true
+}
 
 watch (
   () => solarArraysStore.arrays[arrayIdx].pvgisData?.error,
