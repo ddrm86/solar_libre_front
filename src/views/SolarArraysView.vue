@@ -4,7 +4,7 @@
     :label="t('solar_array.add_array')"
     @click="solarArraysStore.addSolarArray()"
   />
-  <div v-for="(_, idx) in solarArraysStore.arrays" :key="idx" class="pt-4">
+  <div v-for="(solarArray, idx) in solarArraysStore.arrays" :key="solarArray.id" class="pt-4">
     <SolarArray :arrayIdx="idx"/>
   </div>
 </template>
