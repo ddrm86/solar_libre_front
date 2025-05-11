@@ -9,6 +9,7 @@ export interface IInverterSetup {
   calcPeakPower(): number
   calcPeakVoltage(): number
   calcStartupVoltage(): number
+  calcInverterUsage(): number
 }
 
 export class CInverterSetup implements IInverterSetup {
@@ -40,5 +41,14 @@ export class CInverterSetup implements IInverterSetup {
       .map((mppt) => mppt.calcPeakVoltage())
       .filter((voltage) => voltage > 0)
       .reduce((min, voltage) => Math.min(min, voltage), Infinity)
+  }
+
+  calcInverterUsage(): number {
+    if (!this.inverter) {
+      return 0
+    }
+    const peakPower = this.calcPeakPower()
+    const inverterOutputPower = this.inverter.nominal_output_power
+    return peakPower / inverterOutputPower
   }
 }
