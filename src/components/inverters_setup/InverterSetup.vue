@@ -46,7 +46,7 @@
         </div>
       </Panel>
     </div>
-    <div>  <!-- TODO: do not show if not inverter selected or no strings yet (0 power connected?). Maybe control inside component -->
+    <div v-if="isSomethingConnected">
       <InverterInfo :idx="idx" />
     </div>
   </div>
@@ -144,6 +144,10 @@ const onMpptChange = (updatedMppt: CMpptSetup, idx: number) => {
 const deleteInverter = () => {
   emit('deleteInverter', props.idx)
 }
+
+const isSomethingConnected = computed(() => {
+  return inverterSetup.value.calcPeakPower() > 0
+})
 </script>
 
 <i18n>
