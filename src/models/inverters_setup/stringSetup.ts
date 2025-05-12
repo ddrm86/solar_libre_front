@@ -7,6 +7,9 @@ export interface IStringSetup {
 
   calcPeakPower(): number
   calcPeakVoltage(): number
+  calcPeakCurrent(): number
+  calcOpenCircuitVoltage(): number
+  calcShortCircuitCurrent(): number
 }
 
 export class CStringSetup implements IStringSetup {
@@ -33,5 +36,26 @@ export class CStringSetup implements IStringSetup {
       return 0
     }
     return this.solarArray.array.panel.vmpp * (this.panelNumber ?? 0)
+  }
+
+  calcPeakCurrent(): number {
+    if (!this.solarArray || !this.panelNumber || this.panelNumber === 0) {
+      return 0
+    }
+    return this.solarArray.array.panel.impp
+  }
+
+  calcOpenCircuitVoltage(): number {
+    if (!this.solarArray) {
+      return 0
+    }
+    return this.solarArray.array.panel.voc * (this.panelNumber ?? 0)
+  }
+
+  calcShortCircuitCurrent(): number {
+    if (!this.solarArray || !this.panelNumber || this.panelNumber === 0) {
+      return 0
+    }
+    return this.solarArray.array.panel.isc
   }
 }
