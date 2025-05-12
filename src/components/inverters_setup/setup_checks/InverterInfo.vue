@@ -4,36 +4,44 @@
       <span>{{ t('inverter_info.title') }}</span>
     </template>
     <template #content>
-    <div class="flex items-center pb-2">
-      <span class="pe-2">{{ t('inverter_info.connected_power', { peakPower, usagePercentage }) }}</span>
-      <Message
-        :severity="connectedPowerMessage.severity"
-        :icon="connectedPowerMessage.icon"
-        size="small"
-      >
-        {{ connectedPowerMessage.text }}
-      </Message>
-    </div>
-    <div class="flex items-center pb-2">
-      <span class="pe-2">{{ t('inverter_info.input_voltage', { inputVoltage }) }}</span>
-      <Message
-        :severity="inputVoltageMessage.severity"
-        :icon="inputVoltageMessage.icon"
-        size="small"
-      >
-        {{ inputVoltageMessage.text }}
-      </Message>
-    </div>
-    <div class="flex items-center pb-2">
-      <span class="pe-2">{{ t('inverter_info.startup_voltage', { startupVoltage }) }}</span>
-      <Message
-        :severity="startupVoltageMessage.severity"
-        :icon="startupVoltageMessage.icon"
-        size="small"
-      >
-        {{ startupVoltageMessage.text }}
-      </Message>
-    </div>
+      <div class="grid grid-cols-2 gap-2 items-center">
+        <div>
+          <span>{{ t('inverter_info.connected_power', { peakPower, usagePercentage }) }}</span>
+        </div>
+        <div>
+          <Message
+            :severity="connectedPowerMessage.severity"
+            :icon="connectedPowerMessage.icon"
+            size="small"
+          >
+            {{ connectedPowerMessage.text }}
+          </Message>
+        </div>
+        <div>
+          <span>{{ t('inverter_info.input_voltage', { inputVoltage }) }}</span>
+        </div>
+        <div>
+          <Message
+            :severity="inputVoltageMessage.severity"
+            :icon="inputVoltageMessage.icon"
+            size="small"
+          >
+            {{ inputVoltageMessage.text }}
+          </Message>
+        </div>
+        <div>
+          <span class="pe-2">{{ t('inverter_info.startup_voltage', { startupVoltage }) }}</span>
+        </div>
+        <div>
+          <Message
+            :severity="startupVoltageMessage.severity"
+            :icon="startupVoltageMessage.icon"
+            size="small"
+          >
+            {{ startupVoltageMessage.text }}
+          </Message>
+        </div>
+      </div>
     </template>
   </Card>
 </template>
@@ -53,7 +61,9 @@ const invertersSetupStore = useInvertersSetupStore()
 const inverter = computed(() => invertersSetupStore.inverters[props.idx])
 
 const peakPower = computed(() => inverter.value.calcPeakPower())
-const usagePercentage = computed(() => Number((inverter.value.calcInverterUsage() * 100).toFixed(0)))
+const usagePercentage = computed(() =>
+  Number((inverter.value.calcInverterUsage() * 100).toFixed(0)),
+)
 const inputVoltage = computed(() => Number(inverter.value.calcPeakVoltage().toFixed(2)))
 const startupVoltage = computed(() => Number(inverter.value.calcStartupVoltage().toFixed(2)))
 
@@ -66,25 +76,25 @@ const connectedPowerMessage = computed(() => {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('inverter_info.excess_power', { peakPower: peakPower.value, recommendedPower })
+      text: t('inverter_info.excess_power', { peakPower: peakPower.value, recommendedPower }),
     }
   } else if (peakPower.value > nominalPower) {
     return {
       severity: 'info',
       icon: 'pi pi-info-circle',
-      text: t('inverter_info.overproduction', { peakPower: peakPower.value, nominalPower })
+      text: t('inverter_info.overproduction', { peakPower: peakPower.value, nominalPower }),
     }
   } else if (usage < 0.75) {
     return {
       severity: 'info',
       icon: 'pi pi-info-circle',
-      text: t('inverter_info.underutilized')
+      text: t('inverter_info.underutilized'),
     }
   } else {
     return {
       severity: 'success',
       icon: 'pi pi-check',
-      text: t('inverter_info.correct')
+      text: t('inverter_info.correct'),
     }
   }
 })
@@ -96,13 +106,13 @@ const inputVoltageMessage = computed(() => {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('inverter_info.excess_voltage', { inputVoltage: inputVoltage.value, maxVoltage })
+      text: t('inverter_info.excess_voltage', { inputVoltage: inputVoltage.value, maxVoltage }),
     }
   } else {
     return {
       severity: 'success',
       icon: 'pi pi-check',
-      text: t('inverter_info.correct')
+      text: t('inverter_info.correct'),
     }
   }
 })
@@ -114,13 +124,13 @@ const startupVoltageMessage = computed(() => {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('inverter_info.low_voltage', { startupVoltage: startupVoltage.value, minVoltage })
+      text: t('inverter_info.low_voltage', { startupVoltage: startupVoltage.value, minVoltage }),
     }
   } else {
     return {
       severity: 'success',
       icon: 'pi pi-check',
-      text: t('inverter_info.correct')
+      text: t('inverter_info.correct'),
     }
   }
 })
