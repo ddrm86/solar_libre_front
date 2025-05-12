@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="md:flex items-center">
+    <div class="pe-4 w-full">
       <div class="pb-2 flex items-end justify-between">
         <div class="pb-2">
           <span>⚡ {{ t('inverter_setup.inverter') }} {{ idx + 1 }}</span>
