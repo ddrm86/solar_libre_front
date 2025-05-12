@@ -4,6 +4,9 @@ export interface IStringSetup {
   id: string
   solarArray?: ISolarArray
   panelNumber?: number
+
+  calcPeakPower(): number
+  calcPeakVoltage(): number
 }
 
 export class CStringSetup implements IStringSetup {
@@ -16,5 +19,19 @@ export class CStringSetup implements IStringSetup {
     instance.solarArray = solarArray
     instance.panelNumber = panelNumber
     return instance
+  }
+
+  calcPeakPower(): number {
+    if (!this.solarArray) {
+      return 0
+    }
+    return this.solarArray.array.panel.nominal_power * (this.panelNumber ?? 0)
+  }
+
+  calcPeakVoltage(): number {
+    if (!this.solarArray) {
+      return 0
+    }
+    return this.solarArray.array.panel.vmpp * (this.panelNumber ?? 0)
   }
 }
