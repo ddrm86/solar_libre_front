@@ -6,7 +6,7 @@
     <template #content>
       <div class="grid grid-cols-2 gap-2 items-center">
         <div>
-          <span>{{ t('mppt_info.connected_power', { power: connectedPower }) }}</span>
+          <span>{{ t('mppt_info.connected_power', { power: connectedPower.toFixed(0) }) }}</span>
         </div>
         <div>
           <Message
@@ -18,7 +18,7 @@
           </Message>
         </div>
         <div>
-          <span>{{ t('mppt_info.voltage_at_max_power', { voltage: voltageAtMaxPower }) }}</span>
+          <span>{{ t('mppt_info.voltage_at_max_power', { voltage: voltageAtMaxPower.toFixed(2) }) }}</span>
         </div>
         <div>
           <Message
@@ -30,7 +30,7 @@
           </Message>
         </div>
         <div>
-          <span>{{ t('mppt_info.current_at_max_power', { current: currentAtMaxPower }) }}</span>
+          <span>{{ t('mppt_info.current_at_max_power', { current: currentAtMaxPower.toFixed(2) }) }}</span>
         </div>
         <div>
           <Message
@@ -42,7 +42,7 @@
           </Message>
         </div>
         <div>
-          <span>{{ t('mppt_info.open_circuit_voltage', { voltage: openCircuitVoltage }) }}</span>
+          <span>{{ t('mppt_info.open_circuit_voltage', { voltage: openCircuitVoltage.toFixed(2) }) }}</span>
         </div>
         <div>
           <Message
@@ -54,7 +54,7 @@
           </Message>
         </div>
         <div>
-          <span>{{ t('mppt_info.short_circuit_current', { current: shortCircuitCurrent }) }}</span>
+          <span>{{ t('mppt_info.short_circuit_current', { current: shortCircuitCurrent.toFixed(2) }) }}</span>
         </div>
         <div>
           <Message
@@ -104,7 +104,7 @@ const connectedPowerMessage = computed(() => {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
       text: t('mppt_info.excess_power', {
-        power: connectedPower.value,
+        power: connectedPower.value.toFixed(0),
         maxPower: props.inverter.recommended_max_input_power,
       }),
     }
@@ -118,7 +118,7 @@ const voltageAtMaxPowerMessage = computed(() => {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
       text: t('mppt_info.excess_voltage', {
-        voltage: voltageAtMaxPower.value,
+        voltage: voltageAtMaxPower.value.toFixed(2),
         maxVoltage: props.inverter.max_input_voltage,
       }),
     }
@@ -127,7 +127,7 @@ const voltageAtMaxPowerMessage = computed(() => {
       severity: 'info',
       icon: 'pi pi-info-circle',
       text: t('mppt_info.over_voltage', {
-        voltage: voltageAtMaxPower.value,
+        voltage: voltageAtMaxPower.value.toFixed(2),
         maxMpptVoltage: props.inverter.max_mppt_operating_voltage,
       }),
     }
@@ -141,7 +141,7 @@ const currentAtMaxPowerMessage = computed(() => {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
       text: t('mppt_info.excess_current', {
-        current: currentAtMaxPower.value,
+        current: currentAtMaxPower.value.toFixed(2),
         maxCurrent: props.inverter.max_input_current_per_mppt,
       }),
     }
@@ -155,7 +155,7 @@ const openCircuitVoltageMessage = computed(() => {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
       text: t('mppt_info.excess_open_voltage', {
-        voltage: openCircuitVoltage.value,
+        voltage: openCircuitVoltage.value.toFixed(2),
         maxVoltage: props.inverter.max_input_voltage,
       }),
     }
@@ -169,7 +169,7 @@ const shortCircuitCurrentMessage = computed(() => {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
       text: t('mppt_info.excess_short_current', {
-        current: shortCircuitCurrent.value,
+        current: shortCircuitCurrent.value.toFixed(2),
         maxShortCurrent: props.inverter.max_short_circuit_current_per_mppt,
       }),
     }
