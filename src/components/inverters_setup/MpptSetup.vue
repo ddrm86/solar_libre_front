@@ -1,43 +1,39 @@
 <template>
-  <div>
-    <div class="pb-2 flex items-center justify-between">
-      <div>
-        <span class="pe-2">{{ t('mppt_setup.mppt') }} {{ idx + 1 }}</span>
-        <Button
-          icon="pi pi-plus"
-          :label="t('mppt_setup.add_string')"
-          @click="addStringSetup"
-        />
-      </div>
-      <Button
-        icon="pi pi-trash"
-        :label="t('mppt_setup.delete_mppt')"
-        severity="danger"
-        outlined
-        @click="deleteMppt"
-      />
-    </div>
-    <Panel
-      :header="headerText"
-      toggleable
-      @update:collapsed="onPanelToggle"
-    >
-      <div v-for="(stringSetup, index) in mpptSetup.strings" :key="stringSetup.id"
-           class="pt-4 flex items-center justify-between">
-        <StringSetup
-          :idx="index"
-          :currentSetup="stringSetup"
-          @updateString="onStringChange"
-        />
+  <div class="md:flex items-center">
+    <div class="pe-4 w-full">
+      <div class="pb-2 flex items-center justify-between gap-2">
+        <div>
+          <span class="pe-2">{{ t('mppt_setup.mppt') }} {{ idx + 1 }}</span>
+          <Button icon="pi pi-plus" :label="t('mppt_setup.add_string')" @click="addStringSetup" />
+        </div>
         <Button
           icon="pi pi-trash"
-          outlined
-          rounded
+          :label="t('mppt_setup.delete_mppt')"
           severity="danger"
-          @click="deleteStringSetup(index)"
+          outlined
+          @click="deleteMppt"
         />
       </div>
-    </Panel>
+      <Panel :header="headerText" toggleable @update:collapsed="onPanelToggle">
+        <div
+          v-for="(stringSetup, index) in mpptSetup.strings"
+          :key="stringSetup.id"
+          class="pt-4 flex items-center justify-between"
+        >
+          <StringSetup :idx="index" :currentSetup="stringSetup" @updateString="onStringChange" />
+          <Button
+            icon="pi pi-trash"
+            outlined
+            rounded
+            severity="danger"
+            @click="deleteStringSetup(index)"
+          />
+        </div>
+      </Panel>
+    </div>
+    <div v-if="isSomethingConnected && props.inverter">
+      <MpptInfo :mppt="mpptSetup" :inverter="props.inverter" />
+    </div>
   </div>
 </template>
 
@@ -47,11 +43,14 @@ import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import StringSetup from '@/components/inverters_setup/StringSetup.vue'
 import { type IMpptSetup, CMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 import { computed, onMounted, ref } from 'vue'
+import MpptInfo from '@/components/inverters_setup/setup_checks/MpptInfo.vue'
+import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 
 const { t } = useI18n()
 
 const props = defineProps<{
   idx: number
+  inverter?: IMonophaseInverter
   currentSetup?: IMpptSetup
 }>()
 
@@ -104,6 +103,10 @@ const deleteStringSetup = (idx: number) => {
 const deleteMppt = () => {
   emit('deleteMppt', props.idx)
 }
+
+const isSomethingConnected = computed(() => {
+  return mpptSetup.value.calcPeakPower() > 0
+})
 </script>
 
 <i18n>
