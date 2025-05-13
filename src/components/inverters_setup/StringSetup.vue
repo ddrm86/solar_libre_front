@@ -1,6 +1,12 @@
 <template>
   <div class="flex items-center gap-4">
-    <span>{{ t('string_setup.string') }} {{ idx + 1}}</span>
+    <div class="flex items-center gap-1">
+      <span>{{ t('string_setup.string') }} {{ idx + 1}}</span>
+      <StringInfo
+        :disabled="!selectedArray"
+        :string-setup="selectedArray ? CStringSetup.of(selectedArray, panelCount) : {} as IStringSetup"
+      />
+    </div>
     <IftaLabel>
       <Select
         id="solarArray"
@@ -34,6 +40,7 @@ import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { type IStringSetup, CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
+import StringInfo from '@/components/inverters_setup/setup_checks/StringInfo.vue'
 
 const { t } = useI18n()
 
