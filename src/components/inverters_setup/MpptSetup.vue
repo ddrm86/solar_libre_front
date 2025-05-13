@@ -21,13 +21,15 @@
           class="pt-4 flex items-center justify-between"
         >
           <StringSetup :idx="index" :currentSetup="stringSetup" @updateString="onStringChange" />
-          <Button
-            icon="pi pi-trash"
-            outlined
-            rounded
-            severity="danger"
-            @click="deleteStringSetup(index)"
-          />
+          <div class="ps-2">
+            <Button
+              icon="pi pi-trash"
+              outlined
+              rounded
+              severity="danger"
+              @click="deleteStringSetup(index)"
+            />
+          </div>
         </div>
       </Panel>
     </div>
