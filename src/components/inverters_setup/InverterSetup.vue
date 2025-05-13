@@ -1,63 +1,66 @@
 <template>
-  <div>
-    <div class="pb-2 flex items-end justify-between">
-      <div class="pb-2">
-        <span>⚡ {{ t('inverter_setup.inverter') }} {{ idx + 1 }}</span>
-        <div class="pt-2 flex gap-2">
-          <IftaLabel>
-            <Select
-              id="inverter"
-              filter
-              v-model="selectedInverter"
-              :options="inverterOptions"
-              :optionLabel="getInverterLabel"
-              :placeholder="t('inverter_setup.select_inverter')"
-              @change="onInverterChange"
+  <div class="md:flex items-center">
+    <div class="pe-4 w-full">
+      <div class="pb-2 flex items-end justify-between gap-2">
+        <div class="pb-2">
+          <span>⚡ {{ t('inverter_setup.inverter') }} {{ idx + 1 }}</span>
+          <div class="pt-2 flex gap-2">
+            <IftaLabel>
+              <Select
+                id="inverter"
+                filter
+                v-model="selectedInverter"
+                :options="inverterOptions"
+                :optionLabel="getInverterLabel"
+                :placeholder="t('inverter_setup.select_inverter')"
+                @change="onInverterChange"
+              />
+              <label for="inverter">{{ t('inverter_setup.inverter') }}</label>
+            </IftaLabel>
+            <Button
+              icon="pi pi-plus"
+              :label="`${t('inverter_setup.add_mppt')} (${getNumberOfMpptsLeft} ${t('inverter_setup.remaining')})`"
+              :disabled="disableAddMpptButton"
+              @click="addMpptSetup"
             />
-            <label for="inverter">{{ t('inverter_setup.inverter') }}</label>
-          </IftaLabel>
+          </div>
+        </div>
+        <div class="pb-2">
           <Button
-            icon="pi pi-plus"
-            :label="`${t('inverter_setup.add_mppt')} (${getNumberOfMpptsLeft} ${t('inverter_setup.remaining')})`"
-            :disabled="disableAddMpptButton"
-            @click="addMpptSetup"
+            icon="pi pi-trash"
+            :label="t('inverter_setup.delete_inverter')"
+            severity="danger"
+            outlined
+            @click="deleteInverter"
           />
         </div>
       </div>
-      <div class="pb-2">
-        <Button
-          icon="pi pi-trash"
-          :label="t('inverter_setup.delete_inverter')"
-          severity="danger"
-          outlined
-          @click="deleteInverter"
-        />
-      </div>
+      <Panel :header="headerText" toggleable @update:collapsed="onPanelToggle">
+        <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="mpptSetup.id" class="pt-4">
+          <MpptSetup
+            :idx="index"
+            :currentSetup="mpptSetup"
+            :inverter="selectedInverter || undefined"
+            @updateMppt="onMpptChange"
+            @deleteMppt="deleteMpptSetup"
+          />
+        </div>
+      </Panel>
     </div>
-    <Panel
-      :header="headerText"
-      toggleable
-      @update:collapsed="onPanelToggle"
-    >
-      <div v-for="(mpptSetup, index) in inverterSetup.setup" :key="mpptSetup.id" class="pt-4">
-        <MpptSetup
-          :idx="index"
-          :currentSetup="mpptSetup"
-          @updateMppt="onMpptChange"
-          @deleteMppt="deleteMpptSetup"
-        />
-      </div>
-    </Panel>
+    <div v-if="isSomethingConnected">
+      <InverterInfo :idx="idx" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MpptSetup from '@/components/inverters_setup/MpptSetup.vue'
 import { CInverterSetup, type IInverterSetup } from '@/models/inverters_setup/inverterSetup.ts'
 import { CMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
+import InverterInfo from '@/components/inverters_setup/setup_checks/InverterInfo.vue'
 
 const { t } = useI18n()
 
@@ -68,7 +71,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  updateInverterSetup:  [IInverterSetup, idx: number]
+  updateInverterSetup: [IInverterSetup, idx: number]
   deleteInverter: [idx: number]
 }>()
 
@@ -93,9 +96,7 @@ const headerText = computed(() => {
   }
 
   return inverterSetup.value.setup
-    .map((stringSetup, index) =>
-      `MPPT ${index + 1} 🔌 ${stringSetup.toString()}`
-    )
+    .map((stringSetup, index) => `MPPT ${index + 1} 🔌 ${stringSetup.toString()}`)
     .join(' || ')
 })
 
@@ -116,8 +117,10 @@ const onInverterChange = () => {
 }
 
 const disableAddMpptButton = computed(() => {
-  return !selectedInverter.value ||
+  return (
+    !selectedInverter.value ||
     inverterSetup.value.setup.length >= (inverterSetup.value.inverter?.number_of_mppts ?? 0)
+  )
 })
 
 const getNumberOfMpptsLeft = computed(() => {
@@ -142,6 +145,10 @@ const onMpptChange = (updatedMppt: CMpptSetup, idx: number) => {
 const deleteInverter = () => {
   emit('deleteInverter', props.idx)
 }
+
+const isSomethingConnected = computed(() => {
+  return inverterSetup.value.calcPeakPower() > 0
+})
 </script>
 
 <i18n>
