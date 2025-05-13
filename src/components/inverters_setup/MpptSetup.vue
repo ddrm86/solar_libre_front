@@ -1,5 +1,5 @@
 <template>
-  <div class="md:flex items-center">
+  <div class="2xl:flex items-center">
     <div class="pe-4 w-full">
       <div class="pb-2 flex items-center justify-between gap-2">
         <div>
