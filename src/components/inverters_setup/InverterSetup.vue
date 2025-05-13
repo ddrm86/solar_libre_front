@@ -40,7 +40,7 @@
           <MpptSetup
             :idx="index"
             :currentSetup="mpptSetup"
-            :inverter="selectedInverter"
+            :inverter="selectedInverter || undefined"
             @updateMppt="onMpptChange"
             @deleteMppt="deleteMpptSetup"
           />
