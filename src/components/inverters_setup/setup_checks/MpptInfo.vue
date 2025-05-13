@@ -103,24 +103,33 @@ const connectedPowerMessage = computed(() => {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('mppt_info.excess_power', { power: connectedPower.value }),
+      text: t('mppt_info.excess_power', {
+        power: connectedPower.value,
+        maxPower: props.inverter.recommended_max_input_power,
+      }),
     }
   }
   return { severity: 'success', icon: 'pi pi-check', text: t('mppt_info.correct') }
 })
 
 const voltageAtMaxPowerMessage = computed(() => {
-  if (voltageAtMaxPower.value > props.inverter.max_mppt_operating_voltage) {
-    return {
-      severity: 'info',
-      icon: 'pi pi-info-circle',
-      text: t('mppt_info.over_voltage', { voltage: voltageAtMaxPower.value }),
-    }
-  } else if (voltageAtMaxPower.value > props.inverter.max_input_voltage) {
+  if (voltageAtMaxPower.value > props.inverter.max_input_voltage) {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('mppt_info.excess_voltage', { voltage: voltageAtMaxPower.value }),
+      text: t('mppt_info.excess_voltage', {
+        voltage: voltageAtMaxPower.value,
+        maxVoltage: props.inverter.max_input_voltage,
+      }),
+    }
+  } else if (voltageAtMaxPower.value > props.inverter.max_mppt_operating_voltage) {
+    return {
+      severity: 'info',
+      icon: 'pi pi-info-circle',
+      text: t('mppt_info.over_voltage', {
+        voltage: voltageAtMaxPower.value,
+        maxMpptVoltage: props.inverter.max_mppt_operating_voltage,
+      }),
     }
   }
   return { severity: 'success', icon: 'pi pi-check', text: t('mppt_info.correct') }
@@ -131,7 +140,10 @@ const currentAtMaxPowerMessage = computed(() => {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('mppt_info.excess_current', { current: currentAtMaxPower.value }),
+      text: t('mppt_info.excess_current', {
+        current: currentAtMaxPower.value,
+        maxCurrent: props.inverter.max_input_current_per_mppt,
+      }),
     }
   }
   return { severity: 'success', icon: 'pi pi-check', text: t('mppt_info.correct') }
@@ -142,7 +154,10 @@ const openCircuitVoltageMessage = computed(() => {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('mppt_info.excess_open_voltage', { voltage: openCircuitVoltage.value }),
+      text: t('mppt_info.excess_open_voltage', {
+        voltage: openCircuitVoltage.value,
+        maxVoltage: props.inverter.max_input_voltage,
+      }),
     }
   }
   return { severity: 'success', icon: 'pi pi-check', text: t('mppt_info.correct') }
@@ -153,7 +168,10 @@ const shortCircuitCurrentMessage = computed(() => {
     return {
       severity: 'warn',
       icon: 'pi pi-exclamation-triangle',
-      text: t('mppt_info.excess_short_current', { current: shortCircuitCurrent.value }),
+      text: t('mppt_info.excess_short_current', {
+        current: shortCircuitCurrent.value,
+        maxShortCurrent: props.inverter.max_short_circuit_current_per_mppt,
+      }),
     }
   }
   return { severity: 'success', icon: 'pi pi-check', text: t('mppt_info.correct') }
@@ -185,12 +203,12 @@ const parallelStringsMessage = computed(() => {
       "current_at_max_power": "Current at max power: {current}A",
       "open_circuit_voltage": "Open circuit voltage: {voltage}V",
       "short_circuit_current": "Short circuit current: {current}A",
-      "excess_power": "Excess connected power ({power}W > max input power)",
-      "over_voltage": "Correct, but exceeds MPPT operating voltage ({voltage}V)",
-      "excess_voltage": "Excess input voltage ({voltage}V > max input voltage)",
-      "excess_current": "Excess input current ({current}A > max input current per MPPT)",
-      "excess_open_voltage": "Excess open circuit voltage ({voltage}V > max input voltage)",
-      "excess_short_current": "Excess short circuit current ({current}A > max short circuit current per MPPT)",
+      "excess_power": "Excess connected power ({power}W > {maxPower}W)",
+      "over_voltage": "Correct, but exceeds MPPT operating voltage ({voltage}V > {maxMpptVoltage}V)",
+      "excess_voltage": "Excess input voltage ({voltage}V > {maxVoltage}V)",
+      "excess_current": "Excess input current ({current}A > {maxCurrent}A)",
+      "excess_open_voltage": "Excess open circuit voltage ({voltage}V > {maxVoltage}V)",
+      "excess_short_current": "Excess short circuit current ({current}A > {maxShortCurrent}A)",
       "parallel_strings": "Parallel connection must be external to the MPPT ({strings} strings > {maxInputs} inputs available)",
       "correct": "Correct"
     }
@@ -203,12 +221,12 @@ const parallelStringsMessage = computed(() => {
       "current_at_max_power": "Intensidad en máxima potencia: {current}A",
       "open_circuit_voltage": "Voltaje en circuito abierto: {voltage}V",
       "short_circuit_current": "Intensidad por cortocircuito: {current}A",
-      "excess_power": "Exceso de potencia conectada ({power}W > potencia máxima de entrada)",
-      "over_voltage": "Correcto, pero supera el voltaje de trabajo del MPPT ({voltage}V)",
-      "excess_voltage": "Exceso de voltaje de entrada ({voltage}V > voltaje máximo de entrada)",
-      "excess_current": "Exceso de intensidad de entrada ({current}A > intensidad máxima por MPPT)",
-      "excess_open_voltage": "Exceso de voltaje en circuito abierto ({voltage}V > voltaje máximo de entrada)",
-      "excess_short_current": "Exceso de intensidad por cortocircuito ({current}A > intensidad máxima por cortocircuito por MPPT)",
+      "excess_power": "Exceso de potencia conectada ({power}W > {maxPower}W)",
+      "over_voltage": "Correcto, pero supera el voltaje de trabajo del MPPT ({voltage}V > {maxMpptVoltage}V)",
+      "excess_voltage": "Exceso de voltaje de entrada ({voltage}V > {maxVoltage}V)",
+      "excess_current": "Exceso de intensidad de entrada ({current}A > {maxCurrent}A)",
+      "excess_open_voltage": "Exceso de voltaje en circuito abierto ({voltage}V > {maxVoltage}V)",
+      "excess_short_current": "Exceso de intensidad por cortocircuito ({current}A > {maxShortCurrent}A)",
       "parallel_strings": "La conexión en paralelo se deberá hacer fuera del MPPT ({strings} strings > {maxInputs} entradas disponibles)",
       "correct": "Correcto"
     }
