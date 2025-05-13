@@ -6,6 +6,9 @@ export interface IMpptSetup {
 
   calcPeakPower(): number
   calcPeakVoltage(): number
+  calcPeakCurrent(): number
+  calcOpenCircuitVoltage(): number
+  calcShortCircuitCurrent(): number
 }
 
 export class CMpptSetup implements IMpptSetup {
@@ -25,6 +28,24 @@ export class CMpptSetup implements IMpptSetup {
   calcPeakVoltage(): number {
     return this.strings.reduce((max, string) => {
         return Math.max(max, string.calcPeakVoltage())
+    }, 0)
+  }
+
+  calcPeakCurrent(): number {
+    return this.strings.reduce((acc, string) => {
+      return acc + string.calcPeakCurrent()
+    }, 0)
+  }
+
+  calcOpenCircuitVoltage(): number {
+    return this.strings.reduce((max, string) => {
+        return Math.max(max, string.calcOpenCircuitVoltage())
+    }, 0)
+  }
+
+  calcShortCircuitCurrent(): number {
+    return this.strings.reduce((acc, string) => {
+      return acc + string.calcShortCircuitCurrent()
     }, 0)
   }
 
