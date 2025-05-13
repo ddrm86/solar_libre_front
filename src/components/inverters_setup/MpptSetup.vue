@@ -1,6 +1,6 @@
 <template>
   <div class="2xl:flex items-center">
-    <div class="pe-4 w-full">
+    <div class="pe-2 w-full">
       <div class="pb-2 flex items-center justify-between gap-2">
         <div>
           <span class="pe-2">{{ t('mppt_setup.mppt') }} {{ idx + 1 }}</span>
@@ -31,7 +31,7 @@
         </div>
       </Panel>
     </div>
-    <div v-if="isSomethingConnected && props.inverter">
+    <div v-if="isSomethingConnected && props.inverter" class="pt-2 pe-2">
       <MpptInfo :mppt="mpptSetup" :inverter="props.inverter" />
     </div>
   </div>

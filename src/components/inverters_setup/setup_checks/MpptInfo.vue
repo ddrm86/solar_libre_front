@@ -65,7 +65,7 @@
             {{ shortCircuitCurrentMessage.text }}
           </Message>
         </div>
-        <div v-if="parallelStringsMessage">
+        <div v-if="parallelStringsMessage" class="col-span-2">
           <Message
             :severity="parallelStringsMessage.severity"
             :icon="parallelStringsMessage.icon"
