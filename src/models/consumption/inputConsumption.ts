@@ -17,6 +17,9 @@ export interface IYearlyConsumption {
   october: IConsumptionByTimeBand,
   november: IConsumptionByTimeBand,
   december: IConsumptionByTimeBand,
+
+  calcTotalConsumptionByTimeBand: () => IConsumptionByTimeBand,
+  calcTotalConsumption: () => number,
 }
 
 export class CYearlyConsumption implements IYearlyConsumption {
@@ -32,4 +35,20 @@ export class CYearlyConsumption implements IYearlyConsumption {
   october = { peak: 0, flat: 0, valley: 0 };
   november = { peak: 0, flat: 0, valley: 0 };
   december = { peak: 0, flat: 0, valley: 0 };
+
+  calcTotalConsumptionByTimeBand(): IConsumptionByTimeBand {
+    const results = { peak: 0, flat: 0, valley: 0 }
+    Object.keys(this).forEach((month) => {
+      const monthConsumpPerBand = this[month as keyof CYearlyConsumption] as IConsumptionByTimeBand;
+      results.peak += monthConsumpPerBand.peak
+      results.flat += monthConsumpPerBand.flat
+      results.valley += monthConsumpPerBand.valley
+    });
+    return results
+  }
+
+  calcTotalConsumption(): number {
+    const totalPerTimeBand = this.calcTotalConsumptionByTimeBand()
+    return totalPerTimeBand.peak + totalPerTimeBand.flat + totalPerTimeBand.valley
+  }
 }
