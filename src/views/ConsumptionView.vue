@@ -1,7 +1,7 @@
 <template>
-  <span>Placeholder text for the incomplete energy consumption module.</span>
+  <InputConsumption />
 </template>
 
 <script setup lang="ts">
-
+import InputConsumption from '@/components/consumption/InputConsumption.vue'
 </script>
