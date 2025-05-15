@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h3 class="text-lg font-bold mb-4">{{ t('energy_consumption.title') }}</h3>
-    <div class="grid grid-cols-4 gap-4 items-center">
+    <div class="grid grid-cols-4 gap-1 items-center">
       <!-- Encabezados -->
       <div class="font-bold">{{ t('energy_consumption.month') }}</div>
       <div class="font-bold text-center">{{ t('energy_consumption.peak') }}</div>
@@ -39,14 +39,22 @@
           />
         </div>
       </template>
+      <div class="text-lg">
+        {{ t('energy_consumption.totals') }}
+      </div>
+      <div>
+        {{ t('energy_consumption.total_peak') }}: {{ totals.peak }}
+      </div>
+      <div>
+        {{ t('energy_consumption.total_flat') }}: {{ totals.flat }}
+      </div>
+      <div>
+        {{ t('energy_consumption.total_valley') }}: {{ totals.valley }}
+      </div>
     </div>
 
     <!-- Totales -->
     <div class="mt-6">
-      <h4 class="text-lg font-bold">{{ t('energy_consumption.totals') }}</h4>
-      <p>{{ t('energy_consumption.total_peak') }}: {{ totals.peak }}</p>
-      <p>{{ t('energy_consumption.total_flat') }}: {{ totals.flat }}</p>
-      <p>{{ t('energy_consumption.total_valley') }}: {{ totals.valley }}</p>
       <h4 class="text-lg font-bold mt-4">{{ t('energy_consumption.annual_consumption') }}: {{ totalConsumption }}</h4>
     </div>
   </div>
