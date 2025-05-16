@@ -1,63 +1,62 @@
 <template>
-  <div class="card">
-    <h3 class="text-lg font-bold mb-4">{{ t('energy_consumption.title') }}</h3>
-    <div class="grid grid-cols-4 gap-1 items-center">
-      <!-- Encabezados -->
-      <div class="font-bold">{{ t('energy_consumption.month') }}</div>
-      <div class="font-bold text-center">{{ t('energy_consumption.peak') }}</div>
-      <div class="font-bold text-center">{{ t('energy_consumption.flat') }}</div>
-      <div class="font-bold text-center">{{ t('energy_consumption.valley') }}</div>
+  <Card>
+    <template #title>
+      <h3 class="text-lg font-bold mb-4">{{ t('energy_consumption.title') }}</h3>
+    </template>
+    <template #content>
+      <div class="grid grid-cols-4 gap-1 items-center">
+        <div class="font-bold">{{ t('energy_consumption.month') }}</div>
+        <div class="font-bold text-center">{{ t('energy_consumption.peak') }}</div>
+        <div class="font-bold text-center">{{ t('energy_consumption.flat') }}</div>
+        <div class="font-bold text-center">{{ t('energy_consumption.valley') }}</div>
 
-      <!-- Filas de datos -->
-      <template v-for="(month, index) in months" :key="index">
-        <div>{{ month }}</div>
-        <div>
-          <InputNumber
-            :model-value="consumption.consumptionsPerMonth[index].peak"
-            :min="0"
-            mode="decimal"
-            class="w-full"
-            @update:model-value="(value) => setConsumption(index, 'peak', value)"
-          />
-        </div>
-        <div>
-          <InputNumber
-            :model-value="consumption.consumptionsPerMonth[index].flat"
-            :min="0"
-            mode="decimal"
-            class="w-full"
-            @update:model-value="(value) => setConsumption(index, 'flat', value)"
-          />
-        </div>
-        <div>
-          <InputNumber
-            :model-value="consumption.consumptionsPerMonth[index].valley"
-            :min="0"
-            mode="decimal"
-            class="w-full"
-            @update:model-value="(value) => setConsumption(index, 'valley', value)"
-          />
-        </div>
-      </template>
-      <div class="text-lg">
-        {{ t('energy_consumption.totals') }}
-      </div>
-      <div>
-        {{ t('energy_consumption.total_peak') }}: {{ totals.peak }}
-      </div>
-      <div>
-        {{ t('energy_consumption.total_flat') }}: {{ totals.flat }}
-      </div>
-      <div>
-        {{ t('energy_consumption.total_valley') }}: {{ totals.valley }}
-      </div>
-    </div>
+        <template v-for="(month, index) in months" :key="index">
+          <div>{{ month }}</div>
+          <div>
+            <InputNumber
+              :model-value="consumption.consumptionsPerMonth[index].peak"
+              :min="0"
+              mode="decimal"
+              class="w-full"
+              @update:model-value="(value) => setConsumption(index, 'peak', value)"
+            />
+          </div>
+          <div>
+            <InputNumber
+              :model-value="consumption.consumptionsPerMonth[index].flat"
+              :min="0"
+              mode="decimal"
+              class="w-full"
+              @update:model-value="(value) => setConsumption(index, 'flat', value)"
+            />
+          </div>
+          <div>
+            <InputNumber
+              :model-value="consumption.consumptionsPerMonth[index].valley"
+              :min="0"
+              mode="decimal"
+              class="w-full"
+              @update:model-value="(value) => setConsumption(index, 'valley', value)"
+            />
+          </div>
+        </template>
 
-    <!-- Totales -->
-    <div class="mt-6">
-      <h4 class="text-lg font-bold mt-4">{{ t('energy_consumption.annual_consumption') }}: {{ totalConsumption }}</h4>
-    </div>
-  </div>
+        <div class="text-lg">
+          {{ t('energy_consumption.totals') }}
+        </div>
+        <div>{{ t('energy_consumption.total_peak') }}: {{ totals.peak }}</div>
+        <div>{{ t('energy_consumption.total_flat') }}: {{ totals.flat }}</div>
+        <div>{{ t('energy_consumption.total_valley') }}: {{ totals.valley }}</div>
+      </div>
+    </template>
+    <template #footer>
+      <div class="mt-6">
+        <h4 class="text-lg font-bold mt-4">
+          {{ t('energy_consumption.annual_consumption') }}: {{ totalConsumption }}
+        </h4>
+      </div>
+    </template>
+  </Card>
 </template>
 
 <script setup lang="ts">
@@ -81,7 +80,7 @@ const months = [
   t('months.september'),
   t('months.october'),
   t('months.november'),
-  t('months.december')
+  t('months.december'),
 ]
 
 const consumption = inputConsumptionStore.consumption
@@ -91,7 +90,7 @@ const totalConsumption = computed(() => inputConsumptionStore.totalConsumption)
 const setConsumption = (
   monthIndex: number,
   timeBand: keyof IConsumptionByTimeBand,
-  value: number
+  value: number,
 ) => {
   inputConsumptionStore.consumption.setConsumptionByMonthAndTimeBand(monthIndex, timeBand, value)
 }
