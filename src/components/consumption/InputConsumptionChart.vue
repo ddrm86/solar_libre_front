@@ -1,14 +1,12 @@
 <template>
-  <Card>
-    <template #content>
+  <div>
       <Chart
         type="line"
         :data="chartData"
         :options="chartOptions"
-        class="h-[30rem]"
+        class="w-full h-full"
       />
-    </template>
-  </Card>
+  </div>
 </template>
 
 <script setup lang="ts">
