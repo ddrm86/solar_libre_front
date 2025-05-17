@@ -37,12 +37,12 @@
         </div>
       </template>
 
-      <div class="text-lg">
+      <div class="text-lg font-semibold">
         {{ t('energy_consumption.totals') }}
       </div>
-      <div>{{ t('energy_consumption.total_peak') }}: {{ totals.peak }}</div>
-      <div>{{ t('energy_consumption.total_flat') }}: {{ totals.flat }}</div>
-      <div>{{ t('energy_consumption.total_valley') }}: {{ totals.valley }}</div>
+      <div class="font-semibold">{{ t('energy_consumption.total_peak') }}: {{ totals.peak }}</div>
+      <div class="font-semibold">{{ t('energy_consumption.total_flat') }}: {{ totals.flat }}</div>
+      <div class="font-semibold">{{ t('energy_consumption.total_valley') }}: {{ totals.valley }}</div>
     </div>
     <div class="mt-6">
       <h4 class="text-lg font-bold mt-4">
