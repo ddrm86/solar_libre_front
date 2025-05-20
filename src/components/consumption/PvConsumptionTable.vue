@@ -19,6 +19,11 @@
       <p class="text-xs mt-1 text-slate-500">
         {{ t('pvConsumptionTable.disclaimer') }}
       </p>
+      <p class="text-xs mt-1 text-slate-500">
+        <a href="https://sunrisesunset.io/" target="_blank" rel="noopener">
+          {{ t('pvConsumptionTable.poweredBy') }}
+        </a>
+      </p>
     </template>
   </Card>
 </template>
@@ -79,7 +84,8 @@ const totalValley = computed(() =>
       "totalFlat": "Total Flat",
       "totalValley": "Total Valley",
       "annualConsumption": "ANNUAL CONSUMPTION [kWh/year] during photovoltaic production hours",
-      "disclaimer": "Based on the average consumption distribution profile for a residential customer in Spain, calculated from: https://www.boe.es/eli/es/res/2024/12/23/(5)"
+      "disclaimer": "Based on the average consumption distribution profile for a residential customer in Spain, calculated from: https://www.boe.es/eli/es/res/2024/12/23/(5)",
+      "poweredBy": "Powered by SunriseSunset.io"
     },
     "months": {
       "january": "January",
@@ -108,7 +114,8 @@ const totalValley = computed(() =>
       "totalFlat": "Total Llano",
       "totalValley": "Total Valle",
       "annualConsumption": "CONSUMO ANUAL [kWh/año] en horas de producción fotovoltaica",
-      "disclaimer": "Basado en el perfil de reparto de consumo medio para un cliente residencial en España, calculado a partir de: https://www.boe.es/eli/es/res/2024/12/23/(5)"
+      "disclaimer": "Basado en el perfil de reparto de consumo medio para un cliente residencial en España, calculado a partir de: https://www.boe.es/eli/es/res/2024/12/23/(5)",
+      "poweredBy": "Con tecnología de SunriseSunset.io"
     },
     "months": {
       "january": "Enero",
