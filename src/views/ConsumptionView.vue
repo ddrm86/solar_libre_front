@@ -1,6 +1,8 @@
 <template>
   <InputConsumption />
-  <PVConsumptionTable />
+  <div class="pt-4">
+    <PVConsumptionTable />
+  </div>
 </template>
 
 <script setup lang="ts">

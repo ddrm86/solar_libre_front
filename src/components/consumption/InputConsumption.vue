@@ -4,7 +4,7 @@
       <h3 class="text-lg font-bold mb-4">{{ t('energy_consumption.title') }}</h3>
     </template>
     <template #content>
-      <div class="2xl:flex lg:gap-8">
+      <div class="2xl:flex 2xl:gap-8">
       <InputConsumptionTable />
       <InputConsumptionChart class="pt-8 lg:pt-0 lg:flex-1"/>
       </div>
