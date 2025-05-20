@@ -34,6 +34,11 @@ const items = ref([
     route: '/project_info'
   },
   {
+    label: t('consumption'),
+    icon: 'pi pi-euro',
+    route: '/consumption'
+  },
+  {
     label: t('solar_arrays'),
     icon: 'pi pi-table',
     route: '/solar_arrays'
@@ -73,6 +78,7 @@ const items = ref([
   "en": {
     "home": "Home",
     "project_info": "Project info",
+    "consumption": "Consumption",
     "solar_arrays": "Solar arrays",
     "inventory": "Inventory",
     "panels": "Solar panels",
@@ -82,6 +88,7 @@ const items = ref([
   "es": {
     "home": "Inicio",
     "project_info": "Información del proyecto",
+    "consumption": "Consumo",
     "solar_arrays": "Matrices solares",
     "inventory": "Inventario",
     "panels": "Paneles solares",
