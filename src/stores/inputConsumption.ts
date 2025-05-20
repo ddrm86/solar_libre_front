@@ -5,6 +5,9 @@ import {
   type IYearlyConsumption
 } from '@/models/consumption/inputConsumption.ts'
 import { CYearlySunHours, type IYearlySunHours } from '@/models/consumption/sunHours.ts'
+import {
+  consumptionDistributionProfile
+} from '@/models/consumption/consumptionDistributionProfile'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
 export const useInputConsumptionStore = defineStore('input_consumption', () => {
@@ -31,6 +34,30 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     }
   })
 
+  const pvConsumptionsPerMonth = computed(() => {
+    return yearlyPVHours.value.pvHoursPerMonth.map((pvHours, monthIndex) => {
+      const { sunrise, sunset } = pvHours
+      const startHour = sunrise.getHours()
+      const endHour = sunset.getHours()
+
+      const monthlyConsumption = consumption.value.consumptionsPerMonth[monthIndex]
+      const profile = consumptionDistributionProfile[monthIndex]
+
+      const pvConsumption = { peak: 0, flat: 0, valley: 0 }
+
+      for (let hour = startHour; hour <= endHour; hour++) {
+        pvConsumption.peak +=
+          (monthlyConsumption.peak * profile[hour].percentPeak) / 100
+        pvConsumption.flat +=
+          (monthlyConsumption.flat * profile[hour].percentFlat) / 100
+        pvConsumption.valley +=
+          (monthlyConsumption.valley * profile[hour].percentValley) / 100
+      }
+
+      return pvConsumption
+    })
+  })
+
   watch(
     () => [projectInfoStore.projectInfo.location.latitude, projectInfoStore.projectInfo.location.longitude],
     ([lat, lng]) => {
@@ -39,5 +66,5 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     { immediate: true }
   )
 
-  return { consumption, consumptionByTimeBand, totalConsumption, yearlySunHours, yearlyPVHours }
+  return { consumption, consumptionByTimeBand, totalConsumption, yearlySunHours, yearlyPVHours, pvConsumptionsPerMonth }
 })
