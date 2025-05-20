@@ -16,6 +16,9 @@
         {{ t('pvConsumptionTable.annualConsumption') }}:
         {{ (totalPeak + totalFlat + totalValley).toFixed(2) }}
       </h4>
+      <p class="text-xs mt-1 text-slate-500">
+        {{ t('pvConsumptionTable.disclaimer') }}
+      </p>
     </template>
   </Card>
 </template>
@@ -75,7 +78,8 @@ const totalValley = computed(() =>
       "totalPeak": "Total Peak",
       "totalFlat": "Total Flat",
       "totalValley": "Total Valley",
-      "annualConsumption": "ANNUAL CONSUMPTION [kWh/year] during photovoltaic production hours"
+      "annualConsumption": "ANNUAL CONSUMPTION [kWh/year] during photovoltaic production hours",
+      "disclaimer": "Based on the average consumption distribution profile for a residential customer in Spain, calculated from: https://www.boe.es/eli/es/res/2024/12/23/(5)"
     },
     "months": {
       "january": "January",
@@ -103,7 +107,8 @@ const totalValley = computed(() =>
       "totalPeak": "Total Punta",
       "totalFlat": "Total Llano",
       "totalValley": "Total Valle",
-      "annualConsumption": "CONSUMO ANUAL [kWh/año] en horas de producción fotovoltaica"
+      "annualConsumption": "CONSUMO ANUAL [kWh/año] en horas de producción fotovoltaica",
+      "disclaimer": "Basado en el perfil de reparto de consumo medio para un cliente residencial en España, calculado a partir de: https://www.boe.es/eli/es/res/2024/12/23/(5)"
     },
     "months": {
       "january": "Enero",
