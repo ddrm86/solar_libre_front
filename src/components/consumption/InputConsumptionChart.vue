@@ -35,6 +35,7 @@ const chartData = computed(() => {
   ]
 
   const consumptions = inputConsumptionStore.consumption.consumptionsPerMonth
+  const pvConsumptions = inputConsumptionStore.pvConsumptionsPerMonth
 
   return {
     labels: months,
@@ -59,6 +60,24 @@ const chartData = computed(() => {
         fill: false,
         borderColor: documentStyle.getPropertyValue('--p-green-500'),
         tension: 0.4
+      },
+      {
+        label: t('energy_consumption.pv_peak'),
+        data: pvConsumptions.map((c) => c.peak),
+        backgroundColor: documentStyle.getPropertyValue('--p-red-200'),
+        type: 'bar'
+      },
+      {
+        label: t('energy_consumption.pv_flat'),
+        data: pvConsumptions.map((c) => c.flat),
+        backgroundColor: documentStyle.getPropertyValue('--p-yellow-200'),
+        type: 'bar'
+      },
+      {
+        label: t('energy_consumption.pv_valley'),
+        data: pvConsumptions.map((c) => c.valley),
+        backgroundColor: documentStyle.getPropertyValue('--p-green-200'),
+        type: 'bar'
       }
     ]
   }
@@ -108,7 +127,10 @@ const chartOptions = computed(() => {
       "title": "ANNUAL ENERGY CONSUMPTION [kWh]",
       "peak": "Peak",
       "flat": "Flat",
-      "valley": "Valley"
+      "valley": "Valley",
+      "pv_peak": "Peak during PV hours",
+      "pv_flat": "Flat during PV hours",
+      "pv_valley": "Valley during PV hours"
     },
     "months": {
       "january": "January",
@@ -130,7 +152,10 @@ const chartOptions = computed(() => {
       "title": "ENERGÍA CONSUMIDA ANUALMENTE [kWh]",
       "peak": "Punta",
       "flat": "Llano",
-      "valley": "Valle"
+      "valley": "Valle",
+      "pv_peak": "Punta en horas FV",
+      "pv_flat": "Llano en horas FV",
+      "pv_valley": "Valle en horas FV"
     },
     "months": {
       "january": "Enero",
