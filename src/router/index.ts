@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import('@/views/ProjectInfoView.vue'),
     },
     {
+      path: '/consumption',
+      name: 'consumption',
+      component: () => import('@/views/ConsumptionView.vue'),
+    },
+    {
       path: '/solar_arrays',
       name: 'solar_arrays',
       component: () => import('@/views/SolarArraysView.vue'),
