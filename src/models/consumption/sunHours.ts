@@ -33,3 +33,29 @@ export class CSunHours implements ISunHours {
       })
   }
 }
+
+export interface IYearlySunHours {
+  sunHoursPerMonth: ISunHours[]
+  fetchYearlySunHours(latitude: number, longitude: number): Promise<void>
+}
+
+export class CYearlySunHours implements IYearlySunHours {
+  sunHoursPerMonth: ISunHours[]
+
+  constructor() {
+    this.sunHoursPerMonth = Array.from({ length: 12 }, () => ({
+      sunrise: new Date(),
+      sunset: new Date(),
+    }))
+  }
+
+  async fetchYearlySunHours(latitude: number, longitude: number): Promise<void> {
+    const promises = this.sunHoursPerMonth.map((_, monthIndex) => {
+      const date = new Date()
+      date.setMonth(monthIndex, 1)
+      return CSunHours.fetchSunHours(latitude, longitude, date)
+    })
+
+    this.sunHoursPerMonth = await Promise.all(promises)
+  }
+}
