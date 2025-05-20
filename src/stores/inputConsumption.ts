@@ -22,6 +22,15 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
 
   const yearlySunHours = ref<IYearlySunHours>(new CYearlySunHours())
 
+  const yearlyPVHours = computed(() => {
+    return {
+      pvHoursPerMonth: yearlySunHours.value.sunHoursPerMonth.map(({ sunrise, sunset }) => ({
+        sunrise: new Date(sunrise.getTime() + 2 * 60 * 60 * 1000), // Add 2 hours
+        sunset: new Date(sunset.getTime() - 2 * 60 * 60 * 1000),  // Subtract 2 horas
+      }))
+    }
+  })
+
   watch(
     () => [projectInfoStore.projectInfo.location.latitude, projectInfoStore.projectInfo.location.longitude],
     ([lat, lng]) => {
@@ -30,5 +39,5 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     { immediate: true }
   )
 
-  return { consumption, consumptionByTimeBand, totalConsumption, yearlySunHours }
+  return { consumption, consumptionByTimeBand, totalConsumption, yearlySunHours, yearlyPVHours }
 })
