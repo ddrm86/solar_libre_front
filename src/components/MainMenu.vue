@@ -49,6 +49,11 @@ const items = ref([
     route: '/inverters_setup'
   },
   {
+    label: t('economic_balance'),
+    icon: 'pi pi-wallet',
+    route: '/economic_balance'
+  },
+  {
     label: t('inventory'),
     icon: 'pi pi-warehouse',
     items: [
@@ -81,8 +86,9 @@ const items = ref([
     "consumption": "Consumption",
     "solar_arrays": "Solar arrays",
     "inventory": "Inventory",
-    "panels": "Solar panels",
     "inverters_setup": "Inverters setup",
+    "economic_balance": "Economic balance",
+    "panels": "Solar panels",
     "monophase_inverters": "Monophase inverters"
   },
   "es": {
@@ -91,8 +97,9 @@ const items = ref([
     "consumption": "Consumo",
     "solar_arrays": "Matrices solares",
     "inventory": "Inventario",
-    "panels": "Paneles solares",
     "inverters_setup": "Configuración de inversores",
+    "economic_balance": "Balance económico",
+    "panels": "Paneles solares",
     "monophase_inverters": "Inversores monofásicos"
   }
 }

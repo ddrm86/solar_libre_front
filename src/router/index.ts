@@ -30,6 +30,11 @@ const router = createRouter({
       component: () => import('@/views/InvertersSetupView.vue'),
     },
     {
+      path: '/economic_balance',
+      name: 'economic_balance',
+      component: () => import('@/views/EconomicBalanceView.vue'),
+    },
+    {
       path: '/inventory/panels',
       name: 'panels',
       component: () => import('@/views/inventory/PanelsView.vue'),
