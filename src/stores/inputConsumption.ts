@@ -2,12 +2,10 @@ import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import {
   CYearlyConsumption,
-  type IYearlyConsumption
+  type IYearlyConsumption,
 } from '@/models/consumption/inputConsumption.ts'
 import { CYearlySunHours, type IYearlySunHours } from '@/models/consumption/sunHours.ts'
-import {
-  consumptionDistributionProfile
-} from '@/models/consumption/consumptionDistributionProfile'
+import { consumptionDistributionProfile } from '@/models/consumption/consumptionDistributionProfile'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
 export const useInputConsumptionStore = defineStore('input_consumption', () => {
@@ -17,6 +15,10 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
 
   const consumptionByTimeBand = computed(() => {
     return consumption.value.calcTotalConsumptionByTimeBand()
+  })
+
+  const totalConsumptionPerMonth = computed(() => {
+    return consumption.value.calcTotalConsumptionPerMonth()
   })
 
   const totalConsumption = computed(() => {
@@ -29,8 +31,8 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     return {
       pvHoursPerMonth: yearlySunHours.value.sunHoursPerMonth.map(({ sunrise, sunset }) => ({
         sunrise: new Date(sunrise.getTime() + 2 * 60 * 60 * 1000), // Add 2 hours
-        sunset: new Date(sunset.getTime() - 2 * 60 * 60 * 1000),  // Subtract 2 horas
-      }))
+        sunset: new Date(sunset.getTime() - 2 * 60 * 60 * 1000), // Subtract 2 horas
+      })),
     }
   })
 
@@ -46,12 +48,9 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
       const pvConsumption = { peak: 0, flat: 0, valley: 0 }
 
       for (let hour = startHour; hour <= endHour; hour++) {
-        pvConsumption.peak +=
-          (monthlyConsumption.peak * profile[hour].percentPeak) / 100
-        pvConsumption.flat +=
-          (monthlyConsumption.flat * profile[hour].percentFlat) / 100
-        pvConsumption.valley +=
-          (monthlyConsumption.valley * profile[hour].percentValley) / 100
+        pvConsumption.peak += (monthlyConsumption.peak * profile[hour].percentPeak) / 100
+        pvConsumption.flat += (monthlyConsumption.flat * profile[hour].percentFlat) / 100
+        pvConsumption.valley += (monthlyConsumption.valley * profile[hour].percentValley) / 100
       }
 
       return pvConsumption
@@ -59,12 +58,23 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
   })
 
   watch(
-    () => [projectInfoStore.projectInfo.location.latitude, projectInfoStore.projectInfo.location.longitude],
+    () => [
+      projectInfoStore.projectInfo.location.latitude,
+      projectInfoStore.projectInfo.location.longitude,
+    ],
     ([lat, lng]) => {
       void yearlySunHours.value.fetchYearlySunHours(lat, lng)
     },
-    { immediate: true }
+    { immediate: true },
   )
 
-  return { consumption, consumptionByTimeBand, totalConsumption, yearlySunHours, yearlyPVHours, pvConsumptionsPerMonth }
+  return {
+    consumption,
+    consumptionByTimeBand,
+    totalConsumptionPerMonth,
+    totalConsumption,
+    yearlySunHours,
+    yearlyPVHours,
+    pvConsumptionsPerMonth,
+  }
 })

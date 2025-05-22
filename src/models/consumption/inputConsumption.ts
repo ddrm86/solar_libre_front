@@ -8,6 +8,7 @@ export interface IYearlyConsumption {
   consumptionsPerMonth: [IConsumptionByTimeBand]
 
   calcTotalConsumptionByTimeBand: () => IConsumptionByTimeBand
+  calcTotalConsumptionPerMonth: () => [number]
   calcTotalConsumption: () => number
   setConsumptionByMonthAndTimeBand: (
     monthIndex: number,
@@ -47,6 +48,13 @@ export class CYearlyConsumption implements IYearlyConsumption {
       results.valley += monthConsumpPerBand.valley
     })
     return results
+  }
+
+  calcTotalConsumptionPerMonth(): [number] {
+    const totalPerMonth = this.consumptionsPerMonth.map((monthConsumpPerBand) => {
+      return monthConsumpPerBand.peak + monthConsumpPerBand.flat + monthConsumpPerBand.valley
+    })
+    return totalPerMonth as [number]
   }
 
   calcTotalConsumption(): number {
