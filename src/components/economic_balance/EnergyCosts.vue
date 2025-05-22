@@ -102,8 +102,8 @@
         </div>
 
         <div class="font-bold">{{ t('energy_costs.total') }}</div>
-        <div class="font-semibold text-center">{{ energyCostTotal.withoutTaxes.toFixed(2) }}€</div>
-        <div class="font-semibold text-center">{{ energyCostTotal.withTaxes.toFixed(2) }}€</div>
+        <div class="font-medium text-center">{{ energyCostTotal.withoutTaxes.toFixed(2) }}€</div>
+        <div class="font-medium text-center">{{ energyCostTotal.withTaxes.toFixed(2) }}€</div>
 
         <div class="font-bold">{{ t('energy_costs.averageKwhCost') }}</div>
         <div class="font-medium text-center">{{ averageKwhCost.withoutTaxes.toFixed(6) }}€</div>
