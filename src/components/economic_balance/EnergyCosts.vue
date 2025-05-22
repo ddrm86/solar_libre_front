@@ -10,31 +10,33 @@
             <label for="iva">{{ t('energy_costs.iva') }}</label>
             <InputNumber
               id="iva"
-              :model-value="energyCosts.iva * 100"
+              :model-value="economicBalanceStore.energyCosts.iva * 100"
               mode="decimal"
               :maxFractionDigits="2"
               :min="0"
               suffix="%"
-              @update:model-value="(value) => (energyCosts.iva = value / 100)"
+              @update:model-value="(value) => (economicBalanceStore.energyCosts.iva = value / 100)"
             />
           </div>
           <div class="grid grid-cols-2 gap-2 items-center pt-2">
             <label for="electricTax">{{ t('energy_costs.electricTax') }}</label>
             <InputNumber
               id="electricTax"
-              :model-value="energyCosts.electricTax * 100"
+              :model-value="economicBalanceStore.energyCosts.electricTax * 100"
               mode="decimal"
               :min="0"
               :maxFractionDigits="6"
               suffix="%"
-              @update:model-value="(value) => (energyCosts.electricTax = value / 100)"
+              @update:model-value="
+                (value) => (economicBalanceStore.energyCosts.electricTax = value / 100)
+              "
             />
           </div>
           <div class="grid grid-cols-2 gap-2 items-center pt-2">
             <label for="totalAnnualCost">{{ t('energy_costs.totalAnnualCost') }}</label>
             <InputNumber
               id="totalAnnualCost"
-              v-model="energyCosts.totalAnnualCost"
+              v-model="economicBalanceStore.energyCosts.totalAnnualCost"
               mode="decimal"
               :minFractionDigits="2"
               :maxFractionDigits="2"
@@ -47,7 +49,7 @@
             <label for="peakKwhCost">{{ t('energy_costs.peakKwhCost') }}</label>
             <InputNumber
               id="peakKwhCost"
-              v-model="energyCosts.peakKwhCost"
+              v-model="economicBalanceStore.energyCosts.peakKwhCost"
               mode="decimal"
               :minFractionDigits="6"
               :maxFractionDigits="6"
@@ -58,7 +60,7 @@
             <label for="flatKwhCost">{{ t('energy_costs.flatKwhCost') }}</label>
             <InputNumber
               id="flatKwhCost"
-              v-model="energyCosts.flatKwhCost"
+              v-model="economicBalanceStore.energyCosts.flatKwhCost"
               mode="decimal"
               :minFractionDigits="6"
               :maxFractionDigits="6"
@@ -69,7 +71,7 @@
             <label for="valleyKwhCost">{{ t('energy_costs.valleyKwhCost') }}</label>
             <InputNumber
               id="valleyKwhCost"
-              v-model="energyCosts.valleyKwhCost"
+              v-model="economicBalanceStore.energyCosts.valleyKwhCost"
               mode="decimal"
               :minFractionDigits="6"
               :maxFractionDigits="6"
@@ -86,28 +88,48 @@
         <div class="font-semibold text-center">{{ t('energy_costs.withTaxes') }}</div>
 
         <div class="font-semibold">{{ t('energy_costs.peak') }}</div>
-        <div class="text-center">{{ energyCostByTimeBand.peak.toFixed(2) }}€</div>
-        <div class="text-center">{{ energyCostByTimeBand.peakWithTaxes.toFixed(2) }}€</div>
+        <div class="text-center">
+          {{ economicBalanceStore.energyCostByTimeBand.peak.toFixed(2) }}€
+        </div>
+        <div class="text-center">
+          {{ economicBalanceStore.energyCostByTimeBand.peakWithTaxes.toFixed(2) }}€
+        </div>
 
         <div class="font-semibold">{{ t('energy_costs.flat') }}</div>
-        <div class="text-center">{{ energyCostByTimeBand.flat.toFixed(2) }}€</div>
-        <div class="text-center">{{ energyCostByTimeBand.flatWithTaxes.toFixed(2) }}€</div>
+        <div class="text-center">
+          {{ economicBalanceStore.energyCostByTimeBand.flat.toFixed(2) }}€
+        </div>
+        <div class="text-center">
+          {{ economicBalanceStore.energyCostByTimeBand.flatWithTaxes.toFixed(2) }}€
+        </div>
 
         <div class="font-semibold">{{ t('energy_costs.valley') }}</div>
-        <div class="text-center">{{ energyCostByTimeBand.valley.toFixed(2) }}€</div>
-        <div class="text-center">{{ energyCostByTimeBand.valleyWithTaxes.toFixed(2) }}€</div>
+        <div class="text-center">
+          {{ economicBalanceStore.energyCostByTimeBand.valley.toFixed(2) }}€
+        </div>
+        <div class="text-center">
+          {{ economicBalanceStore.energyCostByTimeBand.valleyWithTaxes.toFixed(2) }}€
+        </div>
 
         <div class="col-span-full">
           <Divider />
         </div>
 
         <div class="font-bold">{{ t('energy_costs.total') }}</div>
-        <div class="font-medium text-center">{{ energyCostTotal.withoutTaxes.toFixed(2) }}€</div>
-        <div class="font-medium text-center">{{ energyCostTotal.withTaxes.toFixed(2) }}€</div>
+        <div class="font-medium text-center">
+          {{ economicBalanceStore.energyCostTotal.withoutTaxes.toFixed(2) }}€
+        </div>
+        <div class="font-medium text-center">
+          {{ economicBalanceStore.energyCostTotal.withTaxes.toFixed(2) }}€
+        </div>
 
         <div class="font-bold">{{ t('energy_costs.averageKwhCost') }}</div>
-        <div class="font-medium text-center">{{ averageKwhCost.withoutTaxes.toFixed(6) }}€</div>
-        <div class="font-medium text-center">{{ averageKwhCost.withTaxes.toFixed(6) }}€</div>
+        <div class="font-medium text-center">
+          {{ economicBalanceStore.averageKwhCost.withoutTaxes.toFixed(6) }}€
+        </div>
+        <div class="font-medium text-center">
+          {{ economicBalanceStore.averageKwhCost.withTaxes.toFixed(6) }}€
+        </div>
       </div>
     </template>
   </Card>
@@ -119,11 +141,6 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const economicBalanceStore = useEconomicBalanceStore()
-
-const energyCosts = economicBalanceStore.energyCosts
-const energyCostByTimeBand = economicBalanceStore.energyCostByTimeBand
-const energyCostTotal = economicBalanceStore.energyCostTotal
-const averageKwhCost = economicBalanceStore.averageKwhCost
 </script>
 
 <i18n>
