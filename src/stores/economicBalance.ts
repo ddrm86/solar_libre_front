@@ -4,8 +4,9 @@ import { CEnergyCosts, type IEnergyCosts } from '@/models/economic_balance/energ
 import { useInputConsumptionStore } from '@/stores/inputConsumption'
 
 export const useEconomicBalanceStore = defineStore('economic_balance', () => {
-  const energyCosts = ref<IEnergyCosts>(new CEnergyCosts())
   const inputConsumptionStore = useInputConsumptionStore()
+
+  const energyCosts = ref<IEnergyCosts>(new CEnergyCosts())
 
   const energyCostByTimeBand = computed(() => {
     const { peak, flat, valley } = inputConsumptionStore.consumptionByTimeBand
@@ -33,5 +34,18 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
     }
   })
 
-  return { energyCosts, energyCostByTimeBand, energyCostTotal }
+  const averageKwhCost = computed(() => {
+    return {
+      withoutTaxes:
+        inputConsumptionStore.totalConsumption === 0
+          ? 0
+          : energyCostTotal.value.withoutTaxes / inputConsumptionStore.totalConsumption,
+      withTaxes:
+        inputConsumptionStore.totalConsumption === 0
+          ? 0
+          : energyCostTotal.value.withTaxes / inputConsumptionStore.totalConsumption,
+    }
+  })
+
+  return { energyCosts, energyCostByTimeBand, energyCostTotal, averageKwhCost }
 })

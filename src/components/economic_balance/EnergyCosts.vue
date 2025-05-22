@@ -104,6 +104,10 @@
         <div class="font-bold">{{ t('energy_costs.total') }}</div>
         <div class="font-semibold text-center">{{ energyCostTotal.withoutTaxes.toFixed(2) }}€</div>
         <div class="font-semibold text-center">{{ energyCostTotal.withTaxes.toFixed(2) }}€</div>
+
+        <div class="font-bold">{{ t('energy_costs.averageKwhCost') }}</div>
+        <div class="font-medium text-center">{{ averageKwhCost.withoutTaxes.toFixed(6) }}€</div>
+        <div class="font-medium text-center">{{ averageKwhCost.withTaxes.toFixed(6) }}€</div>
       </div>
     </template>
   </Card>
@@ -119,6 +123,7 @@ const economicBalanceStore = useEconomicBalanceStore()
 const energyCosts = economicBalanceStore.energyCosts
 const energyCostByTimeBand = economicBalanceStore.energyCostByTimeBand
 const energyCostTotal = economicBalanceStore.energyCostTotal
+const averageKwhCost = economicBalanceStore.averageKwhCost
 </script>
 
 <i18n>
@@ -131,6 +136,7 @@ const energyCostTotal = economicBalanceStore.energyCostTotal
       "peakKwhCost": "Peak kWh cost",
       "flatKwhCost": "Flat kWh cost",
       "valleyKwhCost": "Valley kWh cost",
+      "averageKwhCost": "Average kWh cost",
       "totalAnnualCost": "Total annual cost",
       "costs_summary": "Costs summary",
       "withoutTaxes": "Without taxes",
@@ -149,6 +155,7 @@ const energyCostTotal = economicBalanceStore.energyCostTotal
       "peakKwhCost": "Coste por kWh punta",
       "flatKwhCost": "Coste por kWh llano",
       "valleyKwhCost": "Coste por kWh valle",
+      "averageKwhCost": "Coste medio por kWh",
       "totalAnnualCost": "Coste anual total",
       "costs_summary": "Resumen de costes",
       "withoutTaxes": "Sin impuestos",
