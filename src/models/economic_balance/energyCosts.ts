@@ -5,6 +5,7 @@ export interface IEnergyCosts {
   flatKwhCost: number
   valleyKwhCost: number
   totalAnnualCost: number
+  compensationPerKwh: number
 }
 
 export class CEnergyCosts implements IEnergyCosts {
@@ -14,6 +15,7 @@ export class CEnergyCosts implements IEnergyCosts {
   flatKwhCost: number
   valleyKwhCost: number
   totalAnnualCost: number
+  compensationPerKwh: number
 
   constructor() {
     this.iva = 0.21
@@ -22,5 +24,6 @@ export class CEnergyCosts implements IEnergyCosts {
     this.flatKwhCost = 0.0
     this.valleyKwhCost = 0.0
     this.totalAnnualCost = 0.0
+    this.compensationPerKwh = 0.09
   }
 }

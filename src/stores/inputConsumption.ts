@@ -57,6 +57,12 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     })
   })
 
+  const totalPvConsumptionPerMonth = computed(() => {
+    return pvConsumptionsPerMonth.value.map((pvConsumption) => {
+      return pvConsumption.peak + pvConsumption.flat + pvConsumption.valley
+    })
+  })
+
   watch(
     () => [
       projectInfoStore.projectInfo.location.latitude,
@@ -76,5 +82,6 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     yearlySunHours,
     yearlyPVHours,
     pvConsumptionsPerMonth,
+    totalPvConsumptionPerMonth
   }
 })

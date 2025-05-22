@@ -21,6 +21,20 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
     arrays.value.splice(index, 1)
   }
 
+  const pvgisProductionPerMonth = computed(() => {
+    const monthlyProduction = Array(12).fill(0)
+
+    arrays.value.forEach((array) => {
+      if (array.pvgisData?.response?.monthly) {
+        array.pvgisData.response.monthly.forEach((monthData) => {
+          monthlyProduction[monthData.month - 1] += monthData.E_m
+        })
+      }
+    })
+
+    return monthlyProduction
+  })
+
   watch(
     () => projectInfoStore.projectInfo.location,
     () => {
@@ -31,5 +45,5 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
     { deep: true }
   )
 
-  return { arrays, totalNumberOfPanels, addSolarArray, deleteSolarArray }
+  return { arrays, totalNumberOfPanels, addSolarArray, deleteSolarArray, pvgisProductionPerMonth }
 })
