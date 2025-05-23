@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex gap-4 items-center">
+    <div class="grid grid-cols-2 gap-y-2 items-center">
       <label for="initialCost" class="block font-medium mb-2">
         {{ t('roi.initialCost') }}
       </label>
@@ -17,7 +17,7 @@
       />
     </div>
 
-    <div class="flex gap-4 items-center">
+    <div class="grid grid-cols-2 gap-y-2 items-center">
       <label for="annualMaintenanceCost" class="block font-medium mb-2">
         {{ t('roi.annualMaintenanceCost') }}
       </label>
@@ -34,7 +34,7 @@
       />
     </div>
 
-    <div class="flex gap-4 items-center">
+    <div class="grid grid-cols-2 gap-y-2 items-center">
       <label for="inflation" class="block font-medium mb-2">
         {{ t('roi.inflation') }}
       </label>
@@ -51,7 +51,7 @@
       />
     </div>
 
-    <div class="flex gap-4 items-center">
+    <div class="grid grid-cols-2 gap-y-2 items-center">
       <label for="includeSurplus" class="block font-medium mb-2">
         {{ t('roi.includeSurplus') }}
       </label>
@@ -62,7 +62,7 @@
       />
     </div>
 
-    <div class="flex gap-4 items-center">
+    <div class="grid grid-cols-2 gap-y-2 items-center">
       <label for="energyAnnualSavings" class="block font-medium mb-2">
         {{ t('roi.annualSavings') }}
       </label>
