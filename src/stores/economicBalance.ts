@@ -2,11 +2,19 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { CEnergyCosts, type IEnergyCosts } from '@/models/economic_balance/energyCosts'
 import { useInputConsumptionStore } from '@/stores/inputConsumption'
+import {
+  CInstallationCosts,
+  type IInstallationCosts,
+} from '@/models/economic_balance/installationCosts.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 
 export const useEconomicBalanceStore = defineStore('economic_balance', () => {
+  const solarArraysStore = useSolarArraysStore()
   const inputConsumptionStore = useInputConsumptionStore()
 
   const energyCosts = ref<IEnergyCosts>(new CEnergyCosts())
+  const installationCosts = ref<IInstallationCosts>(new CInstallationCosts())
+  const inflation = ref<number>(0.02)
 
   const energyCostByTimeBand = computed(() => {
     const { peak, flat, valley } = inputConsumptionStore.consumptionByTimeBand
@@ -47,5 +55,41 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
     }
   })
 
-  return { energyCosts, energyCostByTimeBand, energyCostTotal, averageKwhCost }
+  const savingsWithoutCompensation = computed(() => {
+    return solarArraysStore.pvgisProductionPerMonth.map((production, index) => {
+      return Math.min(production, inputConsumptionStore.totalPvConsumptionPerMonth[index]) * averageKwhCost.value.withTaxes
+    })
+  })
+
+  const surplus = computed(() => {
+    return solarArraysStore.pvgisProductionPerMonth.map((production, index) => {
+      return Math.max(0, production - inputConsumptionStore.totalPvConsumptionPerMonth[index]) * energyCosts.value.compensationPerKwh
+    })
+  })
+
+  const monthlyCosts = computed(() => {
+    return inputConsumptionStore.totalConsumptionPerMonth.map((consumption) => {
+      return consumption * averageKwhCost.value.withTaxes
+    })
+  })
+
+  const annualSavings = computed(() => {
+    return {
+      withoutCompensation: savingsWithoutCompensation.value.reduce((total, saving) => total + saving, 0),
+      surplus: surplus.value.reduce((total, surplusValue) => total + surplusValue, 0),
+    }
+  })
+
+  return {
+    energyCosts,
+    energyCostByTimeBand,
+    energyCostTotal,
+    averageKwhCost,
+    installationCosts,
+    inflation,
+    savingsWithoutCompensation,
+    surplus,
+    monthlyCosts,
+    annualSavings
+  }
 })

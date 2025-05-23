@@ -12,14 +12,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useInputConsumptionStore } from '@/stores/inputConsumption'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
-import { useSolarArraysStore } from '@/stores/solarArrays'
 
 const { t } = useI18n()
-const inputConsumptionStore = useInputConsumptionStore()
 const economicBalanceStore = useEconomicBalanceStore()
-const solarArraysStore = useSolarArraysStore()
 
 const chartData = computed(() => {
   const documentStyle = getComputedStyle(document.documentElement)
@@ -38,23 +34,9 @@ const chartData = computed(() => {
     t('months.december')
   ]
 
-  const totalConsumptionPerMonth = inputConsumptionStore.totalConsumptionPerMonth
-  const totalPvConsumptionPerMonth = inputConsumptionStore.totalPvConsumptionPerMonth
-  const pvgisProductionPerMonth = solarArraysStore.pvgisProductionPerMonth
-  const averageKwhCost = economicBalanceStore.averageKwhCost.withTaxes
-  const compensationPerKwh = economicBalanceStore.energyCosts.compensationPerKwh
-
-  const savingsWithoutCompensation = pvgisProductionPerMonth.map((production, index) => {
-    return Math.min(production, totalPvConsumptionPerMonth[index]) * averageKwhCost
-  })
-
-  const surplus = pvgisProductionPerMonth.map((production, index) => {
-    return Math.max(0, production - totalPvConsumptionPerMonth[index]) * compensationPerKwh
-  })
-
-  const monthlyCosts = totalConsumptionPerMonth.map((consumption) => {
-    return consumption * averageKwhCost
-  })
+  const savingsWithoutCompensation = economicBalanceStore.savingsWithoutCompensation
+  const surplus = economicBalanceStore.surplus
+  const monthlyCosts = economicBalanceStore.monthlyCosts
 
   return {
     labels: months,
