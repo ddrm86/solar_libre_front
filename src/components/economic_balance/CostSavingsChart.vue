@@ -44,46 +44,45 @@ const chartData = computed(() => {
   const averageKwhCost = economicBalanceStore.averageKwhCost.withTaxes
   const compensationPerKwh = economicBalanceStore.energyCosts.compensationPerKwh
 
-  const monthlyCosts = totalConsumptionPerMonth.map((consumption) => {
-    return consumption * averageKwhCost
-  })
-
   const savingsWithoutCompensation = pvgisProductionPerMonth.map((production, index) => {
     return Math.min(production, totalPvConsumptionPerMonth[index]) * averageKwhCost
   })
 
-  const savingsWithCompensation = pvgisProductionPerMonth.map((production, index) => {
-    const surplus = Math.max(0, production - totalPvConsumptionPerMonth[index])
-    return savingsWithoutCompensation[index] + surplus * compensationPerKwh
+  const surplus = pvgisProductionPerMonth.map((production, index) => {
+    return Math.max(0, production - totalPvConsumptionPerMonth[index]) * compensationPerKwh
+  })
+
+  const monthlyCosts = totalConsumptionPerMonth.map((consumption) => {
+    return consumption * averageKwhCost
   })
 
   return {
     labels: months,
     datasets: [
       {
+        label: t('cost_savings.savings_without_compensation'),
+        data: savingsWithoutCompensation,
+        backgroundColor: documentStyle.getPropertyValue('--p-green-500'),
+        stack: 'savings'
+      },
+      {
+        label: t('cost_savings.surplus'),
+        data: surplus,
+        backgroundColor: documentStyle.getPropertyValue('--p-blue-500'),
+        stack: 'savings'
+      },
+      {
         label: t('cost_savings.expenses'),
         data: monthlyCosts,
         type: 'line',
         borderColor: documentStyle.getPropertyValue('--p-red-500'),
-        tension: 0.4,
-        fill: false
-      },
-      {
-        label: t('cost_savings.savings_without_compensation'),
-        data: savingsWithoutCompensation,
-        backgroundColor: documentStyle.getPropertyValue('--p-green-500'),
-        type: 'bar'
-      },
-      {
-        label: t('cost_savings.savings_with_compensation'),
-        data: savingsWithCompensation,
-        backgroundColor: documentStyle.getPropertyValue('--p-blue-500'),
-        type: 'bar'
+        borderWidth: 2,
+        fill: false,
+        tension: 0.4
       }
     ]
   }
 })
-
 const chartOptions = computed(() => {
   const documentStyle = getComputedStyle(document.documentElement)
   const textColor = documentStyle.getPropertyValue('--p-text-color')
@@ -101,6 +100,7 @@ const chartOptions = computed(() => {
     },
     scales: {
       x: {
+        stacked: true,
         ticks: {
           color: textColorSecondary
         },
@@ -109,6 +109,7 @@ const chartOptions = computed(() => {
         }
       },
       y: {
+        stacked: true,
         ticks: {
           color: textColorSecondary
         },
@@ -127,7 +128,7 @@ const chartOptions = computed(() => {
     "cost_savings": {
       "expenses": "Monthly Expenses",
       "savings_without_compensation": "Savings without Compensation",
-      "savings_with_compensation": "Savings with Compensation"
+      "surplus": "Surplus compensation"
     },
     "months": {
       "january": "January",
@@ -148,7 +149,7 @@ const chartOptions = computed(() => {
     "cost_savings": {
       "expenses": "Gastos Mensuales",
       "savings_without_compensation": "Ahorros sin Compensación",
-      "savings_with_compensation": "Ahorros con Compensación"
+      "surplus": "Compensación de excedentes"
     },
     "months": {
       "january": "Enero",
