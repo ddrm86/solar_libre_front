@@ -60,6 +60,15 @@ const chartData = computed(() => {
     labels: months,
     datasets: [
       {
+        label: t('cost_savings.expenses'),
+        data: monthlyCosts,
+        type: 'line',
+        borderColor: documentStyle.getPropertyValue('--p-red-500'),
+        borderWidth: 2,
+        fill: false,
+        tension: 0.4
+      },
+      {
         label: t('cost_savings.savings_without_compensation'),
         data: savingsWithoutCompensation,
         backgroundColor: documentStyle.getPropertyValue('--p-green-500'),
@@ -70,19 +79,11 @@ const chartData = computed(() => {
         data: surplus,
         backgroundColor: documentStyle.getPropertyValue('--p-blue-500'),
         stack: 'savings'
-      },
-      {
-        label: t('cost_savings.expenses'),
-        data: monthlyCosts,
-        type: 'line',
-        borderColor: documentStyle.getPropertyValue('--p-red-500'),
-        borderWidth: 2,
-        fill: false,
-        tension: 0.4
       }
     ]
   }
 })
+
 const chartOptions = computed(() => {
   const documentStyle = getComputedStyle(document.documentElement)
   const textColor = documentStyle.getPropertyValue('--p-text-color')
