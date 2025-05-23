@@ -24,6 +24,11 @@
         <CostSavingsChart />
       </div>
     </template>
+    <template #footer>
+      <p class="text-xs mt-1 text-slate-500">
+        {{ t('savings.disclaimer') }}
+      </p>
+    </template>
   </Card>
 </template>
 
@@ -41,13 +46,15 @@ const economicBalanceStore = useEconomicBalanceStore()
   "en": {
     "savings": {
       "title": "Savings",
-      "compensationPerKwh": "Compensation for surplus"
+      "compensationPerKwh": "Compensation for surplus",
+      "disclaimer": "Depending on the contracted rate, it is possible that surpluses exceeding the monthly consumption will not be compensated."
     }
   },
   "es": {
     "savings": {
       "title": "Ahorros",
-      "compensationPerKwh": "Compensación por excedentes"
+      "compensationPerKwh": "Compensación por excedentes",
+      "disclaimer": "Dependiendo de la tarifa contratada, es posible que no se compensen los excedentes que superen el gasto mensual realizado."
     }
   }
 }
