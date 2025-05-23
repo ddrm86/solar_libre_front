@@ -13,14 +13,14 @@
           mode="decimal"
           showButtons
           :step="0.01"
-          :maxFractionDigits = "2"
-          :minFractionDigits = "2"
-          :min = "0"
+          :maxFractionDigits="2"
+          :minFractionDigits="2"
+          :min="0"
           suffix="€/kWh"
           v-model="economicBalanceStore.energyCosts.compensationPerKwh"
         />
       </div>
-      <div>
+      <div class="pt-4">
         <CostSavingsChart />
       </div>
     </template>
