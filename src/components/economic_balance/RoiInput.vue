@@ -40,6 +40,7 @@
       </label>
       <InputNumber
         id="inflation"
+        :model-value="economicBalanceStore.inflation * 100"
         mode="decimal"
         showButtons
         :step="0.01"
@@ -47,7 +48,7 @@
         :minFractionDigits="2"
         :min="0"
         suffix="%"
-        v-model="economicBalanceStore.inflation"
+        @update:model-value="(value) => (economicBalanceStore.inflation = value / 100)"
       />
     </div>
 
@@ -55,26 +56,20 @@
       <label for="includeSurplus" class="block font-medium mb-2">
         {{ t('roi.includeSurplus') }}
       </label>
-      <Checkbox
-        id="includeSurplus"
-        v-model="includeSurplus"
-        binary
-      />
+      <Checkbox id="includeSurplus" v-model="includeSurplus" binary />
     </div>
 
     <div class="grid grid-cols-2 gap-y-2 items-center">
       <label for="energyAnnualSavings" class="block font-medium mb-2">
         {{ t('roi.annualSavings') }}
       </label>
-      <span id="energyAnnualSavings" class="font-semibold">
-        {{ formattedAnnualSavings }}€
-      </span>
+      <span id="energyAnnualSavings" class="font-semibold"> {{ formattedAnnualSavings }}€ </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
 
