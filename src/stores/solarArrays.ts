@@ -3,7 +3,6 @@ import { ref, watch, computed } from 'vue'
 import { type ISolarArray, CSolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
-
 export const useSolarArraysStore = defineStore('solar_arrays', () => {
   const projectInfoStore = useProjectInfoStore()
 
@@ -11,6 +10,10 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
 
   const totalNumberOfPanels = computed(() => {
     return arrays.value.reduce((total, array) => total + array.array.panelNumber, 0)
+  })
+
+  const isDirty = computed(() => {
+    return arrays.value.some((array) => array.isDirty)
   })
 
   const addSolarArray = () => {
@@ -42,8 +45,15 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
         array.isDirty = true
       })
     },
-    { deep: true }
+    { deep: true },
   )
 
-  return { arrays, totalNumberOfPanels, addSolarArray, deleteSolarArray, pvgisProductionPerMonth }
+  return {
+    arrays,
+    totalNumberOfPanels,
+    isDirty,
+    addSolarArray,
+    deleteSolarArray,
+    pvgisProductionPerMonth,
+  }
 })

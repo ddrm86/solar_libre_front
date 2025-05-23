@@ -1,7 +1,12 @@
 <template>
   <Card>
     <template #title>
-      <h2 class="text-lg font-semibold pb-4">{{ t('savings.title') }}</h2>
+      <div class="flex gap-4 items-center pb-4">
+        <h2 class="text-lg font-semibold">{{ t('savings.title') }}</h2>
+        <Message v-if="solarArraysStore.isDirty" icon="pi pi-exclamation-triangle" severity="warn">
+          {{ t('savings.outdated_pvgis') }}
+        </Message>
+      </div>
     </template>
     <template #content>
       <div class="flex gap-4 items-center">
@@ -36,9 +41,11 @@
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
 import CostSavingsChart from '@/components/economic_balance/CostSavingsChart.vue'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 
 const { t } = useI18n()
 const economicBalanceStore = useEconomicBalanceStore()
+const solarArraysStore = useSolarArraysStore()
 </script>
 
 <i18n>
@@ -47,14 +54,16 @@ const economicBalanceStore = useEconomicBalanceStore()
     "savings": {
       "title": "Savings",
       "compensationPerKwh": "Compensation for surplus",
-      "disclaimer": "Depending on the contracted rate, it is possible that surpluses exceeding the monthly consumption will not be compensated."
+      "disclaimer": "Depending on the contracted rate, it is possible that surpluses exceeding the monthly consumption will not be compensated.",
+      "outdated_pvgis": "The PVGIS production data is outdated with respect to the current installation."
     }
   },
   "es": {
     "savings": {
       "title": "Ahorros",
       "compensationPerKwh": "Compensación por excedentes",
-      "disclaimer": "Dependiendo de la tarifa contratada, es posible que no se compensen los excedentes que superen el gasto mensual realizado."
+      "disclaimer": "Dependiendo de la tarifa contratada, es posible que no se compensen los excedentes que superen el gasto mensual realizado.",
+      "outdated_pvgis": "Los datos de producción PVGIS están desactualizados respecto a la instalación actual"
     }
   }
 }
