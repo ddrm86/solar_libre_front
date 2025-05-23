@@ -44,6 +44,10 @@ const chartData = computed(() => {
   const averageKwhCost = economicBalanceStore.averageKwhCost.withTaxes
   const compensationPerKwh = economicBalanceStore.energyCosts.compensationPerKwh
 
+  const monthlyCosts = totalConsumptionPerMonth.map((consumption) => {
+    return consumption * averageKwhCost
+  })
+
   const savingsWithoutCompensation = pvgisProductionPerMonth.map((production, index) => {
     return Math.min(production, totalPvConsumptionPerMonth[index]) * averageKwhCost
   })
@@ -58,7 +62,7 @@ const chartData = computed(() => {
     datasets: [
       {
         label: t('cost_savings.expenses'),
-        data: totalConsumptionPerMonth,
+        data: monthlyCosts,
         type: 'line',
         borderColor: documentStyle.getPropertyValue('--p-red-500'),
         tension: 0.4,
