@@ -7,6 +7,7 @@
     </template>
     <template #content>
       <RoiInput />
+      <RoiTable />
     </template>
   </Card>
 </template>
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import RoiInput from '@/components/economic_balance/RoiInput.vue'
+import RoiTable from '@/components/economic_balance/RoiTable.vue'
 
 const { t } = useI18n()
 </script>
