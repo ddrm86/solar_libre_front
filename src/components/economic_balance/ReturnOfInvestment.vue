@@ -6,8 +6,8 @@
       </div>
     </template>
     <template #content>
-      <RoiInput />
-      <RoiTable />
+      <RoiInput @updateIncludeSurplus="(value) => includeSurplus = value" />
+      <RoiTable :includeSurplus="includeSurplus" />
     </template>
   </Card>
 </template>
@@ -16,8 +16,10 @@
 import { useI18n } from 'vue-i18n'
 import RoiInput from '@/components/economic_balance/RoiInput.vue'
 import RoiTable from '@/components/economic_balance/RoiTable.vue'
+import { ref } from 'vue'
 
 const { t } = useI18n()
+const includeSurplus = ref(true)
 </script>
 
 <i18n>

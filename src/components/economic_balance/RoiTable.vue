@@ -13,14 +13,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
 
+const props = defineProps({
+  includeSurplus: {
+    type: Boolean,
+    required: true
+  }
+})
+
 const { t } = useI18n()
 const economicBalanceStore = useEconomicBalanceStore()
-
-const includeSurplus = ref(true)  // TODO Propagate this from RoiInput.vue if needed
 
 const roiData = computed(() => {
   const inflation = economicBalanceStore.inflation
@@ -28,7 +33,7 @@ const roiData = computed(() => {
   const annualMaintenanceCost = economicBalanceStore.installationCosts.annualMaintenanceCost
   const totalAnnualCost = economicBalanceStore.energyCosts.totalAnnualCost
   const baseAnnualSavings = economicBalanceStore.annualSavings.withoutCompensation +
-    (includeSurplus.value ? economicBalanceStore.annualSavings.surplus : 0)
+    (props.includeSurplus ? economicBalanceStore.annualSavings.surplus : 0)
 
   const data = []
   let cumulativeSavings = 0

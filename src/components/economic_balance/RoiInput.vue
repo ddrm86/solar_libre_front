@@ -69,14 +69,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
+
+const emit = defineEmits(['updateIncludeSurplus'])
 
 const { t } = useI18n()
 const economicBalanceStore = useEconomicBalanceStore()
 
 const includeSurplus = ref(true)
+
+watch(includeSurplus, (value) => {
+  emit('updateIncludeSurplus', value)
+})
 
 const formattedAnnualSavings = computed(() => {
   const savings = economicBalanceStore.annualSavings.withoutCompensation
