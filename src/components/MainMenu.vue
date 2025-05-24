@@ -13,6 +13,15 @@
         <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
       </a>
     </template>
+    <template #end>
+      <Button
+        icon="pi pi-file-pdf"
+        variant="text"
+        severity="secondary"
+        size="large"
+        @click="generatePdfReport"
+      />
+    </template>
   </Menubar>
 </template>
 
@@ -21,6 +30,10 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+const generatePdfReport = () => {
+  alert('PDF report generation is not implemented yet.')
+}
 
 const items = ref([
   {
