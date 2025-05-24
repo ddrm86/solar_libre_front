@@ -5,8 +5,8 @@
     </template>
     <template #content>
       <div class="2xl:flex 2xl:gap-8">
-      <InputConsumptionTable />
-      <InputConsumptionChart class="pt-8 lg:pt-0 lg:flex-1"/>
+        <InputConsumptionTable />
+        <InputConsumptionChart class="pt-8 lg:pt-0 lg:flex-1" />
       </div>
     </template>
   </Card>

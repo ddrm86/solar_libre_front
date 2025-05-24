@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import { computed, defineProps, defineEmits } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
 
@@ -24,6 +24,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['updateRoiData'])
+
 const { t } = useI18n()
 const economicBalanceStore = useEconomicBalanceStore()
 
@@ -32,30 +34,42 @@ const roiData = computed(() => {
   const initialCost = economicBalanceStore.installationCosts.initialCost
   const annualMaintenanceCost = economicBalanceStore.installationCosts.annualMaintenanceCost
   const totalAnnualCost = economicBalanceStore.energyCosts.totalAnnualCost
-  const baseAnnualSavings = economicBalanceStore.annualSavings.withoutCompensation +
-    (props.includeSurplus ? economicBalanceStore.annualSavings.surplus : 0)
+  const baseAnnualSavings = economicBalanceStore.annualSavings.withoutCompensation
+  const surplusSavings = economicBalanceStore.annualSavings.surplus
 
   const data = []
-  let cumulativeSavings = 0
+  const roiWithoutSurplus = []
+  const roiWithSurplus = []
+  let cumulativeSavingsWithoutSurplus = 0
+  let cumulativeSavingsWithSurplus = 0
 
   for (let year = 1; year <= 25; year++) {
     const annualBill = totalAnnualCost * Math.pow(1 + inflation, year - 1)
     const maintenance = annualMaintenanceCost * Math.pow(1 + inflation, year - 1)
-    const annualSavings = baseAnnualSavings * Math.pow(1 + inflation, year - 1) - maintenance
-    const annualBillWithPV = annualBill - annualSavings
-    cumulativeSavings += annualSavings
-    const roi = cumulativeSavings - initialCost
+    const annualSavingsWithoutSurplus = baseAnnualSavings * Math.pow(1 + inflation, year - 1) - maintenance
+    const annualSavingsWithSurplus = annualSavingsWithoutSurplus + surplusSavings * Math.pow(1 + inflation, year - 1)
+
+    cumulativeSavingsWithoutSurplus += annualSavingsWithoutSurplus
+    cumulativeSavingsWithSurplus += annualSavingsWithSurplus
+
+    const roiWithout = cumulativeSavingsWithoutSurplus - initialCost
+    const roiWith = cumulativeSavingsWithSurplus - initialCost
+
+    roiWithoutSurplus.push(roiWithout.toFixed(2))
+    roiWithSurplus.push(roiWith.toFixed(2))
 
     data.push({
       year,
       annualBill: annualBill.toFixed(2),
       maintenance: maintenance.toFixed(2),
-      annualSavings: annualSavings.toFixed(2),
-      annualBillWithPV: annualBillWithPV.toFixed(2),
-      cumulativeSavings: cumulativeSavings.toFixed(2),
-      roi: roi.toFixed(2)
+      annualSavings: (props.includeSurplus ? annualSavingsWithSurplus : annualSavingsWithoutSurplus).toFixed(2),
+      annualBillWithPV: (annualBill - (props.includeSurplus ? annualSavingsWithSurplus : annualSavingsWithoutSurplus)).toFixed(2),
+      cumulativeSavings: (props.includeSurplus ? cumulativeSavingsWithSurplus : cumulativeSavingsWithoutSurplus).toFixed(2),
+      roi: (props.includeSurplus ? roiWith : roiWithout).toFixed(2)
     })
   }
+
+  emit('updateRoiData', { roiWithoutSurplus, roiWithSurplus })
 
   return data
 })
