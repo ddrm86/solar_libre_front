@@ -35,7 +35,7 @@ const items = ref([
   },
   {
     label: t('consumption'),
-    icon: 'pi pi-euro',
+    icon: 'pi pi pi-gauge',
     route: '/consumption'
   },
   {
