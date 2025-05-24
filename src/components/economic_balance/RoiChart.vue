@@ -79,8 +79,8 @@ const chartOptions = computed(() => {
           color: textColorSecondary
         },
         grid: {
-          color: (ctx) => (ctx.tick.value === 0 ? 'red' : surfaceBorder),
-          lineWidth: (ctx) => (ctx.tick.value === 0 ? 2 : 1)
+          color: (ctx: { tick: { value: number } }) => (ctx.tick.value === 0 ? 'red' : surfaceBorder),
+          lineWidth: (ctx: { tick: { value: number } }) => (ctx.tick.value === 0 ? 2 : 1)
         }
       }
     }
