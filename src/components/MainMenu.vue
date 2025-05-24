@@ -14,13 +14,7 @@
       </a>
     </template>
     <template #end>
-      <Button
-        icon="pi pi-file-pdf"
-        variant="text"
-        severity="secondary"
-        size="large"
-        @click="generatePdfReport"
-      />
+      <PdfReportGenerator />
     </template>
   </Menubar>
 </template>
@@ -28,12 +22,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import PdfReportGenerator from '@/components/report/PdfReportGenerator.vue'
 
 const { t } = useI18n()
-
-const generatePdfReport = () => {
-  alert('PDF report generation is not implemented yet.')
-}
 
 const items = ref([
   {
