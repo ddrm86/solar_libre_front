@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DataTable :value="roiData" class="p-datatable-sm">
+    <DataTable :value="roiData" size="small" stripedRows>
       <Column field="year" :header="t('roi.year')" />
       <Column field="annualBill" :header="t('roi.annualBill')" />
       <Column field="maintenance" :header="t('roi.maintenance')" />

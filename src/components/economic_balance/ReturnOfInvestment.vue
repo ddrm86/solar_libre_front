@@ -7,7 +7,7 @@
     </template>
     <template #content>
       <RoiInput @updateIncludeSurplus="(value) => (includeSurplus = value)" />
-      <div class="2xl:flex 2xl:gap-8">
+      <div class="2xl:flex 2xl:gap-8 pt-4">
         <RoiTable :includeSurplus="includeSurplus" @updateRoiData="updateRoiData" />
         <RoiChart
           v-if="roiWithoutSurplus.length && roiWithSurplus.length"

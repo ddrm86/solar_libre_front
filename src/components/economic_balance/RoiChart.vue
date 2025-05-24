@@ -4,7 +4,7 @@
       type="line"
       :data="chartData"
       :options="chartOptions"
-      class="w-full h-full"
+      class="w-full h-100"
     />
   </div>
 </template>
