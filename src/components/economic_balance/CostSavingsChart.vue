@@ -1,21 +1,21 @@
 <template>
   <div>
-      <Chart
-        type="line"
-        :data="chartData"
-        :options="chartOptions"
-        class="w-full h-100 2xl:h-full"
-      />
+    <Chart
+      type="bar"
+      :data="chartData"
+      :options="chartOptions"
+      class="w-full h-100"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useInputConsumptionStore } from '@/stores/inputConsumption'
 import { useI18n } from 'vue-i18n'
+import { useEconomicBalanceStore } from '@/stores/economicBalance'
 
 const { t } = useI18n()
-const inputConsumptionStore = useInputConsumptionStore()
+const economicBalanceStore = useEconomicBalanceStore()
 
 const chartData = computed(() => {
   const documentStyle = getComputedStyle(document.documentElement)
@@ -34,50 +34,33 @@ const chartData = computed(() => {
     t('months.december')
   ]
 
-  const consumptions = inputConsumptionStore.consumption.consumptionsPerMonth
-  const pvConsumptions = inputConsumptionStore.pvConsumptionsPerMonth
+  const savingsWithoutCompensation = economicBalanceStore.savingsWithoutCompensation
+  const surplus = economicBalanceStore.surplus
+  const monthlyCosts = economicBalanceStore.monthlyCosts
 
   return {
     labels: months,
     datasets: [
       {
-        label: t('energy_consumption.peak'),
-        data: consumptions.map((c) => c.peak),
-        fill: false,
+        label: t('cost_savings.expenses'),
+        data: monthlyCosts,
+        type: 'line',
         borderColor: documentStyle.getPropertyValue('--p-red-500'),
-        tension: 0.4
-      },
-      {
-        label: t('energy_consumption.flat'),
-        data: consumptions.map((c) => c.flat),
+        borderWidth: 2,
         fill: false,
-        borderColor: documentStyle.getPropertyValue('--p-yellow-500'),
         tension: 0.4
       },
       {
-        label: t('energy_consumption.valley'),
-        data: consumptions.map((c) => c.valley),
-        fill: false,
-        borderColor: documentStyle.getPropertyValue('--p-green-500'),
-        tension: 0.4
+        label: t('cost_savings.savings_without_compensation'),
+        data: savingsWithoutCompensation,
+        backgroundColor: documentStyle.getPropertyValue('--p-green-500'),
+        stack: 'savings'
       },
       {
-        label: t('energy_consumption.pv_peak'),
-        data: pvConsumptions.map((c) => c.peak),
-        backgroundColor: documentStyle.getPropertyValue('--p-red-200'),
-        type: 'bar'
-      },
-      {
-        label: t('energy_consumption.pv_flat'),
-        data: pvConsumptions.map((c) => c.flat),
-        backgroundColor: documentStyle.getPropertyValue('--p-yellow-200'),
-        type: 'bar'
-      },
-      {
-        label: t('energy_consumption.pv_valley'),
-        data: pvConsumptions.map((c) => c.valley),
-        backgroundColor: documentStyle.getPropertyValue('--p-green-200'),
-        type: 'bar'
+        label: t('cost_savings.surplus'),
+        data: surplus,
+        backgroundColor: documentStyle.getPropertyValue('--p-blue-500'),
+        stack: 'savings'
       }
     ]
   }
@@ -100,6 +83,7 @@ const chartOptions = computed(() => {
     },
     scales: {
       x: {
+        stacked: true,
         ticks: {
           color: textColorSecondary
         },
@@ -108,6 +92,7 @@ const chartOptions = computed(() => {
         }
       },
       y: {
+        stacked: true,
         ticks: {
           color: textColorSecondary
         },
@@ -123,14 +108,10 @@ const chartOptions = computed(() => {
 <i18n>
 {
   "en": {
-    "energy_consumption": {
-      "title": "ANNUAL ENERGY CONSUMPTION [kWh]",
-      "peak": "Peak",
-      "flat": "Flat",
-      "valley": "Valley",
-      "pv_peak": "Peak during PV hours",
-      "pv_flat": "Flat during PV hours",
-      "pv_valley": "Valley during PV hours"
+    "cost_savings": {
+      "expenses": "Monthly Expenses",
+      "savings_without_compensation": "Savings without Compensation",
+      "surplus": "Surplus compensation"
     },
     "months": {
       "january": "January",
@@ -148,14 +129,10 @@ const chartOptions = computed(() => {
     }
   },
   "es": {
-    "energy_consumption": {
-      "title": "ENERGÍA CONSUMIDA ANUALMENTE [kWh]",
-      "peak": "Punta",
-      "flat": "Llano",
-      "valley": "Valle",
-      "pv_peak": "Punta en horas FV",
-      "pv_flat": "Llano en horas FV",
-      "pv_valley": "Valle en horas FV"
+    "cost_savings": {
+      "expenses": "Gastos Mensuales",
+      "savings_without_compensation": "Ahorros sin Compensación",
+      "surplus": "Compensación de excedentes"
     },
     "months": {
       "january": "Enero",
