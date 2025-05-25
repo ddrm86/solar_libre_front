@@ -1,16 +1,17 @@
 <template>
   <div>
     <Chart
+      ref="savingsChart"
       type="bar"
       :data="chartData"
       :options="chartOptions"
-      class="w-full h-100"
+      class="w-200 h-100"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
 
@@ -100,9 +101,22 @@ const chartOptions = computed(() => {
           color: surfaceBorder
         }
       }
-    }
+    },
+    animation: {
+      onComplete: () => {
+        updateChartImage()
+      },
+    },
   }
 })
+
+const savingsChart = ref()
+
+const updateChartImage = () => {
+  if (savingsChart.value)  {
+    economicBalanceStore.savingsChartImage = savingsChart.value.getChart().toBase64Image()
+  }
+}
 </script>
 
 <i18n>

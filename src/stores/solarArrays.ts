@@ -12,6 +12,12 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
     return arrays.value.reduce((total, array) => total + array.array.panelNumber, 0)
   })
 
+  const totalPower = computed(() => {
+    return arrays.value.reduce((total, array) => {
+      return total + (array.array.panel.nominal_power * array.array.panelNumber)
+    }, 0)
+  })
+
   const isDirty = computed(() => {
     return arrays.value.some((array) => array.isDirty)
   })
@@ -38,6 +44,10 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
     return monthlyProduction
   })
 
+  const pvgisAnnualProduction = computed(() => {
+    return pvgisProductionPerMonth.value.reduce((total, monthlyProduction) => total + monthlyProduction, 0)
+  })
+
   watch(
     () => projectInfoStore.projectInfo.location,
     () => {
@@ -51,9 +61,11 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
   return {
     arrays,
     totalNumberOfPanels,
+    totalPower,
     isDirty,
     addSolarArray,
     deleteSolarArray,
     pvgisProductionPerMonth,
+    pvgisAnnualProduction
   }
 })

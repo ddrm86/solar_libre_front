@@ -13,12 +13,16 @@
         <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
       </a>
     </template>
+    <template #end>
+      <PdfReportGenerator />
+    </template>
   </Menubar>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import PdfReportGenerator from '@/components/report/PdfReportGenerator.vue'
 
 const { t } = useI18n()
 
@@ -35,7 +39,7 @@ const items = ref([
   },
   {
     label: t('consumption'),
-    icon: 'pi pi-euro',
+    icon: 'pi pi pi-gauge',
     route: '/consumption'
   },
   {
