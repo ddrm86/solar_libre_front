@@ -7,6 +7,7 @@ import {
   type IInstallationCosts,
 } from '@/models/economic_balance/installationCosts.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
+import { chartPlaceholderPicture } from '@/models/report/chartPlaceholderPicture.ts'
 
 export const useEconomicBalanceStore = defineStore('economic_balance', () => {
   const solarArraysStore = useSolarArraysStore()
@@ -80,6 +81,8 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
     }
   })
 
+  const savingsChartImage = ref(chartPlaceholderPicture)
+
   return {
     energyCosts,
     energyCostByTimeBand,
@@ -90,6 +93,7 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
     savingsWithoutCompensation,
     surplus,
     monthlyCosts,
-    annualSavings
+    annualSavings,
+    savingsChartImage
   }
 })

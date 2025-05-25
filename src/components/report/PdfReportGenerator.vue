@@ -17,6 +17,7 @@ import { useProjectInfoReport } from '@/models/report/projectInfoReport.ts'
 import { computed } from 'vue'
 import { useConsumptionReport } from '@/models/report/consumptionReport.ts'
 import { useInstallationReport } from '@/models/report/installationReport.ts'
+import { useEconomicBalanceReport } from '@/models/report/economicBalanceReport.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (<any>pdfMake).addVirtualFileSystem(pdfFonts);
@@ -26,6 +27,7 @@ const { t } = useI18n();
 const { projectInfoReportContent } = useProjectInfoReport()
 const { consumptionReportContent } = useConsumptionReport()
 const { installationReportContent } = useInstallationReport()
+const { economicBalanceReportContent } = useEconomicBalanceReport()
 
 const pdfDefinition = computed<TDocumentDefinitions>(() => ({
   content: [
@@ -38,6 +40,8 @@ const pdfDefinition = computed<TDocumentDefinitions>(() => ({
     ...consumptionReportContent.value,
     '\n\n',
     ...installationReportContent.value,
+    '\n\n',
+    ...economicBalanceReportContent.value,
   ],
   styles: {
     header: {
@@ -90,6 +94,13 @@ const generatePdfReport = () => {
       "components": "Components",
       "inverter": "Inverter",
       "panels": "panels"
+    },
+    "economicBalanceReport": {
+      "header": "Economic Balance",
+      "savings": "Savings",
+      "averageKwhCost": "Average kWh cost with taxes",
+      "compensationPerKwh": "Compensation for surpluses",
+      "perKwh": "per kWh"
     }
   },
   "es": {
@@ -116,6 +127,13 @@ const generatePdfReport = () => {
       "components": "Componentes",
       "inverter": "Inversor",
       "panels": "paneles"
+    },
+    "economicBalanceReport": {
+      "header": "Balance económico",
+      "savings": "Ahorros",
+      "averageKwhCost": "Precio medio del kWh con impuestos",
+      "compensationPerKwh": "Compensación por excedentes",
+      "perKwh": "por kWh"
     }
   }
 }
