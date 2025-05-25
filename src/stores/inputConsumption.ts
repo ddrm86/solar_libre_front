@@ -7,6 +7,7 @@ import {
 import { CYearlySunHours, type IYearlySunHours } from '@/models/consumption/sunHours.ts'
 import { consumptionDistributionProfile } from '@/models/consumption/consumptionDistributionProfile'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
+import { chartPlaceholderPicture } from '@/models/report/chartPlaceholderPicture.ts'
 
 export const useInputConsumptionStore = defineStore('input_consumption', () => {
   const projectInfoStore = useProjectInfoStore()
@@ -63,6 +64,12 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     })
   })
 
+  const totalPvConsumption = computed(() => {
+    return totalPvConsumptionPerMonth.value.reduce((sum, monthlyTotal) => sum + monthlyTotal, 0)
+  })
+
+  const consumptionChartImage = ref(chartPlaceholderPicture)
+
   watch(
     () => [
       projectInfoStore.projectInfo.location.latitude,
@@ -82,6 +89,8 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     yearlySunHours,
     yearlyPVHours,
     pvConsumptionsPerMonth,
-    totalPvConsumptionPerMonth
+    totalPvConsumptionPerMonth,
+    totalPvConsumption,
+    consumptionChartImage
   }
 })

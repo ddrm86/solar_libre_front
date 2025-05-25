@@ -1,6 +1,7 @@
 <template>
   <div>
     <Chart
+      ref="roiChart"
       type="line"
       :data="chartData"
       :options="chartOptions"
@@ -10,10 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useEconomicBalanceStore } from '@/stores/economicBalance.ts'
 
 const { t } = useI18n()
+const economicBalanceStore = useEconomicBalanceStore()
 
 const props = defineProps({
   roiWithoutSurplus: {
@@ -83,9 +86,22 @@ const chartOptions = computed(() => {
           lineWidth: (ctx: { tick: { value: number } }) => (ctx.tick.value === 0 ? 2 : 1)
         }
       }
-    }
+    },
+    animation: {
+      onComplete: () => {
+        updateChartImage()
+      },
+    },
   }
 })
+
+const roiChart = ref()
+
+const updateChartImage = () => {
+  if (roiChart.value) {
+    economicBalanceStore.roiChartImage = roiChart.value.getChart().toBase64Image()
+  }
+}
 </script>
 
 <i18n>
