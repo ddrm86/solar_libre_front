@@ -16,6 +16,7 @@ import { useI18n } from "vue-i18n";
 import { useProjectInfoReport } from '@/models/report/projectInfoReport.ts'
 import { computed } from 'vue'
 import { useConsumptionReport } from '@/models/report/consumptionReport.ts'
+import { useInstallationReport } from '@/models/report/installationReport.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (<any>pdfMake).addVirtualFileSystem(pdfFonts);
@@ -24,6 +25,7 @@ const { t } = useI18n();
 
 const { projectInfoReportContent } = useProjectInfoReport()
 const { consumptionReportContent } = useConsumptionReport()
+const { installationReportContent } = useInstallationReport()
 
 const pdfDefinition = computed<TDocumentDefinitions>(() => ({
   content: [
@@ -34,6 +36,8 @@ const pdfDefinition = computed<TDocumentDefinitions>(() => ({
     ...projectInfoReportContent.value,
     '\n\n',
     ...consumptionReportContent.value,
+    '\n\n',
+    ...installationReportContent.value,
   ],
   styles: {
     header: {
@@ -54,7 +58,9 @@ const pdfDefinition = computed<TDocumentDefinitions>(() => ({
 }));
 
 const generatePdfReport = () => {
-  pdfMake.createPdf(pdfDefinition.value).open();
+  // pdfMake modifies the pdfDefinition object at will, so we need to create a deep copy
+  const pdfDefinitionCopy = JSON.parse(JSON.stringify(pdfDefinition.value));
+  pdfMake.createPdf(pdfDefinitionCopy).open();
 };
 </script>
 
@@ -76,6 +82,14 @@ const generatePdfReport = () => {
       "header": "Electricity Consumption",
       "annualConsumption": "Annual consumption",
       "pvHoursConsumption": "Annual consumption during photovoltaic hours"
+    },
+    "installationReport": {
+      "photovoltaicInstallation": "Photovoltaic installation",
+      "installedPower": "Installed power",
+      "annualProduction": "Average annual production",
+      "components": "Components",
+      "inverter": "Inverter",
+      "panels": "panels"
     }
   },
   "es": {
@@ -94,6 +108,14 @@ const generatePdfReport = () => {
       "header": "Consumo de electricidad",
       "annualConsumption": "Consumo anual",
       "pvHoursConsumption": "Consumo anual en horas fotovoltaicas"
+    },
+    "installationReport": {
+      "photovoltaicInstallation": "Instalación fotovoltaica",
+      "installedPower": "Potencia instalada",
+      "annualProduction": "Producción anual media",
+      "components": "Componentes",
+      "inverter": "Inversor",
+      "panels": "paneles"
     }
   }
 }
