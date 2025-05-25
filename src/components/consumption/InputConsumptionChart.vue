@@ -1,16 +1,17 @@
 <template>
   <div>
-      <Chart
-        type="line"
-        :data="chartData"
-        :options="chartOptions"
-        class="w-full h-100 2xl:h-full"
-      />
+    <Chart
+      ref="consumptionChart"
+      type="line"
+      :data="chartData"
+      :options="chartOptions"
+      class="w-full h-100 2xl:h-full"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useInputConsumptionStore } from '@/stores/inputConsumption'
 import { useI18n } from 'vue-i18n'
 
@@ -31,7 +32,7 @@ const chartData = computed(() => {
     t('months.september'),
     t('months.october'),
     t('months.november'),
-    t('months.december')
+    t('months.december'),
   ]
 
   const consumptions = inputConsumptionStore.consumption.consumptionsPerMonth
@@ -45,41 +46,41 @@ const chartData = computed(() => {
         data: consumptions.map((c) => c.peak),
         fill: false,
         borderColor: documentStyle.getPropertyValue('--p-red-500'),
-        tension: 0.4
+        tension: 0.4,
       },
       {
         label: t('energy_consumption.flat'),
         data: consumptions.map((c) => c.flat),
         fill: false,
         borderColor: documentStyle.getPropertyValue('--p-yellow-500'),
-        tension: 0.4
+        tension: 0.4,
       },
       {
         label: t('energy_consumption.valley'),
         data: consumptions.map((c) => c.valley),
         fill: false,
         borderColor: documentStyle.getPropertyValue('--p-green-500'),
-        tension: 0.4
+        tension: 0.4,
       },
       {
         label: t('energy_consumption.pv_peak'),
         data: pvConsumptions.map((c) => c.peak),
         backgroundColor: documentStyle.getPropertyValue('--p-red-200'),
-        type: 'bar'
+        type: 'bar',
       },
       {
         label: t('energy_consumption.pv_flat'),
         data: pvConsumptions.map((c) => c.flat),
         backgroundColor: documentStyle.getPropertyValue('--p-yellow-200'),
-        type: 'bar'
+        type: 'bar',
       },
       {
         label: t('energy_consumption.pv_valley'),
         data: pvConsumptions.map((c) => c.valley),
         backgroundColor: documentStyle.getPropertyValue('--p-green-200'),
-        type: 'bar'
-      }
-    ]
+        type: 'bar',
+      },
+    ],
   }
 })
 
@@ -94,30 +95,43 @@ const chartOptions = computed(() => {
     plugins: {
       legend: {
         labels: {
-          color: textColor
-        }
-      }
+          color: textColor,
+        },
+      },
     },
     scales: {
       x: {
         ticks: {
-          color: textColorSecondary
+          color: textColorSecondary,
         },
         grid: {
-          color: surfaceBorder
-        }
+          color: surfaceBorder,
+        },
       },
       y: {
         ticks: {
-          color: textColorSecondary
+          color: textColorSecondary,
         },
         grid: {
-          color: surfaceBorder
-        }
-      }
-    }
+          color: surfaceBorder,
+        },
+      },
+    },
+    animation: {
+      onComplete: () => {
+        updateChartImage()
+      },
+    },
   }
 })
+
+const consumptionChart = ref()
+
+const updateChartImage = () => {
+  if (consumptionChart.value)  {
+    inputConsumptionStore.consumptionChartImage = consumptionChart.value.getChart().toBase64Image()
+  }
+}
 </script>
 
 <i18n>

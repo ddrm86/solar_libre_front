@@ -15,13 +15,15 @@ import type { TDocumentDefinitions } from "pdfmake/interfaces";
 import { useI18n } from "vue-i18n";
 import { useProjectInfoReport } from '@/models/report/projectInfoReport.ts'
 import { computed } from 'vue'
+import { useConsumptionReport } from '@/models/report/consumptionReport.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (<any>pdfMake).addVirtualFileSystem(pdfFonts);
 
 const { t } = useI18n();
 
-const { reportContent } = useProjectInfoReport()
+const { projectInfoReportContent } = useProjectInfoReport()
+const { consumptionReportContent } = useConsumptionReport()
 
 const pdfDefinition = computed<TDocumentDefinitions>(() => ({
   content: [
@@ -29,7 +31,9 @@ const pdfDefinition = computed<TDocumentDefinitions>(() => ({
       text: `${t("report.title")}\n\n`,
       style: "header",
     },
-    ...reportContent.value,
+    ...projectInfoReportContent.value,
+    '\n\n',
+    ...consumptionReportContent.value,
   ],
   styles: {
     header: {
@@ -67,6 +71,11 @@ const generatePdfReport = () => {
       "location": "Location",
       "date": "Date",
       "description": "Description"
+    },
+    "consumptionReport": {
+      "header": "Electricity Consumption",
+      "annualConsumption": "Annual consumption",
+      "pvHoursConsumption": "Annual consumption during photovoltaic hours"
     }
   },
   "es": {
@@ -80,6 +89,11 @@ const generatePdfReport = () => {
       "location": "Ubicación",
       "date": "Fecha",
       "description": "Descripción"
+    },
+    "consumptionReport": {
+      "header": "Consumo de electricidad",
+      "annualConsumption": "Consumo anual",
+      "pvHoursConsumption": "Consumo anual en horas fotovoltaicas"
     }
   }
 }

@@ -7,7 +7,7 @@ export function useProjectInfoReport() {
 
   const { t } = useI18n()
 
-  const reportContent = computed(() => {
+  const projectInfoReportContent = computed(() => {
     return [
       {
         text: `${t('projectInfo.projectInfo')}`,
@@ -30,6 +30,6 @@ export function useProjectInfoReport() {
   })
 
   return {
-    reportContent,
+    projectInfoReportContent,
   }
 }
