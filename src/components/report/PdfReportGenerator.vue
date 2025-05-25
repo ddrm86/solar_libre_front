@@ -13,18 +13,23 @@ import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import type { TDocumentDefinitions } from "pdfmake/interfaces";
 import { useI18n } from "vue-i18n";
+import { useProjectInfoReport } from '@/models/report/projectInfoReport.ts'
+import { computed } from 'vue'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (<any>pdfMake).addVirtualFileSystem(pdfFonts);
 
 const { t } = useI18n();
 
-const pdfDefinition: TDocumentDefinitions = {
+const { reportContent } = useProjectInfoReport()
+
+const pdfDefinition = computed<TDocumentDefinitions>(() => ({
   content: [
     {
-      text: t("report.title"),
+      text: `${t("report.title")}\n\n`,
       style: "header",
     },
+    ...reportContent.value,
   ],
   styles: {
     header: {
@@ -32,11 +37,20 @@ const pdfDefinition: TDocumentDefinitions = {
       bold: true,
       alignment: "center",
     },
+    subheader: {
+      fontSize: 15,
+      bold: true,
+      decoration: "underline",
+      lineHeight: 2.0,
+    },
   },
-};
+  defaultStyle: {
+    lineHeight: 1.2,
+  },
+}));
 
 const generatePdfReport = () => {
-  pdfMake.createPdf(pdfDefinition).open();
+  pdfMake.createPdf(pdfDefinition.value).open();
 };
 </script>
 
@@ -45,11 +59,27 @@ const generatePdfReport = () => {
   "en": {
     "report": {
       "title": "SolarLibre Report"
+    },
+    "projectInfo": {
+      "projectInfo": "Project information",
+      "name": "Project name",
+      "address": "Address",
+      "location": "Location",
+      "date": "Date",
+      "description": "Description"
     }
   },
   "es": {
     "report": {
       "title": "Informe de SolarLibre"
+    },
+    "projectInfo": {
+      "projectInfo": "Información del proyecto",
+      "name": "Nombre del proyecto",
+      "address": "Dirección",
+      "location": "Ubicación",
+      "date": "Fecha",
+      "description": "Descripción"
     }
   }
 }
