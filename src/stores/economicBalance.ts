@@ -83,6 +83,8 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
 
   const savingsChartImage = ref(chartPlaceholderPicture)
 
+  const roiChartImage = ref(chartPlaceholderPicture)
+
   return {
     energyCosts,
     energyCostByTimeBand,
@@ -94,6 +96,7 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
     surplus,
     monthlyCosts,
     annualSavings,
-    savingsChartImage
+    savingsChartImage,
+    roiChartImage,
   }
 })

@@ -100,7 +100,14 @@ const generatePdfReport = () => {
       "savings": "Savings",
       "averageKwhCost": "Average kWh cost with taxes",
       "compensationPerKwh": "Compensation for surpluses",
-      "perKwh": "per kWh"
+      "perKwh": "per kWh",
+      "investmentReturn": "Return on Investment",
+      "totalInstallationCost": "Total installation cost",
+      "annualMaintenanceCost": "Annual maintenance cost",
+      "annualInflation": "Annual inflation",
+      "annualEnergySavings": "Annual energy savings",
+      "withoutSurpluses": "Without surpluses",
+      "withSurpluses": "With surpluses"
     }
   },
   "es": {
@@ -133,7 +140,14 @@ const generatePdfReport = () => {
       "savings": "Ahorros",
       "averageKwhCost": "Precio medio del kWh con impuestos",
       "compensationPerKwh": "Compensación por excedentes",
-      "perKwh": "por kWh"
+      "perKwh": "por kWh",
+      "investmentReturn": "Retorno de la inversión",
+      "totalInstallationCost": "Coste total de la instalación",
+      "annualMaintenanceCost": "Mantenimiento anual",
+      "annualInflation": "Inflación anual",
+      "annualEnergySavings": "Ahorro de energía anual",
+      "withoutSurpluses": "Sin excedentes",
+      "withSurpluses": "Con excedentes"
     }
   }
 }
