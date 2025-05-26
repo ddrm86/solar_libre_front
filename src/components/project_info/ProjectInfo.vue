@@ -18,7 +18,7 @@
     <Fluid>
       <div class="pb-2">
         <IftaLabel>
-          <InputText id="name" v-model="projectInfoStore.projectInfo.name" />
+          <InputText id="name" v-model="projectInfoStore.projectInfo.name" @blur="assignNameIfEmtpy"/>
           <label for="name">{{ t('project_info.name') }}*</label>
         </IftaLabel>
       </div>
@@ -70,6 +70,12 @@ import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 
 const { t } = useI18n()
 const projectInfoStore = useProjectInfoStore()
+
+const assignNameIfEmtpy = () => {
+  if (!projectInfoStore.projectInfo.name) {
+    projectInfoStore.projectInfo.name = projectInfoStore.generateRandomProjectName()
+  }
+}
 </script>
 
 <i18n>
