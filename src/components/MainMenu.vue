@@ -14,6 +14,7 @@
       </a>
     </template>
     <template #end>
+      <ProjectSave />
       <PdfReportGenerator />
       <LanguageSelector />
     </template>
@@ -25,6 +26,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PdfReportGenerator from '@/components/report/PdfReportGenerator.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
+import ProjectSave from '@/components/ProjectSave.vue'
 
 const { t } = useI18n()
 
