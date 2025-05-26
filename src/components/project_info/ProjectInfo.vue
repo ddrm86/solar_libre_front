@@ -28,7 +28,6 @@
             id="address"
             v-model="projectInfoStore.projectInfo.location.address"
             rows="3"
-            disabled
           />
           <label for="address">{{ t('project_info.address') }}</label>
         </IftaLabel>
