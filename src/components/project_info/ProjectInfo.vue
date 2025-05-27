@@ -98,7 +98,7 @@ const isProjectNameDuplicated = async (name: string): Promise<boolean> => {
     .get('/project_info/search/', {
       params: { name },
     })
-    .then((response) => response.data.found)
+    .then((response) => response.data.found && projectInfoStore.projectInfo.id === response.data.id)
     .catch((error) => {
       toast.add({
         severity: 'error',
