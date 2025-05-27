@@ -1,11 +1,11 @@
 <template>
-  <Button icon="pi pi-save" variant="text" severity="secondary" size="large" @click="saveProject" />
+  <Button :icon="icon" variant="text" severity="secondary" size="large" @click="saveProject" />
 </template>
 
 <script setup lang="ts">
 import { useProjectSavingStore } from '@/stores/projectSaving.ts'
 import { useToast } from 'primevue/usetoast'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
@@ -14,6 +14,10 @@ const { t } = useI18n()
 const projectSavingStore = useProjectSavingStore()
 
 const saved = ref(false)
+
+const icon = computed(() => {
+  return projectSavingStore.saving ? 'pi pi-spin pi-spinner-dotted' : 'pi pi-save'
+})
 
 const saveProject = () => {
   projectSavingStore.saveProject().then(() => {
