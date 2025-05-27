@@ -21,7 +21,7 @@ const saveProject = () => {
       toast.add({
         severity: 'error',
         summary: t('messages.saving_project_error'),
-        detail: `${t('messages.saving_project_error_detail')} ${projectSavingStore.error}`,
+        detail: `${t('messages.saving_project_error_detail')} ${projectSavingStore.errorDetails}`,
         life: 5000,
       })
     } else {
