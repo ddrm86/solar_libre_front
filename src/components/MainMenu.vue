@@ -26,7 +26,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PdfReportGenerator from '@/components/report/PdfReportGenerator.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
-import ProjectSave from '@/components/ProjectSave.vue'
+import ProjectSave from '@/components/project_persistence/ProjectSave.vue'
 
 const { t } = useI18n()
 

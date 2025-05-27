@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useProjectSavingStore } from '@/stores/projectSaving.ts'
+import { useProjectSavingStore } from '@/stores/project_persistence/projectSaving.ts'
 import { useToast } from 'primevue/usetoast'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'

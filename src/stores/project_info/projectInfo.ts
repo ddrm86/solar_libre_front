@@ -15,6 +15,7 @@ export const useProjectInfoStore = defineStore('project_info', () => {
       longitude: -5.258991,
       address: '',
     },
+    deleted: false,
   })
 
   const createProjectPayload = (projectInfo: IProjectInfo) => {
