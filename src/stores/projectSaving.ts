@@ -18,6 +18,8 @@ export const useProjectSavingStore = defineStore('projec_saving', () => {
 
   const saveProject = async () => {
     saving.value = true
+    error.value = false
+    errorDetails.value = undefined
     try {
       await projectInfoStore.saveProjectInfo()
     } catch (savingError) {
