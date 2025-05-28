@@ -59,5 +59,23 @@ export const useProjectInfoStore = defineStore('project_info', () => {
     }
   }
 
-  return { projectInfo, generateRandomProjectName, saveProjectInfo }
+  const loadProjectInfo = async (projectId: string) => {
+    return axios
+      .get(`/project_info/${projectId}`)
+      .then((response) => {
+        const project = response.data;
+        projectInfo.value = {
+          id: project.id,
+          name: project.name,
+          location: {
+            latitude: project.latitude,
+            longitude: project.longitude,
+            address: project.address,
+          },
+          deleted: project.deleted,
+        };
+      });
+  }
+
+  return { projectInfo, generateRandomProjectName, saveProjectInfo, loadProjectInfo }
 })

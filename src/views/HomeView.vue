@@ -1,12 +1,14 @@
 <template>
-<div class="flex items-center">
-  <div>
-    <img alt="SolarLibre logo" class="logo" src="@/assets/solar_libre_logo.jpeg" width="800" height="800" />
-  </div>
-  <div>
+  <div class="flex gap-4 items-start">
+    <img
+      alt="SolarLibre logo"
+      class="logo"
+      src="@/assets/solar_libre_logo.jpeg"
+      width="800"
+      height="800"
+    />
     <ProjectSelection />
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
