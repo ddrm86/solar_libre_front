@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { useProjectListStore } from '@/stores/project_persistence/projectList.ts'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -23,7 +23,8 @@ const { t } = useI18n()
 const projectListStore = useProjectListStore()
 const selectedProject = ref(null)
 
-const projectOptions = projectListStore.availableProjects.map((project) => {
+const projectOptions = computed(() =>
+  projectListStore.availableProjects.map((project) => {
   let address = '';
   if (project.location.address) {
     const truncatedAddress = project.location.address.substring(0, 40);
@@ -33,7 +34,8 @@ const projectOptions = projectListStore.availableProjects.map((project) => {
     label: project.name + address,
     value: project.id,
   };
-});
+  })
+);
 
 const onProjectChange = () => {
   console.log('Selected project:', selectedProject.value)
