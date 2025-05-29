@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { useProjectListStore } from '@/stores/project_persistence/projectList.ts'
 import { useProjectLoadingStore } from '@/stores/project_persistence/projectLoading.ts'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 
@@ -33,7 +33,20 @@ const { t } = useI18n()
 const projectListStore = useProjectListStore()
 const projectLoadingStore = useProjectLoadingStore()
 
-const selectedProject = ref<{ label: string, value: string } | null>(null)
+onMounted(() => {
+  projectListStore.fetchProjects().then(() => {
+    if (projectListStore.error) {
+      toast.add({
+        severity: 'error',
+        summary: t('messages.loading_projects_error'),
+        detail: `${t('messages.loading_projects_error_detail')} ${projectListStore.errorDetails ?? ''}`,
+        life: 5000,
+      })
+    }
+  })
+})
+
+const selectedProject = ref<{ label: string; value: string } | null>(null)
 
 const projectOptions = computed(() =>
   projectListStore.availableProjects.map((project) => {
@@ -87,6 +100,8 @@ const loadSelectedProject = async () => {
     "messages": {
       "loading_project_error": "Error loading the project",
       "loading_project_error_detail": "Could not load the project: ",
+      "loading_projects_error": "Error loading saved project lists",
+      "loading_projects_error_detail": "Could not load projects: ",
       "loading_project_success": "Project loaded successfully",
       "loading_project_success_detail": "Loaded project: "
     }
@@ -100,6 +115,8 @@ const loadSelectedProject = async () => {
     "messages": {
       "loading_project_error": "Error cargando el proyecto",
       "loading_project_error_detail": "No se pudo cargar el proyecto: ",
+      "loading_projects_error": "No se pudo cargar la lista de proyectos guardados",
+      "loading_projects_error_detail": "No se pudieron cargar los proyectos: ",
       "loading_project_success": "Proyecto cargado exitosamente",
       "loading_project_success_detail": "Proyecto cargado: "
     }

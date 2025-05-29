@@ -12,9 +12,5 @@
 </template>
 
 <script setup lang="ts">
-import { useProjectListStore } from '@/stores/project_persistence/projectList.ts'
 import ProjectSelection from '@/components/project_persistence/ProjectSelection.vue'
-
-const projectListStore = useProjectListStore()
-projectListStore.fetchProjects().then(() => console.log(projectListStore.availableProjects))
 </script>
