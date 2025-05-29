@@ -2,8 +2,11 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { IProjectInfo } from '@/models/project_info/projectInfo.ts'
 import axios from 'axios'
+import { useMapSearchStore } from '@/stores/project_info/mapSearch.ts'
 
 export const useProjectInfoStore = defineStore('project_info', () => {
+  const mapSearchStore = useMapSearchStore()
+
   const generateRandomProjectName = () => {
     return `P-${crypto.randomUUID()}`
   }
@@ -25,11 +28,13 @@ export const useProjectInfoStore = defineStore('project_info', () => {
       latitude: number
       longitude: number
       address: string
+      map_zoom: number
     } = {
       name,
       latitude: location.latitude,
       longitude: location.longitude,
       address: location.address,
+      map_zoom: mapSearchStore.zoom
     };
     return payload;
   };
@@ -74,6 +79,7 @@ export const useProjectInfoStore = defineStore('project_info', () => {
           },
           deleted: project.deleted,
         };
+        mapSearchStore.zoom = project.map_zoom
       });
   }
 
