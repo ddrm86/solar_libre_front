@@ -100,6 +100,7 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
           const solarArray = new CSolarArray(
             new CSolarArrayData(panel, entry.panel_number, entry.loss, entry.angle, entry.azimuth),
           )
+          solarArray.id = entry.id
           solarArray.isDirty = entry.is_dirty
           return solarArray
         })
