@@ -104,6 +104,12 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
           solarArray.isDirty = entry.is_dirty
           return solarArray
         })
+
+        arrays.value.forEach((array) => {
+          if (array.array.panel && Object.keys(array.array.panel).length > 0) {
+            array.fetchPvgisData(projectInfoStore.projectInfo)
+          }
+        })
       })
   }
 
