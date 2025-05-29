@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import { AxiosError } from 'axios'
 import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
 
-export const useProjectSavingStore = defineStore('projec_saving', () => {
+export const useProjectSavingStore = defineStore('project_saving', () => {
   const projectInfoStore = useProjectInfoStore()
   const inputConsumptionStore = useInputConsumptionStore()
 
