@@ -2,9 +2,11 @@ import { defineStore } from 'pinia'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { computed, ref } from 'vue'
 import { AxiosError } from 'axios'
+import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
 
 export const useProjectSavingStore = defineStore('projec_saving', () => {
   const projectInfoStore = useProjectInfoStore()
+  const inputConsumptionStore = useInputConsumptionStore()
 
   const saving = ref(false);
 
@@ -22,6 +24,7 @@ export const useProjectSavingStore = defineStore('projec_saving', () => {
     errorDetails.value = undefined
     try {
       await projectInfoStore.saveProjectInfo()
+      await inputConsumptionStore.saveConsumptionInfo()
     } catch (savingError) {
       error.value = true
       errorDetails.value = savingError as AxiosError

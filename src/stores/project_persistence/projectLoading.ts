@@ -2,9 +2,11 @@ import { defineStore } from 'pinia'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { ref } from 'vue'
 import { AxiosError } from 'axios'
+import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
 
 export const useProjectLoadingStore = defineStore('project_loading', () => {
   const projectInfoStore = useProjectInfoStore()
+  const inputConsumptionStore = useInputConsumptionStore()
 
   const loading = ref(false)
 
@@ -19,8 +21,10 @@ export const useProjectLoadingStore = defineStore('project_loading', () => {
     error.value = false
     errorDetails.value = undefined
     try {
-      await projectInfoStore.loadProjectInfo(projectId)
-      loadedProjectId.value = projectId
+      await projectInfoStore.loadProjectInfo(projectId).then(async () => {
+        loadedProjectId.value = projectId
+        await inputConsumptionStore.loadConsumptionInfo()
+      })
     } catch (loadingError) {
       error.value = true
       errorDetails.value = loadingError as AxiosError
