@@ -3,10 +3,16 @@ import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { ref } from 'vue'
 import { AxiosError } from 'axios'
 import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
+import { useSolarArraysStore } from '@/stores/solarArrays.ts'
+import { usePanelsStore } from '@/stores/inventory/panels.ts'
+import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
 
 export const useProjectLoadingStore = defineStore('project_loading', () => {
+  const panelsStore = usePanelsStore()
+  const monophaseInvertersStore = useMonophaseInvertersStore()
   const projectInfoStore = useProjectInfoStore()
   const inputConsumptionStore = useInputConsumptionStore()
+  const solarArraysStore = useSolarArraysStore()
 
   const loading = ref(false)
 
@@ -21,9 +27,12 @@ export const useProjectLoadingStore = defineStore('project_loading', () => {
     error.value = false
     errorDetails.value = undefined
     try {
-      await projectInfoStore.loadProjectInfo(projectId).then(async () => {
-        loadedProjectId.value = projectId
-        await inputConsumptionStore.loadConsumptionInfo()
+      Promise.all([panelsStore.fetchPanels(), monophaseInvertersStore.fetchMonophaseInverters()]).then(async () => {
+        await projectInfoStore.loadProjectInfo(projectId).then(async () => {
+          loadedProjectId.value = projectId
+          await inputConsumptionStore.loadConsumptionInfo()
+          await solarArraysStore.loadSolarArraysInfo()
+        })
       })
     } catch (loadingError) {
       error.value = true

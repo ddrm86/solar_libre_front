@@ -60,7 +60,7 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     () =>
       solarArraysStore.arrays.map((array) => ({
         id: array.id,
-        panelId: array.array.panel.id,
+        panelId: array.array.panel?.id,
         panelNumber: array.array.panelNumber,
       })),
     (newArrays, oldArrays) => {
