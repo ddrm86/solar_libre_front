@@ -3,16 +3,9 @@ import { CInverterSetup, type IInverterSetup } from '@/models/inverters_setup/in
 import { computed, ref, watch } from 'vue'
 import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
-import { CStringSetup, type IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
-import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
-import axios from 'axios'
-import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
-import { CMpptSetup, type IMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
-import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
+import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 
 export const useInvertersSetupStore = defineStore('inverters_setup', () => {
-  const monophaseInvertersStore = useMonophaseInvertersStore()
-  const projectInfoStore = useProjectInfoStore()
   const solarArraysStore = useSolarArraysStore()
 
   const inverters = ref<IInverterSetup[]>([])
@@ -59,157 +52,6 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     inverters.value.splice(index, 1)
   }
 
-  const createStringPayload = (stringSetups: IStringSetup[], mpptSetupId: string) => {
-    return stringSetups.map((stringSetup) => ({
-      mppt_setup_id: mpptSetupId,
-      panel_number: stringSetup.panelNumber ?? null,
-      solar_array: stringSetup.solarArray?.id ?? null,
-    }))
-  }
-
-  const saveStringSetups = async (mpptSetupId: string, stringSetups: IStringSetup[]) => {
-    const payload = createStringPayload(stringSetups, mpptSetupId)
-
-    return axios
-      .post(`/string_setups/?mppt_setup_id=${mpptSetupId}`, payload)
-      .then((response) => {
-        const ids = response.data
-        if (Array.isArray(ids)) {
-          ids.forEach((item: { id: string }, idx: number) => {
-            if (stringSetups[idx]) {
-              stringSetups[idx].id = item.id
-            }
-          })
-        }
-      })
-  }
-
-  const loadStringSetups = async (mpptSetupId: string) => {
-    interface IApiStringSetup {
-      id: string
-      solar_array: string | null
-      panel_number: number | null
-      mppt_setup_id: string
-    }
-
-    const solarArraysStore = useSolarArraysStore()
-
-    return axios
-      .get(`/string_setups/mppt_setup/${mpptSetupId}`)
-      .then((response) => {
-        const stringSetupsData = response.data
-        return stringSetupsData.map((entry: IApiStringSetup) => {
-          const solarArray = entry.solar_array
-            ? (solarArraysStore.arrays.find((array) => array.id === entry.solar_array) ?? ({} as ISolarArray))
-            : ({} as ISolarArray)
-
-          const stringSetup = CStringSetup.of(solarArray, entry.panel_number ?? 0)
-          stringSetup.id = entry.id
-          return stringSetup
-        })
-      })
-  }
-
-  const createMpptPayload = (mpptSetups: IMpptSetup[], inverterSetupId: string) => {
-    return mpptSetups.map(() => ({
-      inverter_setup_id: inverterSetupId,
-    }))
-  }
-
-  const saveMpptSetups = async (inverterSetupId: string, mpptSetups: IMpptSetup[]) => {
-    const payload = createMpptPayload(mpptSetups, inverterSetupId)
-
-    return axios
-      .post(`/mppt_setups/?inverter_setup_id=${inverterSetupId}`, payload)
-      .then(async (response) => {
-        const ids = response.data
-        if (Array.isArray(ids)) {
-          for (const [idx, item] of ids.entries()) {
-            if (mpptSetups[idx]) {
-              mpptSetups[idx].id = item.id
-              await saveStringSetups(item.id, mpptSetups[idx].strings)
-            }
-          }
-        }
-      })
-  }
-
-  const loadMpptSetups = async (inverterSetupId: string) => {
-    interface IApiMpptSetup {
-      id: string
-      inverter_setup_id: string
-    }
-
-    return axios
-      .get(`/mppt_setups/inverter_setup/${inverterSetupId}`)
-      .then(async (response) => {
-        const mpptSetupsData = response.data
-        return await Promise.all(
-          mpptSetupsData.map(async (entry: IApiMpptSetup) => {
-            const mpptSetup = new CMpptSetup([])
-            mpptSetup.id = entry.id
-
-            mpptSetup.strings = await loadStringSetups(entry.id)
-            return mpptSetup
-          }),
-        )
-      })
-  }
-
-  const createInvertersPayload = (inverters: IInverterSetup[]) => {
-    return inverters.map((inverter) => ({
-      inverter: inverter.inverter?.id ?? null,
-      project_id: projectInfoStore.projectInfo.id,
-    }))
-  }
-
-  const saveInvertersInfo = async () => {
-    const payload = createInvertersPayload(inverters.value)
-
-    return axios
-      .post(`/inverter_setups/?project_id=${projectInfoStore.projectInfo.id}`, payload)
-      .then(async (response) => {
-        const ids = response.data
-        if (Array.isArray(ids)) {
-          for (const item of ids) {
-            const idx: number = ids.indexOf(item)
-            if (inverters.value[idx]) {
-              inverters.value[idx].id = item.id
-              await saveMpptSetups(item.id, inverters.value[idx].setup)
-            }
-          }
-        }
-      })
-  }
-
-  const loadInvertersInfo = async () => {
-    interface IApiInverterSetup {
-      id: string
-      inverter: string | null
-      project_id: string
-    }
-
-    return axios
-      .get(`/inverter_setups/project/${projectInfoStore.projectInfo.id}`)
-      .then(async (response) => {
-        const invertersData = response.data
-        inverters.value = await Promise.all(
-          invertersData.map(async (entry: IApiInverterSetup) => {
-            const inverter = entry.inverter
-              ? (monophaseInvertersStore.monophaseInverters.find((i) => i.id === entry.inverter) ??
-                ({} as IMonophaseInverter))
-              : ({} as IMonophaseInverter)
-
-            const inverterSetup = CInverterSetup.of(inverter, [])
-            inverterSetup.id = entry.id
-
-            inverterSetup.setup = await loadMpptSetups(entry.id)
-            return inverterSetup
-          }),
-        )
-      })
-  }
-
   /**
    * If the panel model in a solar array is changed or the number of panels is reduced,
    * the strings associated with that array are reset
@@ -218,7 +60,7 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     () =>
       solarArraysStore.arrays.map((array) => ({
         id: array.id,
-        panelId: array.array.panel?.id,
+        panelId: array.array.panel.id,
         panelNumber: array.array.panelNumber,
       })),
     (newArrays, oldArrays) => {
@@ -226,10 +68,7 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
         const oldArray = oldArrays[index]
 
         if (oldArray) {
-          if (
-            newArray.panelId !== oldArray.panelId ||
-            newArray.panelNumber < oldArray.panelNumber
-          ) {
+          if (newArray.panelId !== oldArray.panelId || newArray.panelNumber < oldArray.panelNumber) {
             resetStringsAssociatedWithSolarArray(newArray.id)
           }
         }
@@ -257,7 +96,5 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     addInverterSetup,
     updateInverterSetup,
     deleteInverterSetup,
-    saveInvertersInfo,
-    loadInvertersInfo,
   }
 })
