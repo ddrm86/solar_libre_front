@@ -6,6 +6,7 @@ import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { usePanelsStore } from '@/stores/inventory/panels.ts'
 import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
+import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
 
 export const useProjectLoadingStore = defineStore('project_loading', () => {
   const panelsStore = usePanelsStore()
@@ -13,6 +14,7 @@ export const useProjectLoadingStore = defineStore('project_loading', () => {
   const projectInfoStore = useProjectInfoStore()
   const inputConsumptionStore = useInputConsumptionStore()
   const solarArraysStore = useSolarArraysStore()
+  const invertersSetupStore = useInvertersSetupStore()
 
   const loading = ref(false)
 
@@ -32,6 +34,7 @@ export const useProjectLoadingStore = defineStore('project_loading', () => {
           loadedProjectId.value = projectId
           await inputConsumptionStore.loadConsumptionInfo()
           await solarArraysStore.loadSolarArraysInfo()
+          await invertersSetupStore.loadInvertersInfo()
         })
       })
     } catch (loadingError) {

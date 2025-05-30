@@ -4,8 +4,13 @@ import { computed, ref, watch } from 'vue'
 import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
+import axios from 'axios'
+import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
 
 export const useInvertersSetupStore = defineStore('inverters_setup', () => {
+  const monophaseInvertersStore = useMonophaseInvertersStore()
+  const projectInfoStore = useProjectInfoStore()
   const solarArraysStore = useSolarArraysStore()
 
   const inverters = ref<IInverterSetup[]>([])
@@ -52,6 +57,53 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     inverters.value.splice(index, 1)
   }
 
+  const createInvertersPayload = (inverters: IInverterSetup[]) => {
+    return inverters.map((inverter) => ({
+      inverter: inverter.inverter?.id ?? null,
+      project_id: projectInfoStore.projectInfo.id,
+    }))
+  }
+
+  const saveInvertersInfo = async () => {
+    const payload = createInvertersPayload(inverters.value)
+
+    return axios
+      .post(`/inverter_setups/?project_id=${projectInfoStore.projectInfo.id}`, payload)
+      .then((response) => {
+        const ids = response.data
+        if (Array.isArray(ids)) {
+          ids.forEach((item: { id: string }, idx: number) => {
+            if (inverters.value[idx]) {
+              inverters.value[idx].id = item.id
+            }
+          })
+        }
+      })
+  }
+
+  const loadInvertersInfo = async () => {
+    interface IApiInverterSetup {
+      id: string
+      inverter: string | null
+      project_id: string
+    }
+
+    return axios
+      .get(`/inverter_setups/project/${projectInfoStore.projectInfo.id}`)
+      .then((response) => {
+        const invertersData = response.data
+        inverters.value = invertersData.map((entry: IApiInverterSetup) => {
+          const inverter = entry.inverter
+            ? (monophaseInvertersStore.monophaseInverters.find((i) => i.id === entry.inverter) ?? ({} as IMonophaseInverter))
+            : ({} as IMonophaseInverter)
+
+          const inverterSetup = CInverterSetup.of(inverter, [])
+          inverterSetup.id = entry.id
+          return inverterSetup
+        })
+      })
+  }
+
   /**
    * If the panel model in a solar array is changed or the number of panels is reduced,
    * the strings associated with that array are reset
@@ -96,5 +148,7 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     addInverterSetup,
     updateInverterSetup,
     deleteInverterSetup,
+    saveInvertersInfo,
+    loadInvertersInfo
   }
 })
