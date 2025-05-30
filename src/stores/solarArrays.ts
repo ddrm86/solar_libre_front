@@ -74,7 +74,16 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
 
     return axios
       .post(`/solar_arrays/?project_id=${projectInfoStore.projectInfo.id}`, payload)
-      .then(() => {})
+      .then((response) => {
+        const ids = response.data
+        if (Array.isArray(ids)) {
+          ids.forEach((item: { id: string }, idx: number) => {
+            if (arrays.value[idx]) {
+              arrays.value[idx].id = item.id
+            }
+          })
+        }
+      })
   }
 
   const loadSolarArraysInfo = async () => {
