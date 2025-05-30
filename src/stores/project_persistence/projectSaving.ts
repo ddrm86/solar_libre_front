@@ -4,11 +4,13 @@ import { computed, ref } from 'vue'
 import { AxiosError } from 'axios'
 import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
+import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
 
 export const useProjectSavingStore = defineStore('project_saving', () => {
   const projectInfoStore = useProjectInfoStore()
   const inputConsumptionStore = useInputConsumptionStore()
   const solarArraysStore = useSolarArraysStore()
+  const invertersSetupStore = useInvertersSetupStore()
 
   const saving = ref(false);
 
@@ -28,6 +30,7 @@ export const useProjectSavingStore = defineStore('project_saving', () => {
       await projectInfoStore.saveProjectInfo()
       await inputConsumptionStore.saveConsumptionInfo()
       await solarArraysStore.saveSolarArraysInfo()
+      await invertersSetupStore.saveInvertersInfo()
     } catch (savingError) {
       error.value = true
       errorDetails.value = savingError as AxiosError
