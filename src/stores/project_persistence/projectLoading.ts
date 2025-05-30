@@ -29,12 +29,16 @@ export const useProjectLoadingStore = defineStore('project_loading', () => {
     error.value = false
     errorDetails.value = undefined
     try {
-      Promise.all([panelsStore.fetchPanels(), monophaseInvertersStore.fetchMonophaseInverters()]).then(async () => {
+      Promise.all([
+        await panelsStore.fetchPanels(),
+        await monophaseInvertersStore.fetchMonophaseInverters(),
+      ]).then(async () => {
         await projectInfoStore.loadProjectInfo(projectId).then(async () => {
           loadedProjectId.value = projectId
           await inputConsumptionStore.loadConsumptionInfo()
-          await solarArraysStore.loadSolarArraysInfo()
-          await invertersSetupStore.loadInvertersInfo()
+          await solarArraysStore.loadSolarArraysInfo().then(async () => {
+            await invertersSetupStore.loadInvertersInfo()
+          })
         })
       })
     } catch (loadingError) {

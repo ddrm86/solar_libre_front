@@ -8,6 +8,7 @@ import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import axios from 'axios'
 import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
 import { CMpptSetup, type IMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
+import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'
 
 export const useInvertersSetupStore = defineStore('inverters_setup', () => {
   const monophaseInvertersStore = useMonophaseInvertersStore()
@@ -83,6 +84,32 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
       })
   }
 
+  const loadStringSetups = async (mpptSetupId: string) => {
+    interface IApiStringSetup {
+      id: string
+      solar_array: string | null
+      panel_number: number | null
+      mppt_setup_id: string
+    }
+
+    const solarArraysStore = useSolarArraysStore()
+
+    return axios
+      .get(`/string_setups/mppt_setup/${mpptSetupId}`)
+      .then((response) => {
+        const stringSetupsData = response.data
+        return stringSetupsData.map((entry: IApiStringSetup) => {
+          const solarArray = entry.solar_array
+            ? (solarArraysStore.arrays.find((array) => array.id === entry.solar_array) ?? ({} as ISolarArray))
+            : ({} as ISolarArray)
+
+          const stringSetup = CStringSetup.of(solarArray, entry.panel_number ?? 0)
+          stringSetup.id = entry.id
+          return stringSetup
+        })
+      })
+  }
+
   const createMpptPayload = (mpptSetups: IMpptSetup[], inverterSetupId: string) => {
     return mpptSetups.map(() => ({
       inverter_setup_id: inverterSetupId,
@@ -115,13 +142,17 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
 
     return axios
       .get(`/mppt_setups/inverter_setup/${inverterSetupId}`)
-      .then((response) => {
+      .then(async (response) => {
         const mpptSetupsData = response.data
-        return mpptSetupsData.map((entry: IApiMpptSetup) => {
-          const mpptSetup = new CMpptSetup([])
-          mpptSetup.id = entry.id
-          return mpptSetup
-        })
+        return await Promise.all(
+          mpptSetupsData.map(async (entry: IApiMpptSetup) => {
+            const mpptSetup = new CMpptSetup([])
+            mpptSetup.id = entry.id
+
+            mpptSetup.strings = await loadStringSetups(entry.id)
+            return mpptSetup
+          }),
+        )
       })
   }
 
