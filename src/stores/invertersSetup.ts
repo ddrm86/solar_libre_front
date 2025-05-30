@@ -7,6 +7,7 @@ import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import axios from 'axios'
 import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
+import { CMpptSetup, type IMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 
 export const useInvertersSetupStore = defineStore('inverters_setup', () => {
   const monophaseInvertersStore = useMonophaseInvertersStore()
@@ -57,6 +58,47 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     inverters.value.splice(index, 1)
   }
 
+  const createMpptPayload = (mpptSetups: IMpptSetup[], inverterSetupId: string) => {
+    return mpptSetups.map(() => ({
+      inverter_setup_id: inverterSetupId,
+    }))
+  }
+
+  const saveMpptSetups = async (inverterSetupId: string, mpptSetups: IMpptSetup[]) => {
+    const payload = createMpptPayload(mpptSetups, inverterSetupId)
+
+    return axios
+      .post(`/mppt_setups/?inverter_setup_id=${inverterSetupId}`, payload)
+      .then((response) => {
+        const ids = response.data
+        if (Array.isArray(ids)) {
+          ids.forEach((item: { id: string }, idx: number) => {
+            if (mpptSetups[idx]) {
+              mpptSetups[idx].id = item.id
+            }
+          })
+        }
+      })
+  }
+
+  const loadMpptSetups = async (inverterSetupId: string) => {
+    interface IApiMpptSetup {
+      id: string
+      inverter_setup_id: string
+    }
+
+    return axios
+      .get(`/mppt_setups/inverter_setup/${inverterSetupId}`)
+      .then((response) => {
+        const mpptSetupsData = response.data
+        return mpptSetupsData.map((entry: IApiMpptSetup) => {
+          const mpptSetup = new CMpptSetup([])
+          mpptSetup.id = entry.id
+          return mpptSetup
+        })
+      })
+  }
+
   const createInvertersPayload = (inverters: IInverterSetup[]) => {
     return inverters.map((inverter) => ({
       inverter: inverter.inverter?.id ?? null,
@@ -69,14 +111,16 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
 
     return axios
       .post(`/inverter_setups/?project_id=${projectInfoStore.projectInfo.id}`, payload)
-      .then((response) => {
+      .then(async (response) => {
         const ids = response.data
         if (Array.isArray(ids)) {
-          ids.forEach((item: { id: string }, idx: number) => {
+          for (const item of ids) {
+            const idx: number = ids.indexOf(item)
             if (inverters.value[idx]) {
               inverters.value[idx].id = item.id
+              await saveMpptSetups(item.id, inverters.value[idx].setup)
             }
-          })
+          }
         }
       })
   }
@@ -90,17 +134,22 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
 
     return axios
       .get(`/inverter_setups/project/${projectInfoStore.projectInfo.id}`)
-      .then((response) => {
+      .then(async (response) => {
         const invertersData = response.data
-        inverters.value = invertersData.map((entry: IApiInverterSetup) => {
-          const inverter = entry.inverter
-            ? (monophaseInvertersStore.monophaseInverters.find((i) => i.id === entry.inverter) ?? ({} as IMonophaseInverter))
-            : ({} as IMonophaseInverter)
+        inverters.value = await Promise.all(
+          invertersData.map(async (entry: IApiInverterSetup) => {
+            const inverter = entry.inverter
+              ? (monophaseInvertersStore.monophaseInverters.find((i) => i.id === entry.inverter) ??
+                ({} as IMonophaseInverter))
+              : ({} as IMonophaseInverter)
 
-          const inverterSetup = CInverterSetup.of(inverter, [])
-          inverterSetup.id = entry.id
-          return inverterSetup
-        })
+            const inverterSetup = CInverterSetup.of(inverter, [])
+            inverterSetup.id = entry.id
+
+            inverterSetup.setup = await loadMpptSetups(entry.id)
+            return inverterSetup
+          }),
+        )
       })
   }
 
@@ -120,7 +169,10 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
         const oldArray = oldArrays[index]
 
         if (oldArray) {
-          if (newArray.panelId !== oldArray.panelId || newArray.panelNumber < oldArray.panelNumber) {
+          if (
+            newArray.panelId !== oldArray.panelId ||
+            newArray.panelNumber < oldArray.panelNumber
+          ) {
             resetStringsAssociatedWithSolarArray(newArray.id)
           }
         }
@@ -149,6 +201,6 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     updateInverterSetup,
     deleteInverterSetup,
     saveInvertersInfo,
-    loadInvertersInfo
+    loadInvertersInfo,
   }
 })
