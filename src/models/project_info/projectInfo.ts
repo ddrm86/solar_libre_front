@@ -4,4 +4,5 @@ export interface IProjectInfo {
   id?: string;
   name: string;
   location: ILocation;
+  deleted: boolean;
 }

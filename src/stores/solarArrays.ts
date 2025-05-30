@@ -2,9 +2,14 @@ import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
 import { type ISolarArray, CSolarArray } from '@/models/solar_arrays/solarArray.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
+import axios from 'axios'
+import { usePanelsStore } from '@/stores/inventory/panels.ts'
+import type { IPanel } from '@/models/inventory/panel.ts'
+import { CSolarArrayData } from '@/models/solar_arrays/solarArrayData.ts'
 
 export const useSolarArraysStore = defineStore('solar_arrays', () => {
   const projectInfoStore = useProjectInfoStore()
+  const panelsStore = usePanelsStore()
 
   const arrays = ref<ISolarArray[]>([])
 
@@ -14,7 +19,7 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
 
   const totalPower = computed(() => {
     return arrays.value.reduce((total, array) => {
-      return total + (array.array.panel.nominal_power * array.array.panelNumber)
+      return total + array.array.panel.nominal_power * array.array.panelNumber
     }, 0)
   })
 
@@ -45,8 +50,77 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
   })
 
   const pvgisAnnualProduction = computed(() => {
-    return pvgisProductionPerMonth.value.reduce((total, monthlyProduction) => total + monthlyProduction, 0)
+    return pvgisProductionPerMonth.value.reduce(
+      (total, monthlyProduction) => total + monthlyProduction,
+      0,
+    )
   })
+
+  const createSolarArraysPayload = (arrays: ISolarArray[]) => {
+    return arrays
+      .map((array) => ({
+        angle: array.array.angle,
+        azimuth: array.array.azimuth,
+        loss: array.array.loss,
+        panel_number: array.array.panelNumber,
+        is_dirty: array.isDirty,
+        panel: array.array.panel?.id ?? null,
+        project_id: projectInfoStore.projectInfo.id,
+      }))
+  }
+
+  const saveSolarArraysInfo = async () => {
+    const payload = createSolarArraysPayload(arrays.value)
+
+    return axios
+      .post(`/solar_arrays/?project_id=${projectInfoStore.projectInfo.id}`, payload)
+      .then((response) => {
+        const ids = response.data
+        if (Array.isArray(ids)) {
+          ids.forEach((item: { id: string }, idx: number) => {
+            if (arrays.value[idx]) {
+              arrays.value[idx].id = item.id
+            }
+          })
+        }
+      })
+  }
+
+  const loadSolarArraysInfo = async () => {
+    interface IApiSolarArray {
+      angle: number
+      azimuth: number
+      loss: number
+      panel_number: number
+      is_dirty: boolean
+      panel: string | null
+      project_id: string
+      id: string
+    }
+
+    return axios
+      .get(`/solar_arrays/project/${projectInfoStore.projectInfo.id}`)
+      .then((response) => {
+        const solarArraysData = response.data
+        arrays.value = solarArraysData.map((entry: IApiSolarArray) => {
+          const panel = entry.panel
+            ? (panelsStore.panels.find((p) => p.id === entry.panel) ?? ({} as IPanel))
+            : ({} as IPanel)
+          const solarArray = new CSolarArray(
+            new CSolarArrayData(panel, entry.panel_number, entry.loss, entry.angle, entry.azimuth),
+          )
+          solarArray.id = entry.id
+          solarArray.isDirty = entry.is_dirty
+          return solarArray
+        })
+
+        arrays.value.forEach((array) => {
+          if (array.array.panel && Object.keys(array.array.panel).length > 0) {
+            array.fetchPvgisData(projectInfoStore.projectInfo)
+          }
+        })
+      })
+  }
 
   watch(
     () => projectInfoStore.projectInfo.location,
@@ -66,6 +140,8 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
     addSolarArray,
     deleteSolarArray,
     pvgisProductionPerMonth,
-    pvgisAnnualProduction
+    pvgisAnnualProduction,
+    saveSolarArraysInfo,
+    loadSolarArraysInfo,
   }
 })
