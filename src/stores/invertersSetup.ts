@@ -3,7 +3,7 @@ import { CInverterSetup, type IInverterSetup } from '@/models/inverters_setup/in
 import { computed, ref, watch } from 'vue'
 import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
-import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
+import { CStringSetup, type IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import axios from 'axios'
 import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
@@ -58,6 +58,31 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
     inverters.value.splice(index, 1)
   }
 
+  const createStringPayload = (stringSetups: IStringSetup[], mpptSetupId: string) => {
+    return stringSetups.map((stringSetup) => ({
+      mppt_setup_id: mpptSetupId,
+      panel_number: stringSetup.panelNumber ?? null,
+      solar_array: stringSetup.solarArray?.id ?? null,
+    }))
+  }
+
+  const saveStringSetups = async (mpptSetupId: string, stringSetups: IStringSetup[]) => {
+    const payload = createStringPayload(stringSetups, mpptSetupId)
+
+    return axios
+      .post(`/string_setups/?mppt_setup_id=${mpptSetupId}`, payload)
+      .then((response) => {
+        const ids = response.data
+        if (Array.isArray(ids)) {
+          ids.forEach((item: { id: string }, idx: number) => {
+            if (stringSetups[idx]) {
+              stringSetups[idx].id = item.id
+            }
+          })
+        }
+      })
+  }
+
   const createMpptPayload = (mpptSetups: IMpptSetup[], inverterSetupId: string) => {
     return mpptSetups.map(() => ({
       inverter_setup_id: inverterSetupId,
@@ -69,14 +94,15 @@ export const useInvertersSetupStore = defineStore('inverters_setup', () => {
 
     return axios
       .post(`/mppt_setups/?inverter_setup_id=${inverterSetupId}`, payload)
-      .then((response) => {
+      .then(async (response) => {
         const ids = response.data
         if (Array.isArray(ids)) {
-          ids.forEach((item: { id: string }, idx: number) => {
+          for (const [idx, item] of ids.entries()) {
             if (mpptSetups[idx]) {
               mpptSetups[idx].id = item.id
+              await saveStringSetups(item.id, mpptSetups[idx].strings)
             }
-          })
+          }
         }
       })
   }
