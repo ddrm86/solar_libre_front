@@ -1,23 +1,24 @@
 <template>
-  <Button :icon="icon" variant="text" severity="secondary" size="large" @click="saveProject" />
+  <Button
+    :icon="'pi pi-save'"
+    :loading="projectSavingStore.saving"
+    :loadingIcon="'pi pi-spin pi-spinner-dotted'"
+    variant="text"
+    severity="secondary"
+    size="large"
+    @click="saveProject"
+  />
 </template>
 
 <script setup lang="ts">
 import { useProjectSavingStore } from '@/stores/project_persistence/projectSaving.ts'
 import { useToast } from 'primevue/usetoast'
-import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const { t } = useI18n()
 
 const projectSavingStore = useProjectSavingStore()
-
-const saved = ref(false)
-
-const icon = computed(() => {
-  return projectSavingStore.saving ? 'pi pi-spin pi-spinner-dotted' : 'pi pi-save'
-})
 
 const saveProject = () => {
   projectSavingStore.saveProject().then(() => {
@@ -29,14 +30,14 @@ const saveProject = () => {
         life: 5000,
       })
     } else {
-      saved.value = true
       toast.add({
         severity: 'success',
         summary: t('messages.saving_project_success'),
         detail: t('messages.saving_project_success_detail'),
         life: 3000,
       })
-    }  })
+    }
+  })
 }
 </script>
 
