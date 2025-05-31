@@ -7,6 +7,7 @@ import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { usePanelsStore } from '@/stores/inventory/panels.ts'
 import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
 import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
+import { useEconomicBalanceStore } from '@/stores/economicBalance.ts'
 
 export const useProjectLoadingStore = defineStore('project_loading', () => {
   const panelsStore = usePanelsStore()
@@ -15,6 +16,7 @@ export const useProjectLoadingStore = defineStore('project_loading', () => {
   const inputConsumptionStore = useInputConsumptionStore()
   const solarArraysStore = useSolarArraysStore()
   const invertersSetupStore = useInvertersSetupStore()
+  const economicBalanceStore = useEconomicBalanceStore()
 
   const loading = ref(false)
 
@@ -38,6 +40,7 @@ export const useProjectLoadingStore = defineStore('project_loading', () => {
           await inputConsumptionStore.loadConsumptionInfo()
           await solarArraysStore.loadSolarArraysInfo().then(async () => {
             await invertersSetupStore.loadInvertersInfo()
+            await economicBalanceStore.loadCostsInfo()
           })
         })
       })
