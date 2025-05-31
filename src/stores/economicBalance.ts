@@ -8,8 +8,11 @@ import {
 } from '@/models/economic_balance/installationCosts.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { chartPlaceholderPicture } from '@/models/report/chartPlaceholderPicture.ts'
+import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
+import axios from 'axios'
 
 export const useEconomicBalanceStore = defineStore('economic_balance', () => {
+  const projectInfoStore = useProjectInfoStore()
   const solarArraysStore = useSolarArraysStore()
   const inputConsumptionStore = useInputConsumptionStore()
 
@@ -85,6 +88,52 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
 
   const roiChartImage = ref(chartPlaceholderPicture)
 
+  const createCostsPayload = () => {
+    return {
+      vat: energyCosts.value.iva,
+      electric_tax: energyCosts.value.electricTax,
+      peak_kwh_cost: energyCosts.value.peakKwhCost,
+      flat_kwh_cost: energyCosts.value.flatKwhCost,
+      valley_kwh_cost: energyCosts.value.valleyKwhCost,
+      total_annual_cost: energyCosts.value.totalAnnualCost,
+      compensation_per_kwh: energyCosts.value.compensationPerKwh,
+      installation_cost: installationCosts.value.initialCost,
+      maintenance_cost: installationCosts.value.annualMaintenanceCost,
+      inflation: inflation.value,
+      project_id: projectInfoStore.projectInfo.id,
+    }
+  }
+
+  const saveCostsInfo = async () => {
+    const payload = createCostsPayload()
+
+    return axios
+      .post(`/costs/`, payload)
+      .then(() => {
+      })
+  }
+
+  const loadCostsInfo = async () => {
+    return axios
+      .get(`/costs/${projectInfoStore.projectInfo.id}`)
+      .then((response) => {
+        const costs = response.data
+
+        energyCosts.value.iva = costs.vat
+        energyCosts.value.electricTax = costs.electric_tax
+        energyCosts.value.peakKwhCost = costs.peak_kwh_cost
+        energyCosts.value.flatKwhCost = costs.flat_kwh_cost
+        energyCosts.value.valleyKwhCost = costs.valley_kwh_cost
+        energyCosts.value.totalAnnualCost = costs.total_annual_cost
+        energyCosts.value.compensationPerKwh = costs.compensation_per_kwh
+
+        installationCosts.value.initialCost = costs.installation_cost
+        installationCosts.value.annualMaintenanceCost = costs.maintenance_cost
+
+        inflation.value = costs.inflation
+      })
+  }
+
   return {
     energyCosts,
     energyCostByTimeBand,
@@ -98,5 +147,7 @@ export const useEconomicBalanceStore = defineStore('economic_balance', () => {
     annualSavings,
     savingsChartImage,
     roiChartImage,
+    saveCostsInfo,
+    loadCostsInfo,
   }
 })
