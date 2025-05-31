@@ -6,25 +6,28 @@ import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
 import { useEconomicBalanceStore } from '@/stores/economicBalance.ts'
+import { useProjectListStore } from '@/stores/project_persistence/projectList.ts'
 
 export const useProjectSavingStore = defineStore('project_saving', () => {
   const projectInfoStore = useProjectInfoStore()
+  const projectListStore = useProjectListStore()
   const inputConsumptionStore = useInputConsumptionStore()
   const solarArraysStore = useSolarArraysStore()
   const invertersSetupStore = useInvertersSetupStore()
-  const economicBalanceStore = useEconomicBalanceStore();
+  const economicBalanceStore = useEconomicBalanceStore()
 
-  const saving = ref(false);
+  const saving = ref(false)
 
-  const error = ref(false);
+  const error = ref(false)
 
-  const errorDetails = ref<AxiosError>();
+  const errorDetails = ref<AxiosError>()
 
-  const isNewProject = computed (() => {
+  const isNewProject = computed(() => {
     return !projectInfoStore.projectInfo.id
   })
 
   const saveProject = async () => {
+    const savingNewProject = isNewProject.value
     saving.value = true
     error.value = false
     errorDetails.value = undefined
@@ -39,6 +42,9 @@ export const useProjectSavingStore = defineStore('project_saving', () => {
       errorDetails.value = savingError as AxiosError
     } finally {
       saving.value = false
+      if (savingNewProject) {
+        await projectListStore.fetchProjects()
+      }
     }
   }
 
