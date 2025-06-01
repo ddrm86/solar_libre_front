@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-4">
+  <div class="lg:flex items-center gap-4">
     <IftaLabel>
       <Select
         id="project"
@@ -11,24 +11,26 @@
       />
       <label for="project">{{ t('project_selection.project') }}</label>
     </IftaLabel>
-    <Button
-      :icon="'pi pi-upload'"
-      :loading="projectLoadingStore.loading"
-      :loadingIcon="'pi pi-spin pi-spinner-dotted'"
-      :disabled="!selectedProject"
-      :label="t('project_selection.load_project')"
-      @click="loadSelectedProject"
-    />
-    <ProjectDelete
-      v-if="selectedProject"
-      :project-name="selectedProject.label"
-      :project-id="selectedProject.value"
-      @project-deleted="refreshProjects"
-    />
-    <ProjectCreateNew
-      v-if="!projectSavingStore.isNewProject"
-      :current-project-name="selectedProject ? selectedProject.label : ''"
-    />
+    <div class="flex items-center gap-2 pt-4 lg:pt-0">
+      <Button
+        :icon="'pi pi-upload'"
+        :loading="projectLoadingStore.loading"
+        :loadingIcon="'pi pi-spin pi-spinner-dotted'"
+        :disabled="!selectedProject"
+        :label="t('project_selection.load_project')"
+        @click="loadSelectedProject"
+      />
+      <ProjectDelete
+        v-if="selectedProject"
+        :project-name="selectedProject.label"
+        :project-id="selectedProject.value"
+        @project-deleted="refreshProjects"
+      />
+      <ProjectCreateNew
+        v-if="!projectSavingStore.isNewProject"
+        :current-project-name="selectedProject ? selectedProject.label : ''"
+      />
+    </div>
   </div>
 </template>
 
