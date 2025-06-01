@@ -19,7 +19,8 @@ export const useSolarArraysStore = defineStore('solar_arrays', () => {
 
   const totalPower = computed(() => {
     return arrays.value.reduce((total, array) => {
-      return total + array.array.panel.nominal_power * array.array.panelNumber
+      const power = array.array.panel?.nominal_power ?? 0
+      return total + power * array.array.panelNumber
     }, 0)
   })
 
