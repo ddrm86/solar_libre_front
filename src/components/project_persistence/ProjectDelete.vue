@@ -83,7 +83,6 @@ const deleteProject = async () => {
       severity: 'error',
       summary: t('messages.error'),
       detail: `t('messages.deleting_project_error') ${error}`,
-      life: 3000,
     })
   } finally {
     deleting.value = false

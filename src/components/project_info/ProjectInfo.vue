@@ -113,7 +113,6 @@ const isProjectNameDuplicated = async (name: string): Promise<boolean> => {
         severity: 'error',
         summary: t('messages.error'),
         detail: `${t('messages.fetching_error')} ${error.message}`,
-        life: 5000,
       })
       return false
     })

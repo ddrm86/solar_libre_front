@@ -64,7 +64,6 @@ function refreshProjects() {
         severity: 'error',
         summary: t('messages.loading_projects_error'),
         detail: `${t('messages.loading_projects_error_detail')} ${projectListStore.errorDetails ?? ''}`,
-        life: 5000,
       })
     } else if (!projectSavingStore.isNewProject && projecInfoStore.projectInfo.id) {
       const current = projecInfoStore.projectInfo
@@ -105,14 +104,13 @@ const loadSelectedProject = async () => {
           severity: 'error',
           summary: t('messages.loading_project_error'),
           detail: `${t('messages.loading_project_error_detail')} ${projectLoadingStore.errorDetails}`,
-          life: 5000,
         })
       } else {
         toast.add({
           severity: 'success',
           summary: t('messages.loading_project_success'),
           detail: `${t('messages.loading_project_success_detail')} ${selectedProject.value?.label ?? ''}`,
-          life: 5000,
+          life: 3000,
         })
       }
     })

@@ -309,7 +309,6 @@ const savePanel = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.adding_panel_error') + panelsStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
@@ -331,7 +330,6 @@ const savePanel = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.editing_panel_error') + panelsStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
@@ -371,7 +369,6 @@ const deletePanel = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.deleting_panel_error') + panelsStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
