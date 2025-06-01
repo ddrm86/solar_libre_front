@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-4">
+  <div class="lg:flex items-center gap-4">
     <IftaLabel>
       <Select
         id="project"
@@ -11,12 +11,26 @@
       />
       <label for="project">{{ t('project_selection.project') }}</label>
     </IftaLabel>
-    <Button
-      :icon="icon"
-      :label="t('project_selection.load_project')"
-      :disabled="projectLoadingStore.loading || !selectedProject"
-      @click="loadSelectedProject"
-    />
+    <div class="flex items-center gap-2 pt-4 lg:pt-0">
+      <Button
+        :icon="'pi pi-upload'"
+        :loading="projectLoadingStore.loading"
+        :loadingIcon="'pi pi-spin pi-spinner-dotted'"
+        :disabled="!selectedProject"
+        :label="t('project_selection.load_project')"
+        @click="loadSelectedProject"
+      />
+      <ProjectDelete
+        v-if="selectedProject"
+        :project-name="selectedProject.label"
+        :project-id="selectedProject.value"
+        @project-deleted="refreshProjects"
+      />
+      <ProjectCreateNew
+        v-if="!projectSavingStore.isNewProject"
+        :current-project-name="selectedProject ? selectedProject.label : ''"
+      />
+    </div>
   </div>
 </template>
 
@@ -26,14 +40,24 @@ import { useProjectLoadingStore } from '@/stores/project_persistence/projectLoad
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
+import { useProjectSavingStore } from '@/stores/project_persistence/projectSaving.ts'
+import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
+import ProjectDelete from '@/components/project_persistence/ProjectDelete.vue'
+import ProjectCreateNew from '@/components/project_persistence/ProjectCreateNew.vue'
 
 const toast = useToast()
 const { t } = useI18n()
 
 const projectListStore = useProjectListStore()
 const projectLoadingStore = useProjectLoadingStore()
+const projectSavingStore = useProjectSavingStore()
+const projecInfoStore = useProjectInfoStore()
 
 onMounted(() => {
+  refreshProjects()
+})
+
+function refreshProjects() {
   projectListStore.fetchProjects().then(() => {
     if (projectListStore.error) {
       toast.add({
@@ -42,9 +66,20 @@ onMounted(() => {
         detail: `${t('messages.loading_projects_error_detail')} ${projectListStore.errorDetails ?? ''}`,
         life: 5000,
       })
+    } else if (!projectSavingStore.isNewProject && projecInfoStore.projectInfo.id) {
+      const current = projecInfoStore.projectInfo
+      let addressLabel = ''
+      if (current.location.address) {
+        const truncatedAddress = current.location.address.substring(0, 40)
+        addressLabel = ` (${truncatedAddress}${current.location.address.length > 40 ? '...' : ''})`
+      }
+      selectedProject.value = {
+        label: current.name + addressLabel,
+        value: current.id ?? '',
+      }
     }
   })
-})
+}
 
 const selectedProject = ref<{ label: string; value: string } | null>(null)
 
@@ -61,10 +96,6 @@ const projectOptions = computed(() =>
     }
   }),
 )
-
-const icon = computed(() => {
-  return projectLoadingStore.loading ? 'pi pi-spin pi-spinner-dotted' : 'pi pi-upload'
-})
 
 const loadSelectedProject = async () => {
   if (selectedProject.value) {
