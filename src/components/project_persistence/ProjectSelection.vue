@@ -19,6 +19,12 @@
       :label="t('project_selection.load_project')"
       @click="loadSelectedProject"
     />
+    <ProjectDelete
+      v-if="selectedProject"
+      :project-name="selectedProject.label"
+      :project-id="selectedProject.value"
+      @project-deleted="refreshProjects"
+    />
   </div>
 </template>
 
@@ -30,6 +36,7 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { useProjectSavingStore } from '@/stores/project_persistence/projectSaving.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
+import ProjectDelete from '@/components/project_persistence/ProjectDelete.vue'
 
 const toast = useToast()
 const { t } = useI18n()
@@ -40,6 +47,10 @@ const projectSavingStore = useProjectSavingStore()
 const projecInfoStore = useProjectInfoStore()
 
 onMounted(() => {
+  refreshProjects()
+})
+
+function refreshProjects() {
   projectListStore.fetchProjects().then(() => {
     if (projectListStore.error) {
       toast.add({
@@ -61,7 +72,7 @@ onMounted(() => {
       }
     }
   })
-})
+}
 
 const selectedProject = ref<{ label: string; value: string } | null>(null)
 
