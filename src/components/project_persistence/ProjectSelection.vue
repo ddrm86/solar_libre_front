@@ -12,9 +12,11 @@
       <label for="project">{{ t('project_selection.project') }}</label>
     </IftaLabel>
     <Button
-      :icon="icon"
+      :icon="'pi pi-upload'"
+      :loading="projectLoadingStore.loading"
+      :loadingIcon="'pi pi-spin pi-spinner-dotted'"
+      :disabled="!selectedProject"
       :label="t('project_selection.load_project')"
-      :disabled="projectLoadingStore.loading || !selectedProject"
       @click="loadSelectedProject"
     />
   </div>
@@ -76,10 +78,6 @@ const projectOptions = computed(() =>
     }
   }),
 )
-
-const icon = computed(() => {
-  return projectLoadingStore.loading ? 'pi pi-spin pi-spinner-dotted' : 'pi pi-upload'
-})
 
 const loadSelectedProject = async () => {
   if (selectedProject.value) {
