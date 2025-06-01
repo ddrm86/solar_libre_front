@@ -106,7 +106,6 @@ onMounted(() => {
         severity: 'error',
         summary: t('toast_messages.error'),
         detail: t('toast_messages.error_fetching_panels') + ': ' + panelsStore.errorDetails,
-        life: 3000,
       })
     }
   })
@@ -130,7 +129,6 @@ watch (
         summary: t('toast_messages.error'),
         detail: t('toast_messages.error_querying_pvgis') + ': '
           + solarArraysStore.arrays[arrayIdx].pvgisData?.errorDetails,
-        life: 3000,
       })
     }
   }

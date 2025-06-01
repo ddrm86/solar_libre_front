@@ -48,7 +48,6 @@ onMounted(() => {
         severity: 'error',
         summary: t('toast_messages.error'),
         detail: t('toast_messages.error_fetching_inverters') + ': ' + monophaseInvertersStore.errorDetails,
-        life: 3000,
       })
     }
   })

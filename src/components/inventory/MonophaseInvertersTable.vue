@@ -355,7 +355,6 @@ const saveMonophaseInverter = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.adding_monophaseInverter_error') + monophaseInvertersStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
@@ -377,7 +376,6 @@ const saveMonophaseInverter = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.editing_monophaseInverter_error') + monophaseInvertersStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
@@ -417,7 +415,6 @@ const deleteMonophaseInverter = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.deleting_monophaseInverter_error') + monophaseInvertersStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
