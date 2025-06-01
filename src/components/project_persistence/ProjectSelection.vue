@@ -25,6 +25,10 @@
       :project-id="selectedProject.value"
       @project-deleted="refreshProjects"
     />
+    <ProjectCreateNew
+      v-if="!projectSavingStore.isNewProject"
+      :current-project-name="selectedProject ? selectedProject.label : ''"
+    />
   </div>
 </template>
 
@@ -37,6 +41,7 @@ import { useToast } from 'primevue/usetoast'
 import { useProjectSavingStore } from '@/stores/project_persistence/projectSaving.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import ProjectDelete from '@/components/project_persistence/ProjectDelete.vue'
+import ProjectCreateNew from '@/components/project_persistence/ProjectCreateNew.vue'
 
 const toast = useToast()
 const { t } = useI18n()
