@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import {
-  CYearlyConsumption,
-  type IYearlyConsumption,
+  CYearlyConsumption, type IConsumptionByTimeBand,
+  type IYearlyConsumption
 } from '@/models/consumption/inputConsumption.ts'
 import { CYearlySunHours, type IYearlySunHours } from '@/models/consumption/sunHours.ts'
 import { consumptionDistributionProfile } from '@/models/consumption/consumptionDistributionProfile'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { chartPlaceholderPicture } from '@/models/report/chartPlaceholderPicture.ts'
+import axios from 'axios'
 
 export const useInputConsumptionStore = defineStore('input_consumption', () => {
   const projectInfoStore = useProjectInfoStore()
@@ -70,6 +71,49 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
 
   const consumptionChartImage = ref(chartPlaceholderPicture)
 
+  const createConsumptionPayload = (consumption: IYearlyConsumption) => {
+    return consumption.consumptionsPerMonth.map((monthlyConsumption, index) => ({
+      month: index,
+      peak: monthlyConsumption.peak,
+      flat: monthlyConsumption.flat,
+      valley: monthlyConsumption.valley,
+      project_id: projectInfoStore.projectInfo.id,
+    }))
+  }
+
+  const saveConsumptionInfo = async () => {
+    const payload = createConsumptionPayload(consumption.value)
+
+    return axios
+      .post(`/energy_consumption/?project_id=${projectInfoStore.projectInfo.id}`, payload)
+      .then(() => {
+      })
+  }
+
+  const loadConsumptionInfo = async () => {
+    interface IApiConsumption {
+      month: number;
+      peak: number;
+      flat: number;
+      valley: number;
+      project_id: string;
+    }
+
+    return axios
+      .get(`/energy_consumption/project/${projectInfoStore.projectInfo.id}`)
+      .then((response) => {
+        const energyConsumptions = response.data;
+        consumption.value.consumptionsPerMonth = [
+          ...Array.from({ length: 12 }, (_, index) => {
+            const entry = energyConsumptions.find((e: IApiConsumption) => e.month === index);
+            return entry
+              ? { peak: entry.peak, flat: entry.flat, valley: entry.valley }
+              : { peak: 0, flat: 0, valley: 0 };
+          }),
+        ] as [IConsumptionByTimeBand];
+      })
+  };
+
   watch(
     () => [
       projectInfoStore.projectInfo.location.latitude,
@@ -91,6 +135,8 @@ export const useInputConsumptionStore = defineStore('input_consumption', () => {
     pvConsumptionsPerMonth,
     totalPvConsumptionPerMonth,
     totalPvConsumption,
-    consumptionChartImage
+    consumptionChartImage,
+    saveConsumptionInfo,
+    loadConsumptionInfo,
   }
 })

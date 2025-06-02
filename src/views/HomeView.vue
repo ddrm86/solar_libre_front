@@ -1,5 +1,12 @@
 <template>
-<div>
-  <img alt="SolarLibre logo" class="logo" src="@/assets/solar_libre_logo.jpeg" width="800" height="800" />
-</div>
+  <ProjectSelection />
+  <Divider />
+  <article class="xl:w-1/2">
+    <QuickStartGuide />
+  </article>
 </template>
+
+<script setup lang="ts">
+import ProjectSelection from '@/components/project_persistence/ProjectSelection.vue'
+import QuickStartGuide from '@/components/QuickStartGuide.vue'
+</script>

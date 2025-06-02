@@ -14,19 +14,23 @@
       </a>
     </template>
     <template #end>
+      <ProjectSave />
       <PdfReportGenerator />
+      <LanguageSelector />
     </template>
   </Menubar>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PdfReportGenerator from '@/components/report/PdfReportGenerator.vue'
+import LanguageSelector from '@/components/LanguageSelector.vue'
+import ProjectSave from '@/components/project_persistence/ProjectSave.vue'
 
 const { t } = useI18n()
 
-const items = ref([
+const items = computed(() => [
   {
     label: t('home'),
     icon: 'pi pi-home',

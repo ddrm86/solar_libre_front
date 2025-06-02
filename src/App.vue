@@ -10,7 +10,7 @@ axios.defaults.timeout = 2000;
 </script>
 
 <template>
-  <Toast />
+  <Toast position="bottom-right" />
   <header>
     <div class="p-4">
       <nav>

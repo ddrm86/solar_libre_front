@@ -25,35 +25,35 @@ export class CStringSetup implements IStringSetup {
   }
 
   calcPeakPower(): number {
-    if (!this.solarArray) {
+    if (!this.solarArray?.array) {
       return 0
     }
     return this.solarArray.array.panel.nominal_power * (this.panelNumber ?? 0)
   }
 
   calcPeakVoltage(): number {
-    if (!this.solarArray) {
+    if (!this.solarArray?.array) {
       return 0
     }
     return this.solarArray.array.panel.vmpp * (this.panelNumber ?? 0)
   }
 
   calcPeakCurrent(): number {
-    if (!this.solarArray || !this.panelNumber || this.panelNumber === 0) {
+    if (!this.solarArray?.array || !this.panelNumber || this.panelNumber === 0) {
       return 0
     }
     return this.solarArray.array.panel.impp
   }
 
   calcOpenCircuitVoltage(): number {
-    if (!this.solarArray) {
+    if (!this.solarArray?.array) {
       return 0
     }
     return this.solarArray.array.panel.voc * (this.panelNumber ?? 0)
   }
 
   calcShortCircuitCurrent(): number {
-    if (!this.solarArray || !this.panelNumber || this.panelNumber === 0) {
+    if (!this.solarArray?.array || !this.panelNumber || this.panelNumber === 0) {
       return 0
     }
     return this.solarArray.array.panel.isc

@@ -7,64 +7,82 @@
       </template>
       <template #content>
         <DataTable
-      :value="panelsStore.availablePanels"
-      :loading="panelsStore.fetching"
-      dataKey="id"
-      stripedRows
-      sortField="maker"
-      :sortOrder="1"
-      v-model:filters="filters"
-      :globalFilterFields="['maker', 'model', 'description']"
-      filterDisplay="row"
-    >
-      <template #header>
-        <div class="flex justify-between">
-          <div>
-            <Button :label="t('button.new')" icon="pi pi-plus" @click="openNew" />
-          </div>
-          <div>
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search" />
-              </InputIcon>
-              <InputText
-                v-model="filters['global'].value"
-                :placeholder="t('labels.keyword_search')"
+          :value="panelsStore.availablePanels"
+          :loading="panelsStore.fetching"
+          dataKey="id"
+          stripedRows
+          scrollable
+          scrollHeight="flex"
+          sortField="maker"
+          :sortOrder="1"
+          v-model:filters="filters"
+          :globalFilterFields="['maker', 'model', 'description']"
+          filterDisplay="row"
+        >
+          <template #header>
+            <div class="flex justify-between">
+              <div>
+                <Button :label="t('button.new')" icon="pi pi-plus" @click="openNew" />
+              </div>
+              <div>
+                <IconField>
+                  <InputIcon>
+                    <i class="pi pi-search" />
+                  </InputIcon>
+                  <InputText
+                    v-model="filters['global'].value"
+                    :placeholder="t('labels.keyword_search')"
+                  />
+                </IconField>
+              </div>
+            </div>
+          </template>
+          <Column
+            field="maker"
+            :header="t('panel.maker')"
+            :sortable="true"
+            :frozen="true"
+            alignFrozen="left"
+          ></Column>
+          <Column
+            field="model"
+            :header="t('panel.model')"
+            :sortable="true"
+            :frozen="true"
+            alignFrozen="left"
+          ></Column>
+          <Column
+            field="nominal_power"
+            :header="t('panel.nominal_power')"
+            :sortable="true"
+          ></Column>
+          <Column field="vmpp" :header="t('panel.vmpp')" :sortable="true"></Column>
+          <Column field="impp" :header="t('panel.impp')" :sortable="true"></Column>
+          <Column field="voc" :header="t('panel.voc')" :sortable="true"></Column>
+          <Column field="isc" :header="t('panel.isc')" :sortable="true"></Column>
+          <Column field="length" :header="t('panel.length')" :sortable="true"></Column>
+          <Column field="width" :header="t('panel.width')" :sortable="true"></Column>
+          <Column field="reference" :header="t('panel.reference')" :sortable="true"></Column>
+          <Column field="description" :header="t('panel.description')" :sortable="true"></Column>
+          <Column :exportable="false" :frozen="true" alignFrozen="right">
+            <template #body="slotProps">
+              <Button
+                icon="pi pi-pencil"
+                outlined
+                rounded
+                class="mr-2"
+                @click="editPanel(slotProps.data)"
               />
-            </IconField>
-          </div>
-        </div>
-      </template>
-      <Column field="maker" :header="t('panel.maker')" :sortable="true"></Column>
-      <Column field="model" :header="t('panel.model')" :sortable="true"></Column>
-      <Column field="nominal_power" :header="t('panel.nominal_power')" :sortable="true"></Column>
-      <Column field="vmpp" :header="t('panel.vmpp')" :sortable="true"></Column>
-      <Column field="impp" :header="t('panel.impp')" :sortable="true"></Column>
-      <Column field="voc" :header="t('panel.voc')" :sortable="true"></Column>
-      <Column field="isc" :header="t('panel.isc')" :sortable="true"></Column>
-      <Column field="length" :header="t('panel.length')" :sortable="true"></Column>
-      <Column field="width" :header="t('panel.width')" :sortable="true"></Column>
-      <Column field="reference" :header="t('panel.reference')" :sortable="true"></Column>
-      <Column field="description" :header="t('panel.description')" :sortable="true"></Column>
-      <Column :exportable="false">
-        <template #body="slotProps">
-          <Button
-            icon="pi pi-pencil"
-            outlined
-            rounded
-            class="mr-2"
-            @click="editPanel(slotProps.data)"
-          />
-          <Button
-            icon="pi pi-trash"
-            outlined
-            rounded
-            severity="danger"
-            @click="confirmDeletePanel(slotProps.data)"
-          />
-        </template>
-      </Column>
-    </DataTable>
+              <Button
+                icon="pi pi-trash"
+                outlined
+                rounded
+                severity="danger"
+                @click="confirmDeletePanel(slotProps.data)"
+              />
+            </template>
+          </Column>
+        </DataTable>
       </template>
     </Card>
   </div>
@@ -212,7 +230,12 @@
 
     <template #footer>
       <Button :label="t('button.cancel')" icon="pi pi-times" text @click="hideDialog" />
-      <Button :label="t('button.save')" :loading="savingPanel" icon="pi pi-check" @click="savePanel" />
+      <Button
+        :label="t('button.save')"
+        :loading="savingPanel"
+        icon="pi pi-check"
+        @click="savePanel"
+      />
     </template>
   </Dialog>
 
@@ -248,12 +271,12 @@
 </template>
 
 <script setup lang="ts">
-import { usePanelsStore, } from '@/stores/inventory/panels.ts'
-import { ref, onMounted } from 'vue'
+import { usePanelsStore } from '@/stores/inventory/panels.ts'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { FilterMatchMode } from '@primevue/core/api'
-import {type IPanel, validatePanel } from '@/models/inventory/panel.ts'
+import { type IPanel, validatePanel } from '@/models/inventory/panel.ts'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -309,7 +332,6 @@ const savePanel = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.adding_panel_error') + panelsStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
@@ -331,7 +353,6 @@ const savePanel = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.editing_panel_error') + panelsStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
@@ -371,7 +392,6 @@ const deletePanel = () => {
           severity: 'error',
           summary: t('messages.error'),
           detail: t('messages.deleting_panel_error') + panelsStore.errorDetails,
-          life: 3000,
         })
       } else {
         toast.add({
