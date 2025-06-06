@@ -1,4 +1,10 @@
-# solar_libre_front
+# SolarLibre (front-end)
+
+SolarLibre is a web application for sizing residential photovoltaic solar energy installations.
+
+This project has been developed as part of the Final Degree Project in the Computer Engineering program at UNIR.
+
+(es-ES) Este proyecto ha sido desarrollado como parte del Trabajo de Fin de Estudio, en el Grado en Ingeniería Informática de UNIR.
 
 This template should help get you started developing with Vue 3 in Vite.
 
