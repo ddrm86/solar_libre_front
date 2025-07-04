@@ -11,6 +11,19 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * PvgisButton.vue
+ *
+ * This Vue component renders a button to query PVGIS data for a specific solar array.
+ * The button displays a dynamic badge indicating the current status, such as missing data,
+ * needs update, updated, error, or querying.
+ * The button is disabled if the required data is incomplete.
+ * When clicked, it triggers the PVGIS data fetch operation for the selected array using the
+ * current project information.
+ *
+ * Usage:
+ * <PvgisButton :arrayIdx="index" />
+ */
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { computed } from 'vue'

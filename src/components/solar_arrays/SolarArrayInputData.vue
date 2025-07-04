@@ -78,6 +78,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * SolarArrayInputData.vue
+ *
+ * This Vue component provides a form for configuring the data of a solar array.
+ * Users can select a solar panel model, specify the number of panels, set loss percentage, tilt angle, and azimuth.
+ * The component fetches available panel models and displays error notifications if loading fails.
+ * It also shows the calculated total peak power and notifies about errors when querying PVGIS data.
+ *
+ * Usage:
+ * <SolarArrayInputData :arrayIdx="index" />
+ */
 import { useI18n } from 'vue-i18n'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'
 import { usePanelsStore } from '@/stores/inventory/panels.ts'
