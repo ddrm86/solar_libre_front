@@ -38,6 +38,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * ProjectCreateNew.vue
+ *
+ * This Vue component renders a button to create a new project.
+ * When clicked, it opens a confirmation dialog warning the user that unsaved changes will be lost.
+ * If the user confirms, the page reloads to start a new project session.
+ *
+ * Usage:
+ * <ProjectCreateNew :currentProjectName="projectName" />
+ */
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 

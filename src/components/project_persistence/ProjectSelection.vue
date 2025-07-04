@@ -35,6 +35,19 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * ProjectSelection.vue
+ *
+ * This Vue component displays a selector for saved projects and allows the user to load, delete,
+ * or create a new project.
+ * When a project is selected and the load button is clicked, it attempts to load the selected project
+ * and shows a notification indicating the result.
+ * It also allows deleting the selected project or creating a new one, displaying the corresponding
+ * dialogs and notifications.
+ *
+ * Usage:
+ * <ProjectSelection />
+ */
 import { useProjectListStore } from '@/stores/project_persistence/projectList.ts'
 import { useProjectLoadingStore } from '@/stores/project_persistence/projectLoading.ts'
 import { computed, onMounted, ref } from 'vue'
