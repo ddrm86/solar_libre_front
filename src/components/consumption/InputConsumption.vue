@@ -13,6 +13,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * InputConsumption.vue
+ *
+ * This Vue component displays the annual energy consumption by month in kilowatt-hours (kWh).
+ * It contains a table for entering and viewing monthly consumption data and a chart for visualizing the data.
+ * The table and chart are shown side by side on large screens.
+ *
+ * Usage:
+ * <InputConsumption />
+ */
 import InputConsumptionTable from '@/components/consumption/InputConsumptionTable.vue'
 import InputConsumptionChart from '@/components/consumption/InputConsumptionChart.vue'
 import { useI18n } from 'vue-i18n'
