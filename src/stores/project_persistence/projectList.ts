@@ -1,3 +1,19 @@
+/**
+ * projectList.ts
+ *
+ * This file defines a Pinia store for managing the list of projects
+ * within the application. The store maintains a reactive array of projects,
+ * each containing properties such as id, name, location details,
+ * and a deleted flag.
+ *
+ * The store provides a computed property to filter and expose only
+ * available (not deleted) projects. It also tracks the fetching state,
+ * error status, and error details for asynchronous operations.
+ *
+ * A method is included to fetch the list of projects from the backend,
+ * updating the local state and handling errors as needed.
+ */
+
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { AxiosError } from 'axios'

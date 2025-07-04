@@ -1,3 +1,20 @@
+/**
+ * projectLoading.ts
+ *
+ * This file defines a Pinia store for managing the loading process
+ * of a project within the application. The store coordinates the
+ * loading of related data, including project information, input
+ * consumption, solar arrays, panels, inverters, and economic balance.
+ *
+ * The store maintains reactive state for the loading status,
+ * the currently loaded project ID, and error information.
+ *
+ * Methods are provided to load all necessary project data in sequence,
+ * handling asynchronous operations and updating the loading and error
+ * states as needed.
+ *
+ */
+
 import { defineStore } from 'pinia'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { ref } from 'vue'
