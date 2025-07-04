@@ -386,6 +386,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * MonophaseInvertersTable.vue
+ *
+ * This Vue component displays a table for managing monophase inverters in the inventory.
+ * It allows users to view, add, edit, and delete monophase inverter records.
+ * The table supports filtering, sorting, and searching by various fields.
+ * Dialogs are provided for creating or editing inverter details and for confirming deletions.
+ * Toast notifications inform the user about the result of each operation.
+ *
+ * Usage:
+ * <MonophaseInvertersTable />
+ */
 import { useMonophaseInvertersStore } from '@/stores/inventory/monophaseInverters.ts'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
