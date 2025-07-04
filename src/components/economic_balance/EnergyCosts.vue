@@ -136,6 +136,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * EnergyCosts.vue
+ *
+ * This Vue component displays a form for entering and editing energy cost parameters, such as
+ * VAT, electric tax, total annual cost, and kWh costs for different time bands (peak, flat, valley).
+ * It also shows a summary table with calculated energy costs, both with and without taxes,
+ * for each time band and totals.
+ *
+ * Usage:
+ * <EnergyCosts />
+ */
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
 import { useI18n } from 'vue-i18n'
 

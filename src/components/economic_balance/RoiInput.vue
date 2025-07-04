@@ -69,6 +69,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * RoiInput.vue
+ *
+ * This Vue component provides a form for entering and editing parameters related to the return
+ * on investment (ROI) calculation, such as total installation cost, annual maintenance cost, and
+ * annual inflation.
+ * It allows the user to include or exclude surplus compensation in the calculation.
+ * The component displays the calculated annual energy savings based on the provided values.
+ *
+ * Usage:
+ * <RoiInput @updateIncludeSurplus="handler" />
+ */
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'

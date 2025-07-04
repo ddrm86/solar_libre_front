@@ -38,6 +38,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * CostSavings.vue
+ *
+ * This Vue component displays a card for configuring and visualizing cost savings related to
+ * energy compensation for surplus production.
+ * It allows the user to set the compensation per kWh and shows a warning if the PVGIS production
+ * data is outdated.
+ *
+ * Usage:
+ * <CostSavings />
+ */
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'
 import CostSavingsChart from '@/components/economic_balance/CostSavingsChart.vue'
