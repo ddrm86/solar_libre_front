@@ -3,6 +3,19 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * MapSearch.vue
+ *
+ * This Vue component displays an interactive map with a search bar for addresses using Leaflet and
+ * leaflet-geosearch.
+ * Users can search for locations, drag the marker, and select a location, which emits the selected
+ * coordinates and address.
+ * The map zoom level is stored in the mapSearchStore so it does not go back to the default value
+ * every time the component is mounted.
+ *
+ * Usage:
+ * <MapSearch :mapHeight="'400px'" :initView="[latitude, longitude]" @locationSelected="handler" />
+ */
 import 'leaflet/dist/leaflet.css'
 import "leaflet-geosearch/assets/css/leaflet.css";
 

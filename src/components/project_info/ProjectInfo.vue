@@ -64,6 +64,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * ProjectInfo.vue
+ *
+ * This Vue component displays and manages the project's basic information, including name, address,
+ * latitude, and longitude.
+ * It provides a map for selecting the project location and form fields for editing project details.
+ * It validates the project name and ensures uniqueness, generating a new name if duplicated.
+ * Notifications are shown for errors or duplicated names.
+ *
+ * Usage:
+ * <ProjectInfo />
+ */
 import { useI18n } from 'vue-i18n'
 import MapSearch from '@/components/project_info/MapSearch.vue'
 import { type ILocation } from '@/models/project_info/location.ts'
