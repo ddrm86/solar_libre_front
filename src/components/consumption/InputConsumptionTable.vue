@@ -53,6 +53,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * InputConsumptionTable.vue
+ *
+ * This Vue component displays a table for entering and viewing monthly energy consumption data
+ * by time band (peak, flat, valley).
+ * The component calculates and displays the total consumption for each time band and the annual total.
+ *
+ * Usage:
+ * <InputConsumptionTable />
+ */
 import { computed } from 'vue'
 import { useInputConsumptionStore } from '@/stores/inputConsumption'
 import { useI18n } from 'vue-i18n'

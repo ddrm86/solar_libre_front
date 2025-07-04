@@ -54,6 +54,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * InverterSetup.vue
+ *
+ * This Vue component displays a panel for configuring an inverter and its MPPTs (Maximum Power Point Trackers).
+ * Users can select an inverter from the inventory, add or remove MPPTs, and configure each MPPT.
+ * The panel header shows the inverter number and, when collapsed, a summary of the MPPTs.
+ * A delete button allows removing the inverter.
+ *
+ * Usage:
+ * <InverterSetup :idx="index" :inventory="inverterList" :currentSetup="inverterSetup"
+ * @updateInverterSetup="onUpdate" @deleteInverter="onDelete" />
+ */
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MpptSetup from '@/components/inverters_setup/MpptSetup.vue'

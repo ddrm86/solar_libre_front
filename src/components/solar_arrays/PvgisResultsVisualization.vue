@@ -31,6 +31,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * PvgisResultsVisualization.vue
+ *
+ * This Vue component displays the PVGIS simulation results for a selected solar array.
+ * It shows a table with monthly energy production and another table summarizing provided data,
+ * simulation results, and production changes.
+ * If no data is available, a message is shown instead.
+ *
+ * Usage:
+ * <PvgisResultsVisualization :arrayIdx="index" />
+ */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'

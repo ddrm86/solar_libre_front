@@ -22,6 +22,22 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * MainMenu.vue
+ *
+ * This Vue component renders the main navigation menu for the application,
+ * providing access to key sections such as Home, Project Info, Consumption,
+ * Solar Arrays, Inverters Setup, Economic Balance, and Inventory.
+ * The menu uses a Menubar component with custom item templates to display
+ * navigation links, icons, and support for submenu items.
+ *
+ * The right side of the menu includes controls for saving the project,
+ * generating PDF reports, and selecting the application language.
+ *
+ * Usage:
+ * <MainMenu />
+ */
+
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PdfReportGenerator from '@/components/report/PdfReportGenerator.vue'

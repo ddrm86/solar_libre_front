@@ -11,6 +11,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * InputConsumptionChart.vue
+ *
+ * This Vue component displays a line and bar chart of annual energy consumption data.
+ * It visualizes monthly consumption values for peak, flat, and valley periods, as well as
+ * estimated consumption during PV hours.
+ * The chart data and appearance are dynamically generated from the inputConsumptionStore.
+ * After rendering, the chart image is updated and stored for the PDF report.
+ *
+ * Usage:
+ * <InputConsumptionChart />
+ */
 import { computed, ref } from 'vue'
 import { useInputConsumptionStore } from '@/stores/inputConsumption'
 import { useI18n } from 'vue-i18n'

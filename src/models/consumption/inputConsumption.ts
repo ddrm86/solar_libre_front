@@ -1,3 +1,13 @@
+/**
+ * inputConsumption.ts
+ *
+ * This file defines interfaces and a class for managing electricity consumption data by time band and by month.
+ * The IConsumptionByTimeBand interface represents consumption values for peak, flat, and valley time bands.
+ * The IYearlyConsumption interface specifies methods for calculating total consumption by time band,
+ * by month, and overall, as well as for setting consumption values.
+ * The CYearlyConsumption class implements IYearlyConsumption, storing monthly consumption data
+ * and providing methods to update and calculate totals.
+ */
 export interface IConsumptionByTimeBand {
   peak: number
   flat: number

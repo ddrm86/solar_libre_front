@@ -1,3 +1,22 @@
+/**
+ * inputConsumption.ts
+ *
+ * This file defines a Pinia store for managing input consumption data
+ * within the application. The store maintains a reactive yearly consumption
+ * object, which includes monthly consumption values by time band and
+ * provides computed properties for total consumption, consumption by time band,
+ * and monthly breakdowns.
+ *
+ * The store also manages sun hours data for the project location and
+ * calculates photovoltaic (PV) hours per month, adjusting sunrise and sunset
+ * times for PV production estimation.
+ *
+ * Methods are provided to compute PV consumption per month, total PV
+ * consumption, and to generate a payload for saving consumption data.
+ * The store includes logic to save and load consumption information
+ * from the backend, updating the local state accordingly.
+ */
+
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import {

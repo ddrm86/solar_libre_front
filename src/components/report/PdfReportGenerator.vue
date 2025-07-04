@@ -9,6 +9,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * PdfReportGenerator.vue
+ *
+ * This Vue component renders a button to generate and open a PDF report for the current project.
+ * When clicked, it compiles report sections using data from various report models and creates a
+ * PDF using pdfMake.
+ * The generated PDF includes project information, electricity consumption, installation details,
+ * and economic balance.
+ *
+ * Usage:
+ * <PdfReportGenerator />
+ */
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import type { TDocumentDefinitions } from "pdfmake/interfaces";

@@ -1,3 +1,14 @@
+/**
+ * monophaseInverter.ts
+ *
+ * This file defines the IMonophaseInverter interface, which extends IComponent to represent
+ * a monophase inverter with specific electrical properties such as recommended maximum input power,
+ * nominal output power, input and output voltages, MPPT characteristics, and current ratings.
+ * The validateMonophaseInverter function checks that all required fields of a monophase inverter
+ * are present and valid, using the validateComponent function for base component validation
+ * and additional checks for each inverter-specific property.
+ */
+
 import { type IComponent, validateComponent } from '@/models/inventory/component.ts'
 
 export interface IMonophaseInverter extends IComponent {

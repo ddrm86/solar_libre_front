@@ -1,3 +1,21 @@
+/**
+ * projectSaving.ts
+ *
+ * This file defines a Pinia store for managing the saving process
+ * of a project within the application. The store coordinates saving
+ * of project information, input consumption, solar arrays, inverters,
+ * and economic balance data.
+ *
+ * The store maintains reactive state for the saving status,
+ * error flag, and error details. It determines if the project
+ * is new based on the presence of an identifier in the project info.
+ *
+ * Methods are provided to save all relevant project data in sequence,
+ * handling asynchronous operations and updating the saving and error
+ * states as needed. When saving a new project, the store refreshes
+ * the project list after completion.
+ */
+
 import { defineStore } from 'pinia'
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { computed, ref } from 'vue'

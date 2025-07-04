@@ -1,3 +1,20 @@
+/**
+ * projectInfo.ts
+ *
+ * This file defines a Pinia store for managing project information
+ * within the application. The store maintains a reactive projectInfo
+ * object, which includes the project name, location details such as
+ * latitude, longitude, and address, and a deleted flag.
+ *
+ * The store provides a function to generate a random project name
+ * using a UUID, ensuring each new project has a unique identifier.
+ *
+ * Methods are provided to add a new project, update an existing project,
+ * and save project. The store also offers a method to load
+ * project information from the backend.
+ *
+ */
+
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { IProjectInfo } from '@/models/project_info/projectInfo.ts'

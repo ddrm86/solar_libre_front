@@ -11,6 +11,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * CostSavingsChart.vue
+ *
+ * This Vue component displays a bar and line chart visualizing monthly economic balance data.
+ * It shows monthly expenses as a line and savings (with and without surplus compensation) as
+ * stacked bars for each month.
+ * The chart updates automatically when the underlying data changes and saves a base64 image of
+ * the chart in the store for the PDF reports.
+ *
+ * Usage:
+ * <CostSavingsChart />
+ */
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'

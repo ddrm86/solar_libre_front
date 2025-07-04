@@ -11,6 +11,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * RoiChart.vue
+ *
+ * This Vue component displays a line chart visualizing the return on investment (ROI) over 25 years.
+ * It compares ROI with and without surplus compensation, using data provided via props.
+ * The chart updates automatically when the data changes and saves a base64 image of the chart in
+ * the store for the PDF reports.
+ *
+ * Usage:
+ * <RoiChart :roiWithoutSurplus="array1" :roiWithSurplus="array2" />
+ */
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance.ts'

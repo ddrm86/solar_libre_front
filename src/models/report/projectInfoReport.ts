@@ -1,3 +1,12 @@
+/**
+ * projectInfoReport.ts
+ *
+ * This file defines the useProjectInfoReport function, which generates the content for the project
+ * information section of the report.
+ * The function retrieves project data from the project info store, including the project name,
+ * address, and geographic coordinates.
+ */
+
 import { useProjectInfoStore } from '@/stores/project_info/projectInfo.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

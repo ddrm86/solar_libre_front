@@ -13,6 +13,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * RoiTable.vue
+ *
+ * This Vue component displays a table with the return on investment (ROI) calculation over 25 years.
+ * It shows annual bill, maintenance, annual savings, annual bill with PV, cumulative savings, and ROI for each year.
+ * The table updates automatically based on the provided props and store data, and emits updated ROI data.
+ *
+ * Usage:
+ * <RoiTable :includeSurplus="true" @updateRoiData="handler" />
+ */
 import { computed, defineProps, defineEmits } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEconomicBalanceStore } from '@/stores/economicBalance'

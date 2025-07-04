@@ -1,3 +1,21 @@
+/**
+ * solarArrays.ts
+ *
+ * This file defines a Pinia store for managing solar arrays
+ * within the application. The store maintains a reactive array
+ * of solar arrays, each containing configuration data such as
+ * panel type, number of panels, system loss, tilt angle, and azimuth.
+ *
+ * The store provides computed properties for the total number of panels,
+ * total installed power, and annual or monthly production based on PVGIS data.
+ *
+ * Methods are included to add and delete solar arrays, as well as to
+ * save and load solar array information from the backend. The store
+ * also updates PVGIS production data when the project location changes.
+ *
+ */
+
+
 import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
 import { type ISolarArray, CSolarArray } from '@/models/solar_arrays/solarArray.ts'

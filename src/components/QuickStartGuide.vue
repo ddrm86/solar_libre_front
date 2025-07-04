@@ -14,6 +14,20 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * QuickStartGuide.vue
+ *
+ * This Vue component displays a quick start guide for new users,
+ * outlining the main steps to begin working with the SolarLibre application.
+ * It presents a welcome message, a guide title, and an ordered list
+ * of instructions covering inventory setup, project loading, project
+ * information, consumption entry, solar array configuration, inverter
+ * setup, economic balance, and saving or reporting.
+ *
+ * Usage:
+ * <QuickStartGuide />
+ */
+
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

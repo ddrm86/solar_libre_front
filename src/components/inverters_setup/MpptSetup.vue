@@ -40,6 +40,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * MpptSetup.vue
+ *
+ * This Vue component provides a panel for configuring an MPPT (Maximum Power Point Tracker) within
+ * an inverter setup.
+ * Users can add or remove strings, configure each string, and delete the entire MPPT.
+ * The panel header displays the MPPT number and a summary of the strings when collapsed.
+ *
+ * Usage:
+ * <MpptSetup :idx="index" :inverter="inverter" :currentSetup="mpptSetup" @updateMppt="onUpdateMppt"
+ * @deleteMppt="onDeleteMppt" />
+ */
 import { useI18n } from 'vue-i18n'
 import { CStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 import StringSetup from '@/components/inverters_setup/StringSetup.vue'

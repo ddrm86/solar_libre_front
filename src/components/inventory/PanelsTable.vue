@@ -271,6 +271,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * PanelsTable.vue
+ *
+ * This Vue component displays a table for managing solar panels in the inventory.
+ * Users can view, add, edit, and delete panel records.
+ * The table supports filtering, sorting, and searching by different fields.
+ * Dialogs are provided for creating or editing panel details and for confirming deletions.
+ * Toast notifications inform the user about the result of each operation.
+ *
+ * Usage:
+ * <PanelsTable />
+ */
 import { usePanelsStore } from '@/stores/inventory/panels.ts'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'

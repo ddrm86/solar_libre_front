@@ -34,6 +34,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * StringSetup.vue
+ *
+ * This Vue component provides a form for configuring a string within an inverter setup.
+ * Users can select a solar array and specify the number of panels for the string.
+ * The component displays information about the selected string and updates the parent component
+ * when changes occur.
+ *
+ * Usage:
+ * <StringSetup :idx="index" :currentSetup="stringSetup" @updateString="onUpdateString" />
+ */
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ISolarArray } from '@/models/solar_arrays/solarArray.ts'

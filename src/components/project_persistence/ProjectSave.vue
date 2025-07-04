@@ -11,6 +11,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * ProjectSave.vue
+ *
+ * This Vue component renders a save button for persisting the current project.
+ * When clicked, it triggers the save operation via the projectSavingStore.
+ * After the save attempt, it displays a toast notification indicating success or error.
+ *
+ * Usage:
+ * <ProjectSave />
+ */
 import { useProjectSavingStore } from '@/stores/project_persistence/projectSaving.ts'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'

@@ -1,3 +1,18 @@
+/**
+ * inverterSetup.ts
+ *
+ * This file defines the IInverterSetup interface and the CInverterSetup class,
+ * which are used to manage the configuration of inverters in a solar energy system.
+ * The IInverterSetup interface specifies properties such as a unique identifier,
+ * an optional reference to a monophase inverter, and an array of MPPT setups.
+ * It also declares methods to calculate key electrical parameters for the inverter setup,
+ * including peak power, peak voltage, startup voltage, and inverter usage ratio.
+ * The CInverterSetup class implements IInverterSetup, providing logic to aggregate
+ * or select the appropriate values from its associated MPPT setups for each calculation.
+ * The static of method allows for convenient instantiation of CInverterSetup objects
+ * with a given inverter and MPPT setup array.
+ */
+
 import type { IMonophaseInverter } from '@/models/inventory/monophaseInverter.ts'
 import type { IMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'
 

@@ -21,6 +21,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * ReturnOfInvestment.vue
+ *
+ * This Vue component displays the return on investment (ROI) analysis for a project.
+ * It includes a form for entering ROI parameters, a table showing the ROI calculation over time,
+ * and a chart visualizing the ROI with and without surplus compensation.
+ * The component manages the state for including surplus compensation and updates the ROI data accordingly.
+ *
+ * Usage:
+ * <ReturnOfInvestment />
+ */
 import { useI18n } from 'vue-i18n'
 import RoiInput from '@/components/economic_balance/RoiInput.vue'
 import RoiTable from '@/components/economic_balance/RoiTable.vue'

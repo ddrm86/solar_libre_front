@@ -24,6 +24,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * InvertersSetup.vue
+ *
+ * This Vue component manages the configuration of all inverters in the project.
+ * It allows users to add new inverters and renders a list of configured inverters.
+ * A message is displayed about the current connection status of solar panels so users do not forget
+ * to connect all of them.
+ * Each inverter can be configured or removed, and the component updates the parent store accordingly.
+ *
+ * Usage:
+ * <InvertersSetup />
+ */
 import { useI18n } from 'vue-i18n'
 import { useInvertersSetupStore } from '@/stores/invertersSetup.ts'
 import { computed, onMounted } from 'vue'

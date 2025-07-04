@@ -29,6 +29,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * PvConsumptionTable.vue
+ *
+ * This Vue component displays a table showing the estimated monthly energy consumption during
+ * photovoltaic production hours.
+ * It presents the consumption values for each month, divided into peak, flat, and valley periods.
+ * The component calculates and displays the total consumption for each period and the annual total.
+ *
+ * Usage:
+ * <PvConsumptionTable />
+ */
 import { computed } from 'vue'
 import { useInputConsumptionStore } from '@/stores/inputConsumption'
 import { useI18n } from 'vue-i18n'

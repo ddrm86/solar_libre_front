@@ -47,6 +47,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * InverterInfo.vue
+ *
+ * This Vue component displays detailed information and validation messages about the selected inverter configuration.
+ * It shows connected power, input voltage, and startup voltage, each with a corresponding status message,
+ * including the utilization percentage.
+ *
+ * Usage:
+ * <InverterInfo :idx="index" />
+ */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useInvertersSetupStore } from '@/stores/invertersSetup'

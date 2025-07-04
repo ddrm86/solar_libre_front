@@ -39,6 +39,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * ProjectDelete.vue
+ *
+ * This Vue component renders a button to delete the current project.
+ * When clicked, it opens a confirmation dialog warning the user about the deletion.
+ * If the user confirms, it sends a request to delete the project and shows a toast notification
+ * indicating success or error.
+ *
+ * Usage:
+ * <ProjectDelete :projectId="id" :projectName="name" @project-deleted="handler" />
+ */
 import { ref, defineEmits } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'

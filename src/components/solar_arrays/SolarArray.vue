@@ -20,6 +20,18 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * SolarArray.vue
+ *
+ * This Vue component displays a panel for configuring and viewing a solar array.
+ * The panel header shows the array number and, when collapsed, a summary of the selected panel,
+ * configuration, and annual production.
+ * Inside the panel, users can input solar array data and view PVGIS simulation results.
+ * A delete button allows removing the solar array.
+ *
+ * Usage:
+ * <SolarArray :arrayIdx="index" />
+ */
 import SolarArrayInputData from '@/components/solar_arrays/SolarArrayInputData.vue'
 import PvgisResultsVisualization from '@/components/solar_arrays/PvgisResultsVisualization.vue'
 import { ref, computed } from 'vue'

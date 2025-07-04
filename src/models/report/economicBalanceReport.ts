@@ -1,3 +1,14 @@
+/**
+ * economicBalanceReport.ts
+ *
+ * This file defines the useEconomicBalanceReport function, which generates the content for the
+ * economic balance section of the report.
+ * It retrieves data from the economic balance store, including average kWh cost, compensation per kWh,
+ * installation costs, annual maintenance cost, inflation, and annual savings.
+ *
+ * Additionally, the report includes a chart image representing return of investment data.
+ */
+
 import { useEconomicBalanceStore } from '@/stores/economicBalance.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

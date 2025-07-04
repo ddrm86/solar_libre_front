@@ -1,3 +1,14 @@
+/**
+ * consumptionReport.ts
+ *
+ * This file defines the useConsumptionReport composable function, which is responsible for generating
+ * the content of the consumption section of the report.
+ * The function imports and utilizes the input consumption store to access relevant consumption data,
+ * such as total annual consumption and photovoltaic (PV) hours consumption.
+ * Additionally, the report includes a chart image representing the consumption data,
+ * with a specified width for display purposes.
+ */
+
 import { useInputConsumptionStore } from '@/stores/inputConsumption.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

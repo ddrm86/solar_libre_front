@@ -1,3 +1,19 @@
+/**
+ * economicBalance.ts
+ *
+ * This file defines a Pinia store for managing the economic balance
+ * of a project within the application. The store maintains reactive
+ * state for energy costs, installation costs, inflation, and chart images.
+ *
+ * The store computes energy costs by time band, total energy costs,
+ * and average kWh cost, both with and without taxes. It calculates
+ * monthly and annual savings, including surplus compensation, based
+ * on solar production and consumption data.
+ *
+ * Methods are provided to create a payload for saving cost information,
+ * save cost data to the backend, and load cost data for a project.
+ */
+
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { CEnergyCosts, type IEnergyCosts } from '@/models/economic_balance/energyCosts'

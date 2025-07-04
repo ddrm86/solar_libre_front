@@ -1,3 +1,22 @@
+/**
+ * invertersSetup.ts
+ *
+ * This file defines a Pinia store for managing inverter setups
+ * within the application. The store maintains a reactive array
+ * of inverter setups, each containing references to a monophase
+ * inverter and its associated MPPT and string configurations.
+ *
+ * The store provides computed properties to determine available
+ * solar arrays and the number of unassigned panels, ensuring
+ * that panel allocation across inverters is tracked accurately.
+ *
+ * Methods are included to add, update, and delete inverter setups,
+ * as well as to save and load inverter, MPPT, and string setup
+ * information from the backend. The store also handles resetting
+ * string configurations when the associated solar array's panel
+ * model or panel count changes.
+ */
+
 import { defineStore } from 'pinia'
 import { CInverterSetup, type IInverterSetup } from '@/models/inverters_setup/inverterSetup.ts'
 import { computed, ref, watch } from 'vue'
