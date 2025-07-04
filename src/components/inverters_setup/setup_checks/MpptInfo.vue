@@ -80,6 +80,20 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * MpptInfo.vue
+ *
+ * This Vue component displays detailed information and validation messages for an MPPT
+ * (Maximum Power Point Tracker) configuration.
+ * It shows calculated values such as connected power, voltage at max power, current at max power,
+ * open circuit voltage, and short circuit current.
+ * For each value, a message indicates if it is within the recommended range or if it exceeds
+ * inverter specifications.
+ * If the number of strings exceeds the MPPT input limit, an informational message is shown.
+ *
+ * Usage:
+ * <MpptInfo :mppt="mpptSetup" :inverter="inverter" />
+ */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { IMpptSetup } from '@/models/inverters_setup/mpptSetup.ts'

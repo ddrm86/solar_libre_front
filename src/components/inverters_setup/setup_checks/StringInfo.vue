@@ -25,6 +25,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * StringInfo.vue
+ *
+ * This Vue component displays a button that, when clicked, shows a popover with detailed
+ * information about the selected string configuration.
+ * The popover presents calculated values such as nominal power, Vmpp, Impp, Voc, and Isc for the string.
+ * The button can be disabled based on the provided prop.
+ *
+ * Usage:
+ * <StringInfo :stringSetup="stringSetup" :disabled="isDisabled" />
+ */
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
