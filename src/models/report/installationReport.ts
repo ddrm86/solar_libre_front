@@ -1,3 +1,12 @@
+/**
+ * installationReport.ts
+ *
+ * This file defines the useInstallationReport function, which generates the content for the installation
+ * section of the report.
+ * The function retrieves data from the solar arrays store, including total installed power and annual production.
+ * For each inverter, the report specifies the maker and model, followed by the number and type of panels in each string.
+ */
+
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSolarArraysStore } from '@/stores/solarArrays.ts'

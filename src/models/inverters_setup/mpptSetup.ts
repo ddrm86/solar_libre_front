@@ -1,3 +1,17 @@
+/**
+ * mpptSetup.ts
+ *
+ * This file defines the IMpptSetup interface and the CMpptSetup class for managing
+ * the configuration of MPPT (Maximum Power Point Tracking) setups in a solar inverter system.
+ * The IMpptSetup interface specifies properties such as a unique identifier and an array of string setups,
+ * as well as methods to calculate key electrical parameters for the MPPT,
+ * including peak power, peak voltage, peak current, open circuit voltage, and short circuit current.
+ * The CMpptSetup class implements IMpptSetup, providing logic to aggregate or select
+ * the appropriate values from its associated string setups for each calculation.
+ * The toString method generates a human-readable summary of the MPPT setup,
+ * listing the number of panels, panel maker, model, and azimuth for each string with an associated solar array.
+ */
+
 import type { IStringSetup } from '@/models/inverters_setup/stringSetup.ts'
 
 export interface IMpptSetup {

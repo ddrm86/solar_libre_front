@@ -1,3 +1,20 @@
+/**
+ * solarArray.ts
+ *
+ * This file defines the ISolarArray interface and the CSolarArray class,
+ * which are used to represent and manage a solar array within the application.
+ * The ISolarArray interface specifies properties such as a unique identifier,
+ * the array configuration, optional PVGIS data, a dirty state flag, and a method
+ * to fetch PVGIS data using project information.
+ *
+ * The CSolarArray class implements ISolarArray, initializing the array data
+ * and providing logic to fetch and update PVGIS data based on the project's
+ * geographic location and the array's electrical characteristics.
+ * The fetchPvgisData method constructs a PVGIS request using the project's
+ * latitude, longitude, array peak power, system loss, tilt angle, and azimuth,
+ * then updates the PVGIS data and the dirty state accordingly.
+ */
+
 import { CSolarArrayData, type ISolarArrayData } from '@/models/solar_arrays/solarArrayData.ts'
 import { CPvgis, type IPvgis } from '@/models/solar_arrays/pvgis.ts'
 import type { IPanel } from '@/models/inventory/panel.ts'
