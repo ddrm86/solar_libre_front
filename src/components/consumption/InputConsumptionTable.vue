@@ -10,6 +10,7 @@
         <div>{{ month }}</div>
         <div>
           <InputNumber
+            :data-testid="`peak-${month}`"
             :model-value="consumption.consumptionsPerMonth[index].peak"
             :min="0"
             mode="decimal"
@@ -19,6 +20,7 @@
         </div>
         <div>
           <InputNumber
+            :data-testid="`flat-${month}`"
             :model-value="consumption.consumptionsPerMonth[index].flat"
             :min="0"
             mode="decimal"
@@ -28,6 +30,7 @@
         </div>
         <div>
           <InputNumber
+            :data-testid="`valley-${month}`"
             :model-value="consumption.consumptionsPerMonth[index].valley"
             :min="0"
             mode="decimal"
