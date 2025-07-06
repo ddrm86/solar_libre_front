@@ -1,22 +1,19 @@
 import { test, expect } from '@playwright/test';
 
-test('calculates total power production', async ({ page }) => {
+test.beforeEach(async ({ page }) => {
   await page.goto('/solar_arrays');
   await page.getByRole('button', { name: 'Add solar array' }).click();
   await page.getByRole('combobox', { name: 'Select a panel model' }).click();
   await page.getByText('Winaico 360MGL PERC FULL').click();
   await page.locator('#panelNumber button').first().click();
   await page.locator('#panelNumber button').first().click();
+})
+
+test('calculates total power production', async ({ page }) => {
   await expect(page.getByLabel('', { exact: true })).toContainText('(0.72 kW)');
 })
 
 test('queries PVGIS data', async ({ page }) => {
-  await page.goto('/solar_arrays');
-  await page.getByRole('button', { name: 'Add solar array' }).click();
-  await page.getByRole('combobox', { name: 'Select a panel model' }).click();
-  await page.getByText('Winaico 360MGL PERC FULL').click();
-  await page.locator('#panelNumber button').first().click();
-  await page.locator('#panelNumber button').first().click();
   await expect(page.getByLabel('Consult PVGIS Data')).toContainText('Needs update');
   await page.getByRole('button', { name: 'Consult PVGIS Data' }).click();
   await expect(page.locator('.p-card-body').first()).toBeVisible();
