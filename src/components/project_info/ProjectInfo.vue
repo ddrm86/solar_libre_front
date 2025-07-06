@@ -38,6 +38,7 @@
           <IftaLabel>
             <InputNumber
               id="latitude"
+              data-testid="latitude"
               v-model="projectInfoStore.projectInfo.location.latitude"
               :minFractionDigits="6"
               :maxFractionDigits="13"
@@ -50,6 +51,7 @@
           <IftaLabel>
             <InputNumber
               id="longitude"
+              data-testid="longitude"
               v-model="projectInfoStore.projectInfo.location.longitude"
               :minFractionDigits="6"
               :maxFractionDigits="13"
