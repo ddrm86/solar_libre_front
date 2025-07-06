@@ -22,3 +22,14 @@ test('queries PVGIS data', async ({ page }) => {
   await expect(page.getByLabel('', { exact: true })).toContainText('PROVIDED DATA');
   await expect(page.getByLabel('Consult PVGIS Data')).toContainText('Updated');
 })
+
+test('shows array summary when wrapped', async ({ page }) => {
+  await page.locator('#pv_id_11_header').click();
+  await expect(page.getByRole('main')).toContainText('2 x Winaico 360MGL PERC FULL BLACK (📉14% 📐35º 🧭0º) ⚡0 kWh yearly - NOT UPDATED');
+})
+
+test('deletes array', async ({ page }) => {
+  await expect(page.getByRole('combobox')).toBeVisible();
+  await page.getByRole('button', { name: '' }).click();
+  await expect(page.getByRole('combobox')).toBeHidden();
+})
