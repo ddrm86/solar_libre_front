@@ -49,6 +49,7 @@
             <label for="peakKwhCost">{{ t('energy_costs.peakKwhCost') }}</label>
             <InputNumber
               id="peakKwhCost"
+              data-testid="peakKwhCost"
               v-model="economicBalanceStore.energyCosts.peakKwhCost"
               mode="decimal"
               :minFractionDigits="6"
@@ -60,6 +61,7 @@
             <label for="flatKwhCost">{{ t('energy_costs.flatKwhCost') }}</label>
             <InputNumber
               id="flatKwhCost"
+              data-testid="flatKwhCost"
               v-model="economicBalanceStore.energyCosts.flatKwhCost"
               mode="decimal"
               :minFractionDigits="6"
@@ -71,6 +73,7 @@
             <label for="valleyKwhCost">{{ t('energy_costs.valleyKwhCost') }}</label>
             <InputNumber
               id="valleyKwhCost"
+              data-testid="valleyKwhCost"
               v-model="economicBalanceStore.energyCosts.valleyKwhCost"
               mode="decimal"
               :minFractionDigits="6"
